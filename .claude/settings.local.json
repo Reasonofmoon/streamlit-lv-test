@@ -12,7 +12,8 @@
       "Bash(git remote add:*)",
       "Bash(git rm:*)",
       "Bash(git branch:*)",
-      "Bash(python:*)"
+      "Bash(python:*)",
+      "Bash(streamlit run:*)"
     ],
     "deny": [],
     "ask": []

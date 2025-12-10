@@ -43,6 +43,95 @@ div[data-testid="metric-container"] {
     box-shadow: 0 5px 10px rgba(0,0,0,0.2);
 }
 
+/* Answer Option Styles */
+.stButton > button[k*="option_"] {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    color: #333;
+    border: 2px solid #dee2e6;
+    font-weight: 500;
+    padding: 0.75rem 1rem;
+    width: 100%;
+    text-align: left;
+    font-size: 16px;
+    position: relative;
+    overflow: hidden;
+    animation: slideInUp 0.3s ease-out;
+}
+
+.stButton > button[k*="option_"]:hover {
+    background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+    border-color: #adb5bd;
+}
+
+/* Selected Answer Option - Light Red */
+.stButton > button[k*="option_"]:active,
+.stButton > button[k*="option_"][data-selected="true"] {
+    background: linear-gradient(135deg, #ffb3b3 0%, #ff8787 50%, #ff6b6b 100%);
+    color: white;
+    border: 2px solid #ff5252;
+    font-weight: 600;
+    box-shadow: 0 4px 8px rgba(255, 107, 107, 0.3);
+    animation: answerSelected 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Animation for button entry */
+@keyframes slideInUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Animation for selection */
+@keyframes answerSelected {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 2px 4px rgba(255, 107, 107, 0.2);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 6px 12px rgba(255, 107, 107, 0.4);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 4px 8px rgba(255, 107, 107, 0.3);
+    }
+}
+
+/* Pulse effect for selected option */
+.stButton > button[k*="option_"][data-selected="true"]::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    50% {
+        opacity: 0.4;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+}
+
 /* Success State */
 .success-message {
     background-color: #d4edda;

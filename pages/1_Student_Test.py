@@ -842,11 +842,49 @@ def main():
         if st.session_state['current_question'] < len(st.session_state['answers']):
             current_answer = st.session_state['answers'][st.session_state['current_question']]
 
-        for i, option in enumerate(current_q['options']):
-            button_symbol = '●' if i == current_answer else '○'
-            if st.button(f"{button_symbol} {option}",
-                        key=f"q{st.session_state['current_question']}_option_{i}",
-                        help=f"옵션 {i+1}"):
+        # 옵션 버튼을 위한 CSS 스타일 주입
+    selection_style = """
+    <style>
+    .stButton > button[k*="q{st.session_state['current_question']}_option_{current_answer if current_answer is not None else 'X'}"] {{
+        background: linear-gradient(135deg, #ffb3b3 0%, #ff8787 50%, #ff6b6b 100%) !important;
+        color: white !important;
+        border: 2px solid #ff5252 !important;
+        font-weight: 600 !important;
+        box-shadow: 0 4px 8px rgba(255, 107, 107, 0.3) !important;
+        animation: answerSelected 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }}
+
+    @keyframes answerSelected {{
+        0% {{
+            transform: scale(1);
+            box-shadow: 0 2px 4px rgba(255, 107, 107, 0.2);
+        }}
+        50% {{
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(255, 107, 107, 0.4);
+        }}
+        100% {{
+            transform: scale(1);
+            box-shadow: 0 4px 8px rgba(255, 107, 107, 0.3);
+        }}
+    }}
+    </style>
+    """
+    st.markdown(selection_style, unsafe_allow_html=True)
+
+    for i, option in enumerate(current_q['options']):
+        is_selected = (i == current_answer)
+        button_symbol = '●' if is_selected else '○'
+
+        # 선택된 옵션에 특별한 표시 추가
+        if is_selected:
+            button_text = f"✓ {button_symbol} {option}"
+        else:
+            button_text = f"{button_symbol} {option}"
+
+        if st.button(button_text,
+                    key=f"q{st.session_state['current_question']}_option_{i}",
+                    help=f"옵션 {i+1}"):
                 # 선택된 옵션을 세션 상태에 저장
                 if st.session_state['current_question'] < len(st.session_state['answers']):
                     # 이미 답한 문제인 경우 업데이트
