@@ -845,9 +845,16 @@ def main():
         for i, option in enumerate(current_q['options']):
             button_symbol = '●' if i == current_answer else '○'
             if st.button(f"{button_symbol} {option}",
-                        key=f"option_{i}",
+                        key=f"q{st.session_state['current_question']}_option_{i}",
                         help=f"옵션 {i+1}"):
-                selected_option = i
+                # 선택된 옵션을 세션 상태에 저장
+                if st.session_state['current_question'] < len(st.session_state['answers']):
+                    # 이미 답한 문제인 경우 업데이트
+                    st.session_state['answers'][st.session_state['current_question']] = i
+                else:
+                    # 새로운 답변인 경우 추가
+                    st.session_state['answers'].append(i)
+                st.rerun()  # 페이지 다시 로드하여 변경사항 반영
 
         # 버튼 영역
         col1, col2, col3, col4 = st.columns(4)
