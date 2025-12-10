@@ -55,6 +55,12 @@ def load_preA1_questions_isolated():
     """
     PRE-A1 전용 완전 격리 로더 - 다른 어떤 코드도 섞이지 않음
     """
+    # A1 지문 정의 (PRE-A1에도 적용)
+    passages = {
+        1: "Hi Tom,\n\nI am at the library. Please come at 3 o'clock.\nBring your English book.\nSee you soon!\n\nMia",
+        3: "Henry and his big dog Mudge went camping. Henry's mother knew all about camping. She knew how to set up a tent. She knew how to build a campfire. Henry's father didn't know anything about camping. He just came with a guitar and a smile. They walked and walked. It was beautiful. Henry saw fish in the stream and a rainbow.",
+        5: "Nate is a detective. He likes pancakes very much. He had pancakes for breakfast. Then the telephone rang. It was Annie. Annie lost a picture. The picture was of her dog, Fang. Nate said, \"I will find the picture.\""
+    }
     # 1. 첫 번째 시도: 좋은 데이터가 있는 extracted_questions.json에서만 로드
     try:
         import json
@@ -88,6 +94,18 @@ def load_preA1_questions_isolated():
                                 'correct': int(q.get('correct', 0)),  # 내부 채점용 - UI에 표시 안됨
                                 'section': str(q.get('section', 'General'))
                             }
+
+                            # PRE-A1 Reading 섹션에 지문 연결
+                            q_id = cleaned_q['id']
+                            if cleaned_q['section'] == 'Reading':
+                                # 지문 공유 규칙: 1-2번은 지문 1 공유, 3-4번은 지문 2 공유, 5-8번은 지문 3 공유
+                                if q_id in [1, 2]:
+                                    cleaned_q['passage'] = passages[1]
+                                elif q_id in [3, 4]:
+                                    cleaned_q['passage'] = passages[3]
+                                elif q_id in [5, 6, 7, 8]:
+                                    cleaned_q['passage'] = passages[5]
+
                             cleaned_questions.append(cleaned_q)
                     except Exception:
                         continue  # 개별 질문 오류는 무시
@@ -110,28 +128,30 @@ def load_preA1_questions_isolated():
     except Exception:
         pass
 
-    # 3. 최후의 수단: 하드코딩된 비상 질문
+    # 3. 최후의 수단: 하드코딩된 비상 질문 (지문 포함)
     return [
         {
             'id': 1,
-            'question': 'What do you say when you meet someone?',
-            'options': ['Hello', 'Goodbye', 'Thank you', 'Sorry'],
-            'correct': 0,  # 내부 채점용
-            'section': 'Conversation'
+            'question': 'Where is Mia?',
+            'options': ['At school', 'At the library', 'At home', 'At the park'],
+            'correct': 1,  # 내부 채점용
+            'section': 'Reading',
+            'passage': passages[1]  # 지문 포함
         },
         {
             'id': 2,
+            'question': 'What should Tom bring?',
+            'options': ['His lunch box', 'His math book', 'His English book', 'His pencil case'],
+            'correct': 2,  # 내부 채점용
+            'section': 'Reading',
+            'passage': passages[1]  # 지문 공유
+        },
+        {
+            'id': 3,
             'question': 'My name _______ Alex.',
             'options': ['am', 'is', 'are', 'be'],
             'correct': 1,  # 내부 채점용
             'section': 'Grammar'
-        },
-        {
-            'id': 3,
-            'question': 'What is the opposite of "good"?',
-            'options': ['Bad', 'Good', 'Happy', 'Sad'],
-            'correct': 0,  # 내부 채점용
-            'section': 'Vocabulary'
         },
         {
             'id': 4,
@@ -142,9 +162,9 @@ def load_preA1_questions_isolated():
         },
         {
             'id': 5,
-            'question': 'Nice to _______ you.',
-            'options': ['see', 'know', 'meet', 'go'],
-            'correct': 2,  # 내부 채점용
+            'question': 'What do you say when you meet someone?',
+            'options': ['Hello', 'Goodbye', 'Thank you', 'Sorry'],
+            'correct': 0,  # 내부 채점용
             'section': 'Conversation'
         }
     ]
@@ -655,10 +675,10 @@ def main():
         st.error("❌ 유효한 질문이 없습니다. 관리자에게 문의해주세요.")
         st.stop()
 
-    # 🔥 CRITICAL: 학생에게 정답 정보 노출 방지
+    # 🔥 CRITICAL: 학생에게 정답 정보 노출 방지 (지문 유지)
     ui_questions = []
     for q in valid_questions:
-        # UI에 전달할 질문에서 correct 필드 제거
+        # UI에 전달할 질문에서 correct 필드만 제거, passage는 유지
         ui_question = {
             'id': q['id'],
             'question': q['question'],
@@ -666,6 +686,11 @@ def main():
             'section': q['section']
             # correct 필드는 제외됨 - 내부 채점용으로만 보관
         }
+
+        # 지문이 있으면 UI에도 포함
+        if 'passage' in q and q['passage']:
+            ui_question['passage'] = q['passage']
+
         ui_questions.append(ui_question)
 
     # UI용과 채점용 데이터 분리
@@ -680,28 +705,29 @@ def main():
             st.rerun()
         return
 
-    # 진행 상황 표시
+    # 진행 상황 표시 (개선)
     progress = (len(st.session_state['answers']) / total_questions)
+
+    st.markdown("### 📈 전체 진행률")
     st.progress(progress)
 
-    # 상세 진행 상황 표시
+    # 상세 진행 상황 표시 (더 명확하게)
     col1, col2, col3, col4 = st.columns(4)
     with col1:
-        st.metric("현재 문제", f"{st.session_state['current_question'] + 1}/{total_questions}")
+        st.metric("📍 현재 문제", f"{st.session_state['current_question'] + 1}/{total_questions}")
     with col2:
-        st.metric("답변 완료", f"{len(st.session_state['answers'])}/{total_questions}")
+        st.metric("✅ 답변 완료", f"{len(st.session_state['answers'])}/{total_questions}")
     with col3:
-        st.metric("남은 문제", f"{total_questions - len(st.session_state['answers'])}")
+        st.metric("⏳ 남은 문제", f"{total_questions - len(st.session_state['answers'])}")
     with col4:
         completion_rate = (len(st.session_state['answers']) / total_questions) * 100
-        st.metric("완료율", f"{completion_rate:.1f}%")
+        st.metric("📊 완료율", f"{completion_rate:.1f}%")
 
-    # 현재 문제 상태
-    current_answered = st.session_state['current_question'] < len(st.session_state['answers'])
-    if current_answered:
-        st.success(f"✅ 문제 {st.session_state['current_question'] + 1}: 답변 완료됨")
+    # 현재 문제 상태 (더 명확하게)
+    if st.session_state['current_question'] < len(st.session_state['answers']):
+        st.success(f"✅ **문제 {st.session_state['current_question'] + 1}**: 이미 답변 완료됨")
     else:
-        st.warning(f"❓ 문제 {st.session_state['current_question'] + 1}: 답변 필요")
+        st.warning(f"❓ **문제 {st.session_state['current_question'] + 1}**: 답변이 필요합니다")
 
     # 문제 목록과 네비게이션
     st.markdown("---")
