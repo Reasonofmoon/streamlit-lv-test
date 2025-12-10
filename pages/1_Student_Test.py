@@ -842,31 +842,19 @@ def main():
         if st.session_state['current_question'] < len(st.session_state['answers']):
             current_answer = st.session_state['answers'][st.session_state['current_question']]
 
-        # 옵션 버튼을 위한 CSS 스타일 주입
-    selection_style = """
+        # 옵션 버튼을 위한 CSS 스타일 주입 (f-string 제거)
+    current_q_num = st.session_state['current_question']
+    current_ans = current_answer if current_answer is not None else 'X'
+
+    selection_style = f"""
     <style>
-    .stButton > button[k*="q{st.session_state['current_question']}_option_{current_answer if current_answer is not None else 'X'}"] {{
+    .stButton > button[k*="q{current_q_num}_option_{current_ans}"] {{
         background: linear-gradient(135deg, #ffb3b3 0%, #ff8787 50%, #ff6b6b 100%) !important;
         color: white !important;
         border: 2px solid #ff5252 !important;
         font-weight: 600 !important;
         box-shadow: 0 4px 8px rgba(255, 107, 107, 0.3) !important;
         animation: answerSelected 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }}
-
-    @keyframes answerSelected {{
-        0% {{
-            transform: scale(1);
-            box-shadow: 0 2px 4px rgba(255, 107, 107, 0.2);
-        }}
-        50% {{
-            transform: scale(1.05);
-            box-shadow: 0 6px 12px rgba(255, 107, 107, 0.4);
-        }}
-        100% {{
-            transform: scale(1);
-            box-shadow: 0 4px 8px rgba(255, 107, 107, 0.3);
-        }}
     }}
     </style>
     """
