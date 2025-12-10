@@ -37,36 +37,259 @@ if not st.session_state.get('logged_in', False) or st.session_state.get('user_ro
 
 # 질문 데이터 (실제로는 파일이나 데이터베이스에서 로드)
 def load_questions(level):
-    # 기존 HTML에서 추출한 문항 사용
-    try:
-        import json
-        with open('extracted_questions.json', 'r', encoding='utf-8') as f:
-            questions_data = json.load(f)
+    # A1 레벨은 지문이 있는 수동 데이터 사용
+    if level == 'A1':
+        questions = [
+            # Reading Comprehension (8문항) - 지문 포함
+            {
+                'id': 1,
+                'passage': "Hi Tom,\n\nI am at the library. Please come at 3 o'clock.\nBring your English book.\nSee you soon!\n\nMia",
+                'question': 'Where is Mia?',
+                'options': ['At school', 'At the library', 'At home', 'At the park'],
+                'correct': 1,
+                'section': 'Reading'
+            },
+            {
+                'id': 2,
+                'question': 'What should Tom bring?',
+                'options': ['His lunch box', 'His math book', 'His English book', 'His pencil case'],
+                'correct': 2,
+                'section': 'Reading'
+            },
+            {
+                'id': 3,
+                'passage': "Henry and his big dog Mudge went camping. Henry's mother knew all about camping. She knew how to set up a tent. She knew how to build a campfire. Henry's father didn't know anything about camping. He just came with a guitar and a smile. They walked and walked. It was beautiful. Henry saw fish in the stream and a rainbow.",
+                'question': 'Who knew about camping?',
+                'options': ['Henry\'s father', 'Henry\'s mother', 'Mudge the dog', 'Henry'],
+                'correct': 1,
+                'section': 'Reading'
+            },
+            {
+                'id': 4,
+                'question': 'What did Henry see?',
+                'options': ['Fish and a rainbow', 'Just a rainbow', 'Just fish', 'A guitar'],
+                'correct': 0,
+                'section': 'Reading'
+            },
+            {
+                'id': 5,
+                'passage': "Nate is a detective. He likes pancakes very much. He had pancakes for breakfast. Then the telephone rang. It was Annie. Annie lost a picture. The picture was of her dog, Fang. Nate said, \"I will find the picture.\"",
+                'question': 'What does Nate like to eat?',
+                'options': ['Sandwiches', 'Pancakes', 'Pizza', 'Cookies'],
+                'correct': 1,
+                'section': 'Reading'
+            },
+            {
+                'id': 6,
+                'question': 'What did Annie lose?',
+                'options': ['Her dog', 'A picture', 'Her phone', 'Her keys'],
+                'correct': 1,
+                'section': 'Reading'
+            },
+            {
+                'id': 7,
+                'question': 'What is the name of Annie\'s dog?',
+                'options': ['Mudge', 'Henry', 'Fang', 'Tom'],
+                'correct': 2,
+                'section': 'Reading'
+            },
+            {
+                'id': 8,
+                'question': 'What does Nate do?',
+                'options': ['He is a teacher', 'He is a doctor', 'He is a detective', 'He is a cook'],
+                'correct': 2,
+                'section': 'Reading'
+            },
 
-        if level in questions_data:
-            # HTML 태그 제거
-            questions = []
-            for q in questions_data[level]:
-                # 문제 텍스트에서 HTML 태그 제거
-                import re
-                clean_question = re.sub(r'<[^>]+>', '', q['question'])
-                # 옵션 정리
-                clean_options = []
-                for opt in q['options']:
-                    # A), B) 등 접두사 제거
-                    clean_opt = re.sub(r'^[A-D]\s*\)?\s*', '', opt)
-                    clean_options.append(clean_opt.strip())
+            # Vocabulary (12문항)
+            {
+                'id': 9,
+                'question': 'Choose the correct word: I ___ a student.',
+                'options': ['am', 'is', 'are', 'be'],
+                'correct': 0,
+                'section': 'Vocabulary'
+            },
+            {
+                'id': 10,
+                'question': 'What is the opposite of "big"?',
+                'options': ['Small', 'Large', 'Tall', 'Short'],
+                'correct': 0,
+                'section': 'Vocabulary'
+            },
+            {
+                'id': 11,
+                'question': 'What color is the sky?',
+                'options': ['Red', 'Blue', 'Green', 'Yellow'],
+                'correct': 1,
+                'section': 'Vocabulary'
+            },
+            {
+                'id': 12,
+                'question': 'How many days are in a week?',
+                'options': ['5', '6', '7', '8'],
+                'correct': 2,
+                'section': 'Vocabulary'
+            },
+            {
+                'id': 13,
+                'question': 'What do we use to write?',
+                'options': ['Pen', 'Book', 'Table', 'Chair'],
+                'correct': 0,
+                'section': 'Vocabulary'
+            },
+            {
+                'id': 14,
+                'question': 'Which animal says "meow"?',
+                'options': ['Dog', 'Cat', 'Bird', 'Fish'],
+                'correct': 1,
+                'section': 'Vocabulary'
+            },
+            {
+                'id': 15,
+                'question': 'What is the opposite of "hot"?',
+                'options': ['Cold', 'Warm', 'Cool', 'Ice'],
+                'correct': 0,
+                'section': 'Vocabulary'
+            },
+            {
+                'id': 16,
+                'question': 'How many legs does a dog have?',
+                'options': ['Two', 'Four', 'Six', 'Eight'],
+                'correct': 1,
+                'section': 'Vocabulary'
+            },
+            {
+                'id': 17,
+                'question': 'What is the opposite of "happy"?',
+                'options': ['Sad', 'Angry', 'Excited', 'Surprised'],
+                'correct': 0,
+                'section': 'Vocabulary'
+            },
+            {
+                'id': 18,
+                'question': 'What do you do with your eyes?',
+                'options': ['See', 'Hear', 'Smell', 'Taste'],
+                'correct': 0,
+                'section': 'Vocabulary'
+            },
+            {
+                'id': 19,
+                'question': 'What color is an apple?',
+                'options': ['Red', 'Blue', 'Green', 'Yellow'],
+                'correct': 0,
+                'section': 'Vocabulary'
+            },
+            {
+                'id': 20,
+                'question': 'What do you do when you are thirsty?',
+                'options': ['Drink', 'Eat', 'Sleep', 'Run'],
+                'correct': 0,
+                'section': 'Vocabulary'
+            },
 
-                questions.append({
-                    'id': q['id'],
-                    'question': clean_question,
-                    'options': clean_options,
-                    'correct': q['correct'],
-                    'section': q['section']
-                })
-            return questions
-    except:
-        pass
+            # Conversation (5문항)
+            {
+                'id': 21,
+                'question': 'A: "Hello, how are you?" B: "___"',
+                'options': ['I\'m fine, thank you', 'I\'m 25 years old', 'I\'m a teacher', 'I\'m from Korea'],
+                'correct': 0,
+                'section': 'Conversation'
+            },
+            {
+                'id': 22,
+                'question': 'A: "What time is it?" B: "___"',
+                'options': ['It\'s 3 o\'clock', 'It\'s Monday', 'It\'s sunny', 'It\'s hot'],
+                'correct': 0,
+                'section': 'Conversation'
+            },
+            {
+                'id': 23,
+                'question': 'A: "Where is the library?" B: "___"',
+                'options': ['It\'s over there', 'It\'s expensive', 'It\'s delicious', 'It\'s cold'],
+                'correct': 0,
+                'section': 'Conversation'
+            },
+            {
+                'id': 24,
+                'question': 'A: "Thank you for your help." B: "___"',
+                'options': ['You\'re welcome', 'Thank you too', 'Goodbye', 'Hello'],
+                'correct': 0,
+                'section': 'Conversation'
+            },
+            {
+                'id': 25,
+                'question': 'A: "See you tomorrow." B: "___"',
+                'options': ['See you later', 'Nice to meet you', 'How are you', 'What\'s your name'],
+                'correct': 0,
+                'section': 'Conversation'
+            },
+
+            # Grammar (10문항)
+            {
+                'id': 26,
+                'question': 'She ___ a doctor.',
+                'options': ['am', 'is', 'are', 'be'],
+                'correct': 1,
+                'section': 'Grammar'
+            },
+            {
+                'id': 27,
+                'question': 'They ___ happy.',
+                'options': ['am', 'is', 'are', 'be'],
+                'correct': 2,
+                'section': 'Grammar'
+            },
+            {
+                'id': 28,
+                'question': '___ is your name?',
+                'options': ['What', 'Where', 'When', 'Who'],
+                'correct': 0,
+                'section': 'Grammar'
+            },
+            {
+                'id': 29,
+                'question': '___ do you live?',
+                'options': ['What', 'Where', 'When', 'Who'],
+                'correct': 1,
+                'section': 'Grammar'
+            },
+            {
+                'id': 30,
+                'question': 'She ___ to school every day.',
+                'options': ['go', 'goes', 'going', 'is go'],
+                'correct': 1,
+                'section': 'Grammar'
+            },
+            {
+                'id': 31,
+                'question': 'I ___ coffee every morning.',
+                'options': ['drink', 'drinks', 'drinking', 'is drink'],
+                'correct': 0,
+                'section': 'Grammar'
+            },
+            {
+                'id': 32,
+                'question': 'They ___ in London.',
+                'options': ['live', 'lives', 'living', 'is live'],
+                'correct': 0,
+                'section': 'Grammar'
+            },
+            {
+                'id': 33,
+                'question': 'He ___ very hard.',
+                'options': ['work', 'works', 'working', 'is work'],
+                'correct': 1,
+                'section': 'Grammar'
+            },
+            {
+                'id': 34,
+                'question': '___ old are you?',
+                'options': ['What', 'Where', 'When', 'How'],
+                'correct': 3,
+                'section': 'Grammar'
+            }
+        ]
+        return questions
 
     # A2 레벨은 수동으로 추가 (answer-data.js 기반)
     if level == 'A2':
@@ -228,6 +451,17 @@ def main():
     # 현재 질문 표시
     if not st.session_state['test_completed'] and st.session_state['current_question'] < total_questions:
         current_q = questions[st.session_state['current_question']]
+
+        # 지문이 있는 경우 먼저 표시
+        if 'passage' in current_q:
+            st.markdown(f"""
+            <div class="question-card" style="background-color: #f0f8ff; border-left: 5px solid #3b82f6;">
+                <h3>📄 Reading Passage</h3>
+                <div style="background-color: white; padding: 20px; border-radius: 8px; white-space: pre-wrap; line-height: 1.6;">
+                    {current_q['passage']}
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
 
         # 질문 카드
         st.markdown(f"""
