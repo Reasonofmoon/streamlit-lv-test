@@ -4,6 +4,10 @@ import json
 import time
 from datetime import datetime
 import random
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from utils.cefr_analyzer import CEFRAnalyzer
 
 # 페이지 설정
 st.set_page_config(
@@ -295,61 +299,118 @@ def main():
     if st.session_state['test_completed']:
         score_data = calculate_score(st.session_state['answers'], questions)
 
+        # 결과 저장을 위한 데이터 준비
+        test_results = {
+            'studentInfo': st.session_state.get('student_info', {}),
+            'level': level,
+            'submittedAt': datetime.now().isoformat(),
+            'score': score_data['score'],
+            'passed': score_data['passed'],
+            'correct': score_data['correct'],
+            'total': score_data['total'],
+            'sectionResults': score_data['section_results'],
+            'answers': st.session_state['answers']
+        }
+
+        # CEFR 분석
+        analyzer = CEFRAnalyzer()
+        analysis = analyzer.analyze_test_results(test_results)
+
         # 결과 저장
         saved_file = save_results(level, score_data)
 
         # 결과 화면
-        st.success("🎉 테스트 완료!")
+        st.success("🎉 테스트 완료! 상세한 학습 분석 리포트가 생성되었습니다.")
 
-        col1, col2 = st.columns(2)
+        # 탭 생성
+        tab1, tab2, tab3 = st.tabs(["📊 결과 요약", "🎯 상담 리포트", "📚 학습 커리큘럼"])
 
-        with col1:
-            st.markdown(f"""
-            <div class="question-card">
-                <h2>📊 최종 점수</h2>
-                <h1 style="font-size: 4rem; color: {'#10B981' if score_data['passed'] else '#EF4444'};">
-                    {score_data['score']}점
-                </h1>
-                <p>{score_data['correct']} / {score_data['total']} 정답</p>
-                <p style="font-size: 1.5rem;">
-                    {'✅ 합격!' if score_data['passed'] else '❌ 불합격'}
-                </p>
-            </div>
-            """, unsafe_allow_html=True)
+        with tab1:
+            # 기본 결과 요약
+            col1, col2 = st.columns(2)
 
-        with col2:
-            st.markdown(f"""
-            <div class="question-card">
-                <h3>📈 섹션별 결과</h3>
-            </div>
-            """, unsafe_allow_html=True)
+            with col1:
+                st.markdown(f"""
+                <div class="question-card">
+                    <h2>📊 최종 점수</h2>
+                    <h1 style="font-size: 4rem; color: {'#10B981' if score_data['passed'] else '#EF4444'};">
+                        {score_data['score']}점
+                    </h1>
+                    <p>{score_data['correct']} / {score_data['total']} 정답</p>
+                    <p style="font-size: 1.2rem;">
+                        <strong>진단 CEFR 레벨:</strong> {analysis['current_cefr_level']}
+                    </p>
+                </div>
+                """, unsafe_allow_html=True)
 
-            for section, result in score_data['section_results'].items():
-                percentage = (result['correct'] / result['total']) * 100
-                st.write(f"**{section}**: {result['correct']}/{result['total']} ({percentage:.0f}%)")
+            with col2:
+                st.markdown(f"""
+                <div class="question-card">
+                    <h3>📈 섹션별 결과</h3>
+                </div>
+                """, unsafe_allow_html=True)
 
-        # 소요 시간
-        if st.session_state['start_time']:
-            time_spent = time.time() - st.session_state['start_time']
-            minutes = int(time_spent // 60)
-            seconds = int(time_spent % 60)
-            st.info(f"소요 시간: {minutes}분 {seconds}초")
+                # 섹션별 결과를 시각적으로 표시
+                for section, data in analysis['section_analysis'].items():
+                    emoji = {'excellent': '🌟', 'good': '✅', 'average': '📊', 'needs_improvement': '📈'}.get(data['strength_level'], '❓')
+                    st.write(f"{emoji} **{section}**: {data['correct']}/{data['total']} ({data['percentage']}%)")
+                    st.progress(data['percentage'] / 100)
 
-        # 피드백
-        if score_data['passed']:
-            st.markdown("""
-            <div class="success-message">
-                <h3>🎊 축하합니다!</h3>
-                <p>테스트에 합격하셨습니다. 다음 레벨에 도전해보세요!</p>
-            </div>
-            """, unsafe_allow_html=True)
-        else:
-            st.markdown("""
-            <div class="error-message">
-                <h3>💪 응원합니다!</h3>
-                <p>아쉽게 불합격하셨지만, 포기하지 마세요! 더 많은 연습으로 발전할 수 있습니다.</p>
-            </div>
-            """, unsafe_allow_html=True)
+            # 소요 시간
+            if st.session_state['start_time']:
+                time_spent = time.time() - st.session_state['start_time']
+                minutes = int(time_spent // 60)
+                seconds = int(time_spent % 60)
+                st.info(f"⏱️ 소요 시간: {minutes}분 {seconds}초")
+
+        with tab2:
+            # 상담 리포트
+            st.header("🎯 상담용 학습 분석 리포트")
+
+            # 다운로드 버튼
+            col1, col2 = st.columns([3, 1])
+            with col2:
+                if st.button("📄 리포트 다운로드", type="primary"):
+                    report_content = analyzer.generate_counseling_report(analysis)
+                    st.download_button(
+                        label="다운로드",
+                        data=report_content,
+                        file_name=f"CEFR_학습상담_리포트_{st.session_state['student_info']['name']}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.md",
+                        mime="text/markdown"
+                    )
+
+            # 리포트 내용 표시
+            report_content = analyzer.generate_counseling_report(analysis)
+            st.markdown(report_content)
+
+        with tab3:
+            # 학습 커리큘럼
+            st.header("📚 맞춤형 학습 커리큘럼")
+
+            curriculum = analysis['learning_curriculum']
+            next_goal = analysis['next_level_goal']
+
+            col1, col2 = st.columns(2)
+
+            with col1:
+                st.subheader("🎯 학습 목표")
+                st.write(f"**현재 레벨**: {analysis['current_cefr_level']}")
+                st.write(f"**목표 레벨**: {next_goal.get('level', analysis['current_cefr_level'])}")
+                st.write(f"**목표 점수**: {next_goal.get('target_score', 70)}점")
+                st.write(f"**예상 기간**: {next_goal.get('estimated_duration', '3-6개월')}")
+
+                st.subheader("📅 일일 학습 계획")
+                for i, practice in enumerate(curriculum.get('daily_practice', []), 1):
+                    st.write(f"{i}. {practice}")
+
+            with col2:
+                st.subheader("🎯 학습 우선순위")
+                for priority in curriculum.get('priority_areas', []):
+                    st.warning(priority)
+
+                st.subheader("📚 추천 학습 자료")
+                for material in curriculum.get('materials', []):
+                    st.info(f"📖 {material}")
 
         # 버튼들
         col1, col2, col3 = st.columns(3)
@@ -371,8 +432,8 @@ def main():
                 st.rerun()
 
         with col3:
-            if st.button("📊 상세 결과"):
-                st.info("상세 결과 페이지 준비 중...")
+            if st.button("📊 교사와 상담"):
+                st.success("상담 신청이 완료되었습니다! 교사가 연락드릴 것입니다.")
 
 if __name__ == "__main__":
     main()

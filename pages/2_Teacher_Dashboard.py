@@ -6,6 +6,9 @@ from datetime import datetime, timedelta
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from utils.cefr_analyzer import CEFRAnalyzer
 
 # 페이지 설정
 st.set_page_config(
@@ -262,7 +265,41 @@ def main():
     st.subheader(f"📋 학생 결과 목록 (총 {len(filtered_submissions)}명)")
 
     if filtered_submissions:
-        # 테이블 데이터 준비
+        # 학생별 상담 리포트 생성
+        if st.button("🎯 전체 학생 상담 리포트 생성", type="primary"):
+            analyzer = CEFRAnalyzer()
+
+            # 리포트 컨테이너
+            for submission in filtered_submissions:
+                student_info = submission.get('studentInfo', {})
+                student_name = student_info.get('name', 'Unknown')
+
+                with st.expander(f"👤 {student_name} - 상담 리포트"):
+                    # 분석 수행
+                    analysis = analyzer.analyze_test_results(submission)
+
+                    # 기본 정보
+                    col1, col2, col3, col4 = st.columns(4)
+                    with col1:
+                        st.metric("진단 레벨", analysis['current_cefr_level'])
+                    with col2:
+                        st.metric("점수", f"{analysis['score']}점")
+                    with col3:
+                        st.metric("다음 목표", analysis['next_level_goal']['level'])
+                    with col4:
+                        st.metric("예상 기간", analysis['next_level_goal']['estimated_duration'])
+
+                    # 리포트 다운로드
+                    report_content = analyzer.generate_counseling_report(analysis)
+                    st.download_button(
+                        label=f"📄 {student_name}님 리포트 다운로드",
+                        data=report_content,
+                        file_name=f"CEFR_상담리포트_{student_name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.md",
+                        mime="text/markdown",
+                        key=f"download_{submission.get('submittedAt', '')}"
+                    )
+
+        # 테이블 데이터 준비 (개별 리포트 버튼 추가)
         table_data = []
         for s in filtered_submissions:
             student_info = s.get('studentInfo', {})
@@ -280,6 +317,37 @@ def main():
 
         df = pd.DataFrame(table_data)
         st.dataframe(df, use_container_width=True, hide_index=True)
+
+        # 개별 학생 상담 리포트
+        st.subheader("🎯 개별 학생 상담 리포트")
+
+        # 학생 선택
+        if filtered_submissions:
+            student_names = list(set(s.get('studentInfo', {}).get('name', 'Unknown') for s in filtered_submissions))
+            selected_student = st.selectbox("학생 선택", student_names)
+
+            if selected_student and selected_student != 'Unknown':
+                # 선택된 학생의 최근 테스트 결과
+                student_tests = [s for s in filtered_submissions if s.get('studentInfo', {}).get('name') == selected_student]
+                if student_tests:
+                    # 가장 최근 테스트 선택
+                    latest_test = sorted(student_tests, key=lambda x: x.get('submittedAt', ''), reverse=True)[0]
+
+                    if st.button(f"📊 {selected_student}님 상세 리포트 생성"):
+                        analyzer = CEFRAnalyzer()
+                        analysis = analyzer.analyze_test_results(latest_test)
+                        report_content = analyzer.generate_counseling_report(analysis)
+
+                        # 리포트 표시
+                        st.markdown(report_content)
+
+                        # 다운로드 버튼
+                        st.download_button(
+                            label=f"📄 {selected_student}님 리포트 다운로드",
+                            data=report_content,
+                            file_name=f"CEFR_상담리포트_{selected_student}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.md",
+                            mime="text/markdown"
+                        )
 
         # 내보내기 버튼
         col1, col2, col3 = st.columns(3)
