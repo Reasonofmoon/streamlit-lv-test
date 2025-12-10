@@ -141,7 +141,7 @@ def student_dashboard():
     # 테스트 시작 버튼
     if st.button("테스트 시작", type="primary"):
         st.session_state['test_level'] = level
-        st.switch_page("pages/1_📝_Student_Test.py")
+        st.switch_page("pages/1_Student_Test.py")
 
     # 이전 결과 확인
     st.subheader("📊 이전 테스트 결과")
@@ -172,11 +172,11 @@ def teacher_dashboard():
 
     with col1:
         if st.button("📊 결과 관리", type="primary"):
-            st.switch_page("pages/2_👨‍🏫_Teacher_Dashboard.py")
+            st.switch_page("pages/2_Teacher_Dashboard.py")
 
     with col2:
         if st.button("📈 리포트 생성"):
-            st.switch_page("pages/3_📊_Reports.py")
+            st.switch_page("pages/3_Reports.py")
 
     with col3:
         if st.button("⚙️ 설정"):
