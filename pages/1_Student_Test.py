@@ -37,120 +37,91 @@ if not st.session_state.get('logged_in', False) or st.session_state.get('user_ro
 
 # 질문 데이터 (실제로는 파일이나 데이터베이스에서 로드)
 def load_questions(level):
-    # 예시 질문 데이터
-    questions = {
-        'A1': [
-            {
-                'id': 1,
-                'question': 'What is your name?',
-                'options': ['My name is...', 'I am from...', 'I live in...', 'I like...'],
-                'correct': 0,
-                'section': 'Personal Information'
-            },
-            {
-                'id': 2,
-                'question': 'Where are you from?',
-                'options': ['I am 20 years old', 'I am from Korea', 'I am a student', 'I like English'],
-                'correct': 1,
-                'section': 'Personal Information'
-            },
-            {
-                'id': 3,
-                'question': 'Choose the correct form: I ___ a student.',
-                'options': ['am', 'is', 'are', 'be'],
-                'correct': 0,
-                'section': 'Grammar'
-            },
-            {
-                'id': 4,
-                'question': 'What color is the sky?',
-                'options': ['Red', 'Blue', 'Green', 'Yellow'],
-                'correct': 1,
-                'section': 'Vocabulary'
-            },
-            {
-                'id': 5,
-                'question': 'How many days are there in a week?',
-                'options': ['5', '6', '7', '8'],
-                'correct': 2,
-                'section': 'General Knowledge'
-            }
-        ],
-        'A2': [
-            {
-                'id': 1,
-                'question': 'What did you do yesterday?',
-                'options': ['I will go to school', 'I went to the park', 'I am studying', 'I have finished'],
-                'correct': 1,
-                'section': 'Past Tense'
-            },
-            {
-                'id': 2,
-                'question': 'Choose the correct sentence:',
-                'options': [
-                    'She go to school every day',
-                    'She goes to school every day',
-                    'She going to school every day',
-                    'She is go to school every day'
-                ],
-                'correct': 1,
-                'section': 'Grammar'
-            }
-        ],
-        'Pre-A1': [
-            {
-                'id': 1,
-                'question': 'Hello, how are you?',
-                'options': ['Fine, thank you', 'Goodbye', 'My name is...', 'I don\'t know'],
-                'correct': 0,
-                'section': 'Greetings'
-            },
-            {
-                'id': 2,
-                'question': 'What is this? (pointing to a book)',
-                'options': ['This is a pen', 'This is a book', 'This is a desk', 'This is a chair'],
-                'correct': 1,
-                'section': 'Objects'
-            }
-        ],
-        'B1': [
-            {
-                'id': 1,
-                'question': 'If you ___ harder, you would pass the exam.',
-                'options': ['study', 'studied', 'had studied', 'were studying'],
-                'correct': 2,
-                'section': 'Conditional'
-            },
-            {
-                'id': 2,
-                'question': 'Choose the best response: "I haven\'t seen that movie yet."',
-                'options': [
-                    'Neither have I.',
-                    'So have I.',
-                    'I have too.',
-                    'I did either.'
-                ],
-                'correct': 0,
-                'section': 'Agreement'
-            }
-        ],
-        'B2': [
-            {
-                'id': 1,
-                'question': 'The company ___ its profits despite the economic downturn.',
-                'options': ['managed increasing', 'managed to increase', 'managed increase', 'has managed increasing'],
-                'correct': 1,
-                'section': 'Business English'
-            },
-            {
-                'id': 2,
-                'question': '___ the heavy rain, they decided to continue the match.',
-                'options': ['Despite', 'Although', 'Even though', 'In spite'],
-                'correct': 0,
-                'section': 'Conjunctions'
-            }
+    # 기존 HTML에서 추출한 문항 사용
+    try:
+        import json
+        with open('extracted_questions.json', 'r', encoding='utf-8') as f:
+            questions_data = json.load(f)
+
+        if level in questions_data:
+            # HTML 태그 제거
+            questions = []
+            for q in questions_data[level]:
+                # 문제 텍스트에서 HTML 태그 제거
+                import re
+                clean_question = re.sub(r'<[^>]+>', '', q['question'])
+                # 옵션 정리
+                clean_options = []
+                for opt in q['options']:
+                    # A), B) 등 접두사 제거
+                    clean_opt = re.sub(r'^[A-D]\s*\)?\s*', '', opt)
+                    clean_options.append(clean_opt.strip())
+
+                questions.append({
+                    'id': q['id'],
+                    'question': clean_question,
+                    'options': clean_options,
+                    'correct': q['correct'],
+                    'section': q['section']
+                })
+            return questions
+    except:
+        pass
+
+    # A2 레벨은 수동으로 추가 (answer-data.js 기반)
+    if level == 'A2':
+        questions = [
+            # Reading Comprehension (8문항)
+            {'id': 1, 'question': 'Read the passage and answer: The main idea of the text is about...', 'options': ['Travel', 'Education', 'Food', 'Sports'], 'correct': 1, 'section': 'Reading'},
+            {'id': 2, 'question': 'According to the passage, the author believes that...', 'options': ['Learning is easy', 'Practice makes perfect', 'Teachers are not important', 'Students don\'t need help'], 'correct': 1, 'section': 'Reading'},
+            {'id': 3, 'question': 'What does the word "challenge" mean in the context?', 'options': ['Problem', 'Solution', 'Reward', 'Game'], 'correct': 0, 'section': 'Reading'},
+            {'id': 4, 'question': 'The tone of the passage can be described as...', 'options': ['Formal', 'Informal', 'Angry', 'Sad'], 'correct': 0, 'section': 'Reading'},
+            {'id': 5, 'question': 'Where was the author born?', 'options': ['London', 'New York', 'Paris', 'Tokyo'], 'correct': 1, 'section': 'Reading'},
+            {'id': 6, 'question': 'How many languages does the author speak?', 'options': ['One', 'Two', 'Three', 'Four'], 'correct': 2, 'section': 'Reading'},
+            {'id': 7, 'question': 'What is the main character\'s profession?', 'options': ['Teacher', 'Doctor', 'Engineer', 'Artist'], 'correct': 2, 'section': 'Reading'},
+            {'id': 8, 'question': 'When did the story take place?', 'options': ['Last year', 'This year', 'Next year', 'Five years ago'], 'correct': 2, 'section': 'Reading'},
+
+            # Vocabulary (12문항)
+            {'id': 9, 'question': 'Which word means "very large"?', 'options': ['Tiny', 'Huge', 'Small', 'Medium'], 'correct': 1, 'section': 'Vocabulary'},
+            {'id': 10, 'question': 'What is the synonym of "important"?', 'options': ['Insignificant', 'Crucial', 'Minor', 'Simple'], 'correct': 1, 'section': 'Vocabulary'},
+            {'id': 11, 'question': 'Choose the correct word: She has a ___ memory.', 'options': ['good', 'well', 'better', 'best'], 'correct': 0, 'section': 'Vocabulary'},
+            {'id': 12, 'question': 'The weather was ___ yesterday.', 'options': ['beauty', 'beautiful', 'beautify', 'beautifully'], 'correct': 1, 'section': 'Vocabulary'},
+            {'id': 13, 'question': 'He speaks English ___.', 'options': ['fluent', 'fluently', 'fluency', 'fluens'], 'correct': 1, 'section': 'Vocabulary'},
+            {'id': 14, 'question': 'I need to ___ my English.', 'options': ['improve', 'improvement', 'improving', 'improved'], 'correct': 0, 'section': 'Vocabulary'},
+            {'id': 15, 'question': 'The test was very ___.', 'options': ['difficult', 'difficulty', 'difficultly', 'difficultness'], 'correct': 0, 'section': 'Vocabulary'},
+            {'id': 16, 'question': 'She made a ___ decision.', 'options': ['wise', 'wisely', 'wisdom', 'wiseless'], 'correct': 0, 'section': 'Vocabulary'},
+            {'id': 17, 'question': 'The book was very ___.', 'options': ['interesting', 'interest', 'interested', 'interests'], 'correct': 0, 'section': 'Vocabulary'},
+            {'id': 18, 'question': 'He felt ___ after the long journey.', 'options': ['tired', 'tire', 'tiring', 'tires'], 'correct': 0, 'section': 'Vocabulary'},
+            {'id': 19, 'question': 'The food was ___.', 'options': ['delicious', 'deliciously', 'deliciousness', 'deliciously'], 'correct': 0, 'section': 'Vocabulary'},
+            {'id': 20, 'question': 'She is a ___ student.', 'options': ['brilliant', 'brilliantly', 'brilliance', 'brilliantness'], 'correct': 0, 'section': 'Vocabulary'},
+
+            # Conversation (8문항)
+            {'id': 21, 'question': 'A: "How are you?" B: "___"', 'options': ['I\'m fine, thank you', 'I\'m 25 years old', 'I\'m a teacher', 'I\'m from Korea'], 'correct': 0, 'section': 'Conversation'},
+            {'id': 22, 'question': 'A: "What time is it?" B: "___"', 'options': ['It\'s 3 o\'clock', 'It\'s Monday', 'It\'s sunny', 'It\'s hot'], 'correct': 0, 'section': 'Conversation'},
+            {'id': 23, 'question': 'A: "Where is the library?" B: "___"', 'options': ['It\'s over there', 'It\'s expensive', 'It\'s delicious', 'It\'s cold'], 'correct': 0, 'section': 'Conversation'},
+            {'id': 24, 'question': 'A: "Can you help me?" B: "___"', 'options': ['Of course', 'No problem', 'I\'m busy', 'I don\'t know'], 'correct': 0, 'section': 'Conversation'},
+            {'id': 25, 'question': 'A: "Thank you for your help." B: "___"', 'options': ['You\'re welcome', 'Thank you too', 'Goodbye', 'Hello'], 'correct': 0, 'section': 'Conversation'},
+            {'id': 26, 'question': 'A: "See you tomorrow." B: "___"', 'options': ['See you later', 'Nice to meet you', 'How are you', 'What\'s your name'], 'correct': 0, 'section': 'Conversation'},
+            {'id': 27, 'question': 'A: "What do you do for fun?" B: "___"', 'options': ['I like reading books', 'I\'m a doctor', 'I\'m 30 years old', 'I live in Seoul'], 'correct': 0, 'section': 'Conversation'},
+            {'id': 28, 'question': 'A: "How was your weekend?" B: "___"', 'options': ['It was great', 'It\'s Monday', 'I\'m tired', 'I\'m hungry'], 'correct': 0, 'section': 'Conversation'},
+
+            # Grammar (10문항)
+            {'id': 29, 'question': 'I ___ to the cinema yesterday.', 'options': ['go', 'went', 'gone', 'going'], 'correct': 1, 'section': 'Grammar'},
+            {'id': 30, 'question': 'She ___ English for three years.', 'options': ['study', 'studies', 'has studied', 'studied'], 'correct': 2, 'section': 'Grammar'},
+            {'id': 31, 'question': 'They ___ dinner when I arrived.', 'options': ['have', 'had', 'were having', 'are having'], 'correct': 2, 'section': 'Grammar'},
+            {'id': 32, 'question': 'If I ___ rich, I would buy a car.', 'options': ['am', 'was', 'were', 'will be'], 'correct': 2, 'section': 'Grammar'},
+            {'id': 33, 'question': 'The movie ___ by Steven Spielberg.', 'options': ['direct', 'directed', 'directing', 'directs'], 'correct': 1, 'section': 'Grammar'},
+            {'id': 34, 'question': 'You ___ smoke here. It\'s not allowed.', 'options': ['mustn\'t', 'don\'t have to', 'should', 'can'], 'correct': 0, 'section': 'Grammar'},
+            {'id': 35, 'question': 'I wish I ___ speak French.', 'options': ['can', 'could', 'will', 'would'], 'correct': 1, 'section': 'Grammar'},
+            {'id': 36, 'question': 'By next year, I ___ my degree.', 'options': ['finish', 'will finish', 'have finished', 'finished'], 'correct': 2, 'section': 'Grammar'},
+            {'id': 37, 'question': 'She suggested ___ to the park.', 'options': ['go', 'going', 'to go', 'went'], 'correct': 1, 'section': 'Grammar'},
+            {'id': 38, 'question': 'The book ___ I borrowed from you was interesting.', 'options': ['who', 'which', 'what', 'where'], 'correct': 1, 'section': 'Grammar'},
+
+            # Writing (2문항)
+            {'id': 39, 'question': 'Which sentence is correct?', 'options': ['I have visited Paris last year', 'I visited Paris last year', 'I visit Paris last year', 'I am visiting Paris last year'], 'correct': 1, 'section': 'Writing'},
+            {'id': 40, 'question': 'Choose the best way to complete the sentence: "I enjoy ___ because..."', 'options': ['read books', 'reading books', 'to read books', 'read books'], 'correct': 1, 'section': 'Writing'}
         ]
-    }
+        return questions
 
     return questions.get(level, [])
 
@@ -232,9 +203,27 @@ def main():
         return
 
     # 진행 상황 표시
-    progress = (st.session_state['current_question'] / total_questions)
+    progress = (len(st.session_state['answers']) / total_questions)
     st.progress(progress)
-    st.write(f"문제 {st.session_state['current_question'] + 1} / {total_questions}")
+
+    # 상세 진행 상황 표시
+    col1, col2, col3, col4 = st.columns(4)
+    with col1:
+        st.metric("현재 문제", f"{st.session_state['current_question'] + 1}/{total_questions}")
+    with col2:
+        st.metric("답변 완료", f"{len(st.session_state['answers'])}/{total_questions}")
+    with col3:
+        st.metric("남은 문제", f"{total_questions - len(st.session_state['answers'])}")
+    with col4:
+        completion_rate = (len(st.session_state['answers']) / total_questions) * 100
+        st.metric("완료율", f"{completion_rate:.1f}%")
+
+    # 현재 문제 상태
+    current_answered = st.session_state['current_question'] < len(st.session_state['answers'])
+    if current_answered:
+        st.success(f"✅ 문제 {st.session_state['current_question'] + 1}: 답변 완료됨")
+    else:
+        st.warning(f"❓ 문제 {st.session_state['current_question'] + 1}: 답변 필요")
 
     # 현재 질문 표시
     if not st.session_state['test_completed'] and st.session_state['current_question'] < total_questions:
@@ -277,23 +266,60 @@ def main():
 
         # 이전 질문 버튼
         if st.session_state['current_question'] > 0:
-            if st.button("← 이전 문제"):
-                st.session_state['current_question'] -= 1
-                st.rerun()
+            col1, col2 = st.columns(2)
+            with col1:
+                if st.button("← 이전 문제"):
+                    st.session_state['current_question'] -= 1
+                    st.rerun()
+            with col2:
+                if st.button("다음 문제 →"):
+                    # 현재 문제에 답했는지 확인
+                    current_answered = st.session_state['current_question'] < len(st.session_state['answers'])
+                    if current_answered:
+                        st.session_state['current_question'] += 1
+                        st.rerun()
+                    else:
+                        st.error("⚠️ 현재 문제에 답해야 다음 문제로 넘어갈 수 있습니다.")
 
     # 테스트 완료
     elif st.session_state['current_question'] >= total_questions and not st.session_state['test_completed']:
-        # 빈 답변 확인
-        unanswered = total_questions - len(st.session_state['answers'])
-        if unanswered > 0:
-            st.warning(f"아직 답하지 않은 문제가 {unanswered}개 있습니다.")
-            if st.button("테스트 완료", type="primary"):
-                st.session_state['test_completed'] = True
+        # 모든 문항이 답변되었는지 확인
+        if len(st.session_state['answers']) < total_questions:
+            missing_answers = total_questions - len(st.session_state['answers'])
+            st.error(f"⚠️ {missing_answers}개의 문항이 아직 답변되지 않았습니다.")
+            st.warning("모든 문항을 완료해야 테스트를 종료할 수 있습니다.")
+            st.info(f"답변 완료: {len(st.session_state['answers'])}/{total_questions} 문항")
+
+            # 답변하지 않은 문항 목록 표시
+            missing_questions = []
+            for i in range(total_questions):
+                if i >= len(st.session_state['answers']):
+                    missing_questions.append(i + 1)
+
+            st.write(f"답변 필요한 문항: {', '.join(map(str, missing_questions))}")
+
+            # 첫 번째 답변하지 않은 문항으로 이동
+            if st.button("첫 번째 미답변 문항으로 이동", type="primary"):
+                st.session_state['current_question'] = missing_questions[0] - 1
                 st.rerun()
+
+        # 모든 문항이 답변된 경우에만 완료 가능
         else:
-            if st.button("테스트 완료", type="primary"):
-                st.session_state['test_completed'] = True
-                st.rerun()
+            st.success("✅ 모든 문항이 완료되었습니다!")
+            st.info("테스트를 제출하면 자동으로 채점되고 상세한 학습 분석 리포트가 생성됩니다.")
+
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                if st.button("📊 테스트 제출 및 결과 보기", type="primary"):
+                    st.session_state['test_completed'] = True
+                    st.rerun()
+            with col2:
+                if st.button("🔍 답변 확인"):
+                    # 답변 확인용 표시
+                    for i, (answer, question) in enumerate(zip(st.session_state['answers'], questions)):
+                        correct = answer == question['correct']
+                        status = "✅" if correct else "❌"
+                        st.write(f"Q{i+1}: {status} {question['question'][:50]}...")
 
     # 결과 표시
     if st.session_state['test_completed']:
