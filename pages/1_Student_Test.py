@@ -55,8 +55,6 @@ def load_preA1_questions_isolated():
     """
     PRE-A1 전용 완전 격리 로더 - 다른 어떤 코드도 섞이지 않음
     """
-    print("Loading PRE-A1 questions with isolated safe loader...")
-
     # 1. 첫 번째 시도: 좋은 데이터가 있는 extracted_questions.json에서만 로드
     try:
         import json
@@ -80,7 +78,7 @@ def load_preA1_questions_isolated():
                                 'id': int(q.get('id', 0)),
                                 'question': str(q.get('question', '')).replace('<span class="question-text">', '').replace('</span>', ''),
                                 'options': [str(opt).replace('A)', '').replace('B)', '').replace('C)', '').replace('D)', '') for opt in q['options']],
-                                'correct': int(q.get('correct', 0)),
+                                'correct': int(q.get('correct', 0)),  # 내부 채점용 - UI에 표시 안됨
                                 'section': str(q.get('section', 'General'))
                             }
                             cleaned_questions.append(cleaned_q)
@@ -88,62 +86,58 @@ def load_preA1_questions_isolated():
                         continue  # 개별 질문 오류는 무시
 
                 if cleaned_questions:
-                    print(f"✅ PRE-A1: Successfully loaded {len(cleaned_questions)} questions")
                     return cleaned_questions
 
-    except Exception as e:
-        print(f"PRE-A1 JSON loading failed: {e}")
+    except Exception:
+        pass  # 실패 시 조용히 계속 진행
 
     # 2. 두 번째 시도: A1 질문을 PRE-A1으로 사용 (fallback)
     try:
-        print("PRE-A1: Falling back to A1 questions...")
         a1_questions = load_other_level_questions('A1')
         if a1_questions and len(a1_questions) > 0:
             # ID를 PRE-A1 스타일로 조정
             for q in a1_questions:
                 q['id'] = q['id']  # ID는 그대로 유지
                 q['original_level'] = 'A1'  # 원본 레벨 표시
-            print(f"✅ PRE-A1: Using {len(a1_questions)} A1 questions as fallback")
             return a1_questions
-    except Exception as e:
-        print(f"PRE-A1 A1 fallback failed: {e}")
+    except Exception:
+        pass
 
     # 3. 최후의 수단: 하드코딩된 비상 질문
-    print("PRE-A1: Using emergency hardcoded questions...")
     return [
         {
             'id': 1,
             'question': 'What do you say when you meet someone?',
             'options': ['Hello', 'Goodbye', 'Thank you', 'Sorry'],
-            'correct': 0,
+            'correct': 0,  # 내부 채점용
             'section': 'Conversation'
         },
         {
             'id': 2,
             'question': 'My name _______ Alex.',
             'options': ['am', 'is', 'are', 'be'],
-            'correct': 1,
+            'correct': 1,  # 내부 채점용
             'section': 'Grammar'
         },
         {
             'id': 3,
             'question': 'What is the opposite of "good"?',
             'options': ['Bad', 'Good', 'Happy', 'Sad'],
-            'correct': 0,
+            'correct': 0,  # 내부 채점용
             'section': 'Vocabulary'
         },
         {
             'id': 4,
             'question': 'I _______ from Korea.',
             'options': ['am', 'is', 'are', 'be'],
-            'correct': 0,
+            'correct': 0,  # 내부 채점용
             'section': 'Grammar'
         },
         {
             'id': 5,
             'question': 'Nice to _______ you.',
             'options': ['see', 'know', 'meet', 'go'],
-            'correct': 2,
+            'correct': 2,  # 내부 채점용
             'section': 'Conversation'
         }
     ]
@@ -152,7 +146,6 @@ def load_other_level_questions(level):
     """
     A1, A2, B1, B2 등 PRE-A1 외 레벨용 로더
     """
-    print(f"Loading {level} questions...")
     questions = []  # 기본값으로 빈 리스트 초기화
 
     # JSON 파일에서 로드 시도
@@ -179,24 +172,22 @@ def load_other_level_questions(level):
                                 'id': q.get('id', 0),
                                 'question': str(q.get('question', '')).replace('<span class="question-text">', '').replace('</span>', ''),
                                 'options': [str(opt).replace('A)', '').replace('B)', '').replace('C)', '').replace('D)', '') for opt in q['options']],
-                                'correct': int(q.get('correct', 0)),
+                                'correct': int(q.get('correct', 0)),  # 내부 채점용 - UI에 표시 안됨
                                 'section': str(q.get('section', 'General'))
                             }
                             cleaned_questions.append(cleaned_q)
-                    except Exception as e:
+                    except Exception:
                         continue  # 개별 질문 오류는 무시하고 계속 진행
 
                 questions = cleaned_questions
                 if questions:
-                    print(f"Loaded {len(questions)} valid questions from JSON for level {level}")
                     return questions
             else:
                 questions = []
         else:
             questions = []
 
-    except Exception as e:
-        print(f"JSON loading failed for {level}: {e}")
+    except Exception:
         questions = []  # 예외 발생시 빈 리스트로 초기화
 
     # 2. A1 레벨은 하드코딩된 데이터 사용 (fallback)
@@ -651,7 +642,22 @@ def main():
         st.error("❌ 유효한 질문이 없습니다. 관리자에게 문의해주세요.")
         st.stop()
 
-    questions = valid_questions
+    # 🔥 CRITICAL: 학생에게 정답 정보 노출 방지
+    ui_questions = []
+    for q in valid_questions:
+        # UI에 전달할 질문에서 correct 필드 제거
+        ui_question = {
+            'id': q['id'],
+            'question': q['question'],
+            'options': q['options'],
+            'section': q['section']
+            # correct 필드는 제외됨 - 내부 채점용으로만 보관
+        }
+        ui_questions.append(ui_question)
+
+    # UI용과 채점용 데이터 분리
+    questions = ui_questions
+    questions_for_scoring = valid_questions  # 채점용으로는 원본 데이터 유지
     total_questions = len(questions)
 
     # 테스트 시작
@@ -867,15 +873,15 @@ def main():
                     st.rerun()
             with col2:
                 if st.button("🔍 답변 확인"):
-                    # 답변 확인용 표시
-                    for i, (answer, question) in enumerate(zip(st.session_state['answers'], questions)):
+                    # 답변 확인용 표시 - 채점용 데이터 사용
+                    for i, (answer, question) in enumerate(zip(st.session_state['answers'], questions_for_scoring)):
                         correct = answer == question['correct']
                         status = "✅" if correct else "❌"
                         st.write(f"Q{i+1}: {status} {question['question'][:50]}...")
 
     # 결과 표시
     if st.session_state['test_completed']:
-        score_data = calculate_score(st.session_state['answers'], questions)
+        score_data = calculate_score(st.session_state['answers'], questions_for_scoring)
 
         # 결과 저장을 위한 데이터 준비
         test_results = {
