@@ -44,8 +44,8 @@ def load_questions(level):
     if not level or not isinstance(level, str):
         level = 'A1'  # 기본값
 
-    # PRE-A1 완전 격리 처리 - Ultra-think 해결책
-    if level == 'PRE-A1':
+    # PRE-A1 완전 격리 처리 - Ultra-think 해결책 (대소문자 무관)
+    if level.upper() == 'PRE-A1':
         return load_preA1_questions_isolated()
 
     # 다른 레벨은 기존 로직 사용
@@ -61,8 +61,15 @@ def load_preA1_questions_isolated():
         with open('../extracted_questions.json', 'r', encoding='utf-8') as f:
             data = json.load(f)
 
-        if isinstance(data, dict) and 'PRE-A1' in data:
-            raw_questions = data['PRE-A1']
+        # 대소문자 무관한 PRE-A1 검색
+        pre_a1_key = None
+        for key in data.keys():
+            if key.upper() == 'PRE-A1':
+                pre_a1_key = key
+                break
+
+        if isinstance(data, dict) and pre_a1_key:
+            raw_questions = data[pre_a1_key]
 
             if isinstance(raw_questions, list) and len(raw_questions) > 0:
                 cleaned_questions = []
@@ -154,9 +161,15 @@ def load_other_level_questions(level):
         with open('../extracted_questions.json', 'r', encoding='utf-8') as f:
             extracted_questions = json.load(f)
 
-        # 딕셔너리 구조 확인 및 안전한 접근
-        if isinstance(extracted_questions, dict) and level in extracted_questions:
-            questions = extracted_questions[level]
+        # 딕셔너리 구조 확인 및 안전한 접근 (대소문자 무관)
+        level_key = None
+        for key in extracted_questions.keys():
+            if key.upper() == level.upper():
+                level_key = key
+                break
+
+        if isinstance(extracted_questions, dict) and level_key:
+            questions = extracted_questions[level_key]
 
             # 데이터 정리 및 유효성 검사
             if isinstance(questions, list):
