@@ -246,8 +246,15 @@ def main():
 
         # 선택지
         selected_option = None
+
+        # 현재 선택된 답변 확인
+        current_answer = None
+        if st.session_state['current_question'] < len(st.session_state['answers']):
+            current_answer = st.session_state['answers'][st.session_state['current_question']]
+
         for i, option in enumerate(current_q['options']):
-            if st.button(f"{'●' if i == st.session_state['answers'][st.session_state['current_question']] if st.session_state['current_question'] < len(st.session_state['answers']) else '○'} {option}",
+            button_symbol = '●' if i == current_answer else '○'
+            if st.button(f"{button_symbol} {option}",
                         key=f"option_{i}",
                         help=f"옵션 {i+1}"):
                 selected_option = i
