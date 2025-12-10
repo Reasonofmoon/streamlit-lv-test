@@ -28,8 +28,8 @@ if 'student_info' not in st.session_state:
 def login(username, password):
     # 간단한 인증 로직 (실제로는 데이터베이스 사용)
     users = {
-        'teacher': {'password': 'teacher123', 'role': 'teacher'},
-        'student': {'password': 'student123', 'role': 'student'}
+        'darlbitt': {'password': 'darlbitt123', 'role': 'teacher'},
+        'darlbit': {'password': 'darlbit123', 'role': 'student'}
     }
 
     if username in users and users[username]['password'] == password:
@@ -100,7 +100,7 @@ def welcome_page():
         """)
 
     st.markdown("---")
-    st.info("💡 테스트 계정: 학생(student/student123), 교사(teacher/teacher123)")
+    st.info("💡 테스트 계정: 학생(darlbit/darlbit123), 교사(darlbitt/darlbitt123)")
 
     # CEFR 레벨 정보
     st.subheader("📚 CEFR 레벨 안내")
