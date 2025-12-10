@@ -39,11 +39,17 @@ if not st.session_state.get('logged_in', False) or st.session_state.get('user_ro
 def load_questions(level):
     # A1 레벨은 지문이 있는 수동 데이터 사용
     if level == 'A1':
+        # 지문 정의 (문제 그룹별)
+        passages = {
+            1: "Hi Tom,\n\nI am at the library. Please come at 3 o'clock.\nBring your English book.\nSee you soon!\n\nMia",
+            3: "Henry and his big dog Mudge went camping. Henry's mother knew all about camping. She knew how to set up a tent. She knew how to build a campfire. Henry's father didn't know anything about camping. He just came with a guitar and a smile. They walked and walked. It was beautiful. Henry saw fish in the stream and a rainbow.",
+            5: "Nate is a detective. He likes pancakes very much. He had pancakes for breakfast. Then the telephone rang. It was Annie. Annie lost a picture. The picture was of her dog, Fang. Nate said, \"I will find the picture.\""
+        }
+
         questions = [
             # Reading Comprehension (8문항) - 지문 포함
             {
                 'id': 1,
-                'passage': "Hi Tom,\n\nI am at the library. Please come at 3 o'clock.\nBring your English book.\nSee you soon!\n\nMia",
                 'question': 'Where is Mia?',
                 'options': ['At school', 'At the library', 'At home', 'At the park'],
                 'correct': 1,
@@ -58,7 +64,6 @@ def load_questions(level):
             },
             {
                 'id': 3,
-                'passage': "Henry and his big dog Mudge went camping. Henry's mother knew all about camping. She knew how to set up a tent. She knew how to build a campfire. Henry's father didn't know anything about camping. He just came with a guitar and a smile. They walked and walked. It was beautiful. Henry saw fish in the stream and a rainbow.",
                 'question': 'Who knew about camping?',
                 'options': ['Henry\'s father', 'Henry\'s mother', 'Mudge the dog', 'Henry'],
                 'correct': 1,
@@ -73,7 +78,6 @@ def load_questions(level):
             },
             {
                 'id': 5,
-                'passage': "Nate is a detective. He likes pancakes very much. He had pancakes for breakfast. Then the telephone rang. It was Annie. Annie lost a picture. The picture was of her dog, Fang. Nate said, \"I will find the picture.\"",
                 'question': 'What does Nate like to eat?',
                 'options': ['Sandwiches', 'Pancakes', 'Pizza', 'Cookies'],
                 'correct': 1,
@@ -346,7 +350,12 @@ def load_questions(level):
         ]
         return questions
 
-    return questions.get(level, [])
+    # 각 문항에 지문 연결
+    for question in questions:
+        if 'passages' in locals() and question['id'] in locals()['passages']:
+            question['passage'] = locals()['passages'][question['id']]
+
+    return questions
 
 # 채점 함수
 def calculate_score(answers, questions):
@@ -448,6 +457,71 @@ def main():
     else:
         st.warning(f"❓ 문제 {st.session_state['current_question'] + 1}: 답변 필요")
 
+    # 문제 목록과 네비게이션
+    st.markdown("---")
+
+    # 네비게이션과 문제 목록
+    col1, col2, col3 = st.columns([2, 1, 1])
+
+    with col2:
+        st.markdown("### 🧭 빠른 이동")
+        # 첫 번째 문제로 이동
+        if st.button("⬅ 첫 문제", key="first_question", disabled=st.session_state['current_question'] == 0):
+            st.session_state['current_question'] = 0
+            st.rerun()
+
+        # 마지막 문제로 이동
+        if st.button("⬅ 마지막 문제", key="last_question", disabled=st.session_state['current_question'] >= total_questions - 1):
+            st.session_state['current_question'] = total_questions - 1
+            st.rerun()
+
+    with col3:
+        st.markdown("### 📋 문제 목록")
+        # 문제 1-8 표시 (읽기 문제는 지문 표시)
+        st.write("문제 1-8 (읽기 이해)")
+
+        # 모든 문제 상태 표시
+        problem_status = []
+        for i in range(total_questions):
+            if i < len(st.session_state['answers']):
+                problem_status.append(f"Q{i+1}: ✅")
+            else:
+                problem_status.append(f"Q{i+1}: ⭕")
+
+        status_text = " | ".join(problem_status)
+        st.markdown(f"<small>{status_text}</small>", unsafe_allow_html=True)
+
+    with col1:
+        st.markdown("### 📊 문제 진도")
+
+        # 구간별 문제 구분
+        section_questions = {}
+        for i, q in enumerate(questions):
+            section = q['section']
+            if section not in section_questions:
+                section_questions[section] = []
+            section_questions[section].append(i + 1)
+
+        # 섹션별 진행 상황
+        for section, q_list in section_questions.items():
+            section_completed = sum(1 for q_num in q_list if q_num <= len(st.session_state['answers']))
+            section_total = len(q_list)
+
+            # 섹션별 진행률 막대
+            progress = section_completed / section_total if section_total > 0 else 0
+            st.write(f"**{section}**: {section_completed}/{section_total} ({progress*100:.0f}%)")
+            st.progress(progress)
+
+            # 섹션별 문제 번호 표시
+            q_status = []
+            for q_num in q_list:
+                if q_num <= len(st.session_state['answers']):
+                    q_status.append(f"Q{q_num} ✅")
+                else:
+                    q_status.append(f"Q{q_num} ⭕")
+
+            st.markdown(f"<small>{' | '.join(q_status)}</small>", unsafe_allow_html=True)
+
     # 현재 질문 표시
     if not st.session_state['test_completed'] and st.session_state['current_question'] < total_questions:
         current_q = questions[st.session_state['current_question']]
@@ -486,34 +560,34 @@ def main():
                         help=f"옵션 {i+1}"):
                 selected_option = i
 
-        # 선택 저장
-        if selected_option is not None:
-            if st.session_state['current_question'] < len(st.session_state['answers']):
-                st.session_state['answers'][st.session_state['current_question']] = selected_option
-            else:
-                st.session_state['answers'].append(selected_option)
+        # 버튼 영역
+        col1, col2, col3, col4 = st.columns(4)
 
-            # 다음 질문으로
-            st.session_state['current_question'] += 1
-            time.sleep(0.3)
-            st.rerun()
+        with col1:
+            if st.button("← 이전 문제", disabled=st.session_state['current_question'] == 0):
+                st.session_state['current_question'] -= 1
+                st.rerun()
 
-        # 이전 질문 버튼
-        if st.session_state['current_question'] > 0:
-            col1, col2 = st.columns(2)
-            with col1:
-                if st.button("← 이전 문제"):
+        with col2:
+            if st.button("이전으로", disabled=st.session_state['current_question'] == 0):
+                if st.session_state['current_question'] > 0:
                     st.session_state['current_question'] -= 1
+                st.rerun()
+
+        with col3:
+            if st.button("다음으로", disabled=st.session_state['current_question'] >= total_questions - 1):
+                st.session_state['current_question'] += 1
+                st.rerun()
+
+        with col4:
+            if st.button("다음 문제 →", disabled=st.session_state['current_question'] >= total_questions - 1):
+                # 현재 문제에 답했는지 확인
+                current_answered = st.session_state['current_question'] < len(st.session_state['answers'])
+                if current_answered:
+                    st.session_state['current_question'] += 1
                     st.rerun()
-            with col2:
-                if st.button("다음 문제 →"):
-                    # 현재 문제에 답했는지 확인
-                    current_answered = st.session_state['current_question'] < len(st.session_state['answers'])
-                    if current_answered:
-                        st.session_state['current_question'] += 1
-                        st.rerun()
-                    else:
-                        st.error("⚠️ 현재 문제에 답해야 다음 문제로 넘어갈 수 있습니다.")
+                else:
+                    st.error("⚠️ 현재 문제에 답해야 다음 문제로 넘어갈 수 있습니다.")
 
     # 테스트 완료
     elif st.session_state['current_question'] >= total_questions and not st.session_state['test_completed']:
