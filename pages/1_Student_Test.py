@@ -37,8 +37,170 @@ if not st.session_state.get('logged_in', False) or st.session_state.get('user_ro
 
 # 질문 데이터 (실제로는 파일이나 데이터베이스에서 로드)
 def load_questions(level):
-    # A1 레벨은 지문이 있는 수동 데이터 사용
-    if level == 'A1':
+    """
+    PRE-A1 UnboundLocalError 방지를 위한 특수 처리 로더
+    """
+    # 입력값 유효성 검사
+    if not level or not isinstance(level, str):
+        level = 'A1'  # 기본값
+
+    # PRE-A1 완전 격리 처리 - Ultra-think 해결책
+    if level == 'PRE-A1':
+        return load_preA1_questions_isolated()
+
+    # 다른 레벨은 기존 로직 사용
+    return load_other_level_questions(level)
+
+def load_preA1_questions_isolated():
+    """
+    PRE-A1 전용 완전 격리 로더 - 다른 어떤 코드도 섞이지 않음
+    """
+    print("Loading PRE-A1 questions with isolated safe loader...")
+
+    # 1. 첫 번째 시도: 좋은 데이터가 있는 extracted_questions.json에서만 로드
+    try:
+        import json
+        with open('../extracted_questions.json', 'r', encoding='utf-8') as f:
+            data = json.load(f)
+
+        if isinstance(data, dict) and 'PRE-A1' in data:
+            raw_questions = data['PRE-A1']
+
+            if isinstance(raw_questions, list) and len(raw_questions) > 0:
+                cleaned_questions = []
+
+                for q in raw_questions:
+                    try:
+                        if (isinstance(q, dict) and
+                            'options' in q and isinstance(q['options'], list) and
+                            len(q['options']) == 4 and
+                            all(opt and str(opt).strip() for opt in q['options'])):
+
+                            cleaned_q = {
+                                'id': int(q.get('id', 0)),
+                                'question': str(q.get('question', '')).replace('<span class="question-text">', '').replace('</span>', ''),
+                                'options': [str(opt).replace('A)', '').replace('B)', '').replace('C)', '').replace('D)', '') for opt in q['options']],
+                                'correct': int(q.get('correct', 0)),
+                                'section': str(q.get('section', 'General'))
+                            }
+                            cleaned_questions.append(cleaned_q)
+                    except Exception:
+                        continue  # 개별 질문 오류는 무시
+
+                if cleaned_questions:
+                    print(f"✅ PRE-A1: Successfully loaded {len(cleaned_questions)} questions")
+                    return cleaned_questions
+
+    except Exception as e:
+        print(f"PRE-A1 JSON loading failed: {e}")
+
+    # 2. 두 번째 시도: A1 질문을 PRE-A1으로 사용 (fallback)
+    try:
+        print("PRE-A1: Falling back to A1 questions...")
+        a1_questions = load_other_level_questions('A1')
+        if a1_questions and len(a1_questions) > 0:
+            # ID를 PRE-A1 스타일로 조정
+            for q in a1_questions:
+                q['id'] = q['id']  # ID는 그대로 유지
+                q['original_level'] = 'A1'  # 원본 레벨 표시
+            print(f"✅ PRE-A1: Using {len(a1_questions)} A1 questions as fallback")
+            return a1_questions
+    except Exception as e:
+        print(f"PRE-A1 A1 fallback failed: {e}")
+
+    # 3. 최후의 수단: 하드코딩된 비상 질문
+    print("PRE-A1: Using emergency hardcoded questions...")
+    return [
+        {
+            'id': 1,
+            'question': 'What do you say when you meet someone?',
+            'options': ['Hello', 'Goodbye', 'Thank you', 'Sorry'],
+            'correct': 0,
+            'section': 'Conversation'
+        },
+        {
+            'id': 2,
+            'question': 'My name _______ Alex.',
+            'options': ['am', 'is', 'are', 'be'],
+            'correct': 1,
+            'section': 'Grammar'
+        },
+        {
+            'id': 3,
+            'question': 'What is the opposite of "good"?',
+            'options': ['Bad', 'Good', 'Happy', 'Sad'],
+            'correct': 0,
+            'section': 'Vocabulary'
+        },
+        {
+            'id': 4,
+            'question': 'I _______ from Korea.',
+            'options': ['am', 'is', 'are', 'be'],
+            'correct': 0,
+            'section': 'Grammar'
+        },
+        {
+            'id': 5,
+            'question': 'Nice to _______ you.',
+            'options': ['see', 'know', 'meet', 'go'],
+            'correct': 2,
+            'section': 'Conversation'
+        }
+    ]
+
+def load_other_level_questions(level):
+    """
+    A1, A2, B1, B2 등 PRE-A1 외 레벨용 로더
+    """
+    print(f"Loading {level} questions...")
+    questions = []  # 기본값으로 빈 리스트 초기화
+
+    # JSON 파일에서 로드 시도
+    try:
+        import json
+        with open('../extracted_questions.json', 'r', encoding='utf-8') as f:
+            extracted_questions = json.load(f)
+
+        # 딕셔너리 구조 확인 및 안전한 접근
+        if isinstance(extracted_questions, dict) and level in extracted_questions:
+            questions = extracted_questions[level]
+
+            # 데이터 정리 및 유효성 검사
+            if isinstance(questions, list):
+                cleaned_questions = []
+                for q in questions:
+                    try:
+                        if (isinstance(q, dict) and
+                            'options' in q and isinstance(q['options'], list) and
+                            len(q['options']) == 4 and
+                            all(opt and opt.strip() for opt in q['options'])):
+
+                            cleaned_q = {
+                                'id': q.get('id', 0),
+                                'question': str(q.get('question', '')).replace('<span class="question-text">', '').replace('</span>', ''),
+                                'options': [str(opt).replace('A)', '').replace('B)', '').replace('C)', '').replace('D)', '') for opt in q['options']],
+                                'correct': int(q.get('correct', 0)),
+                                'section': str(q.get('section', 'General'))
+                            }
+                            cleaned_questions.append(cleaned_q)
+                    except Exception as e:
+                        continue  # 개별 질문 오류는 무시하고 계속 진행
+
+                questions = cleaned_questions
+                if questions:
+                    print(f"Loaded {len(questions)} valid questions from JSON for level {level}")
+                    return questions
+            else:
+                questions = []
+        else:
+            questions = []
+
+    except Exception as e:
+        print(f"JSON loading failed for {level}: {e}")
+        questions = []  # 예외 발생시 빈 리스트로 초기화
+
+    # 2. A1 레벨은 하드코딩된 데이터 사용 (fallback)
+    if level == 'A1' and not questions:
         # 지문 정의 (문제 그룹별)
         passages = {
             1: "Hi Tom,\n\nI am at the library. Please come at 3 o'clock.\nBring your English book.\nSee you soon!\n\nMia",
@@ -293,6 +455,18 @@ def load_questions(level):
                 'section': 'Grammar'
             }
         ]
+
+        # 각 문항에 지문 연결 (공유 지문 포함)
+        for question in questions:
+            q_id = question['id']
+            # 지문 공유 규칙: 1-2번은 지문 1 공유, 3-4번은 지문 2 공유, 5-8번은 지문 3 공유
+            if q_id in [1, 2]:
+                question['passage'] = passages[1]
+            elif q_id in [3, 4]:
+                question['passage'] = passages[3]
+            elif q_id in [5, 6, 7, 8]:
+                question['passage'] = passages[5]
+
         return questions
 
     # A2 레벨은 수동으로 추가 (answer-data.js 기반)
@@ -350,10 +524,10 @@ def load_questions(level):
         ]
         return questions
 
-    # 각 문항에 지문 연결
-    for question in questions:
-        if 'passages' in locals() and question['id'] in locals()['passages']:
-            question['passage'] = locals()['passages'][question['id']]
+    # 최종 안전장치: questions가 리스트인지 확인하고 반환
+    if not isinstance(questions, list):
+        print(f"Warning: questions is not a list, it's {type(questions)}. Returning empty list.")
+        return []
 
     return questions
 
@@ -423,8 +597,61 @@ def main():
     level = st.session_state.get('test_level', 'A1')
     st.info(f"선택된 레벨: **{level}**")
 
-    # 질문 로드
-    questions = load_questions(level)
+    # 질문 로드 (강력한 예외 처리)
+    try:
+        questions = load_questions(level)
+    except UnboundLocalError as e:
+        st.error(f"❌ 질문 로드 중 오류가 발생했습니다: UnboundLocalError")
+        st.error("🔧 시스템 관리자에게 문의해주세요. 이 오류는 데이터 로드 문제일 수 있습니다.")
+        # 비상용 기본 질문 제공
+        questions = [
+            {
+                'id': 1,
+                'question': 'What is your name?',
+                'options': ['Alex', 'Maria', 'John', 'Sarah'],
+                'correct': 0,
+                'section': 'General'
+            }
+        ]
+    except Exception as e:
+        st.error(f"❌ 질문 로드 중 오류가 발생했습니다: {type(e).__name__}")
+        # 비상용 기본 질문 제공
+        questions = [
+            {
+                'id': 1,
+                'question': 'What is your name?',
+                'options': ['Alex', 'Maria', 'John', 'Sarah'],
+                'correct': 0,
+                'section': 'General'
+            }
+        ]
+
+    # 질문 데이터 유효성 검사
+    if not questions or not isinstance(questions, list):
+        st.error(f"❌ '{level}' 레벨의 질문 데이터를 불러올 수 없습니다.")
+        st.stop()
+
+    if len(questions) == 0:
+        st.error(f"❌ '{level}' 레벨에 사용 가능한 질문이 없습니다.")
+        st.stop()
+
+    # 데이터 품질 검사
+    valid_questions = []
+    for q in questions:
+        if (q and isinstance(q, dict) and
+            'question' in q and q['question'].strip() and
+            'options' in q and isinstance(q['options'], list) and len(q['options']) == 4 and
+            all(opt.strip() for opt in q['options'])):
+            valid_questions.append(q)
+
+    if len(valid_questions) != len(questions):
+        st.warning(f"⚠️ {len(questions) - len(valid_questions)}개의 잘못된 질문을 제외했습니다.")
+
+    if len(valid_questions) == 0:
+        st.error("❌ 유효한 질문이 없습니다. 관리자에게 문의해주세요.")
+        st.stop()
+
+    questions = valid_questions
     total_questions = len(questions)
 
     # 테스트 시작
@@ -526,8 +753,25 @@ def main():
     if not st.session_state['test_completed'] and st.session_state['current_question'] < total_questions:
         current_q = questions[st.session_state['current_question']]
 
+        # 데이터 유효성 검사
+        if not current_q or not isinstance(current_q, dict):
+            st.error("❌ 질문 데이터가 올바르지 않습니다.")
+            st.stop()
+
+        if 'question' not in current_q or not current_q['question'].strip():
+            st.error("❌ 질문 내용이 없습니다.")
+            st.stop()
+
+        if 'options' not in current_q or not isinstance(current_q['options'], list) or len(current_q['options']) != 4:
+            st.error("❌ 선택지 데이터가 올바르지 않습니다.")
+            st.stop()
+
+        if not all(opt.strip() for opt in current_q['options']):
+            st.error("❌ 일부 선택지가 비어있습니다.")
+            st.stop()
+
         # 지문이 있는 경우 먼저 표시
-        if 'passage' in current_q:
+        if 'passage' in current_q and current_q['passage'] and current_q['passage'].strip():
             st.markdown(f"""
             <div class="question-card" style="background-color: #f0f8ff; border-left: 5px solid #3b82f6;">
                 <h3>📄 Reading Passage</h3>
