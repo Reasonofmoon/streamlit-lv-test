@@ -711,7 +711,488 @@
       "section": "Reading"
     }
   ],
-  "A2": [],
+  "A2": [
+    {
+      "id": 1,
+      "question": "<span class=\"question-text\">Read the passage and answer: The main idea of the text is about...</span>",
+      "options": [
+        "A)Travel",
+        "B)Education",
+        "C)Food",
+        "D)Sports"
+      ],
+      "correct": 1,
+      "section": "Reading"
+    },
+    {
+      "id": 2,
+      "question": "<span class=\"question-text\">According to the passage, the author believes that...</span>",
+      "options": [
+        "A)Learning is easy",
+        "B)Practice makes perfect",
+        "C)Teachers are not important",
+        "D)Students don't need help"
+      ],
+      "correct": 1,
+      "section": "Reading"
+    },
+    {
+      "id": 3,
+      "question": "<span class=\"question-text\">What does the word \"challenge\" mean in the context?</span>",
+      "options": [
+        "A)Problem",
+        "B)Solution",
+        "C)Reward",
+        "D)Game"
+      ],
+      "correct": 0,
+      "section": "Reading"
+    },
+    {
+      "id": 4,
+      "question": "<span class=\"question-text\">The tone of the passage can be described as...</span>",
+      "options": [
+        "A)Formal",
+        "B)Informal",
+        "C)Angry",
+        "D)Sad"
+      ],
+      "correct": 0,
+      "section": "Reading"
+    },
+    {
+      "id": 5,
+      "question": "<span class=\"question-text\">Where was the author born?</span>",
+      "options": [
+        "A)London",
+        "B)New York",
+        "C)Paris",
+        "D)Tokyo"
+      ],
+      "correct": 1,
+      "section": "Reading"
+    },
+    {
+      "id": 6,
+      "question": "<span class=\"question-text\">How many languages does the author speak?</span>",
+      "options": [
+        "A)One",
+        "B)Two",
+        "C)Three",
+        "D)Four"
+      ],
+      "correct": 2,
+      "section": "Reading"
+    },
+    {
+      "id": 7,
+      "question": "<span class=\"question-text\">What is the main character's profession?</span>",
+      "options": [
+        "A)Teacher",
+        "B)Doctor",
+        "C)Engineer",
+        "D)Artist"
+      ],
+      "correct": 2,
+      "section": "Reading"
+    },
+    {
+      "id": 8,
+      "question": "<span class=\"question-text\">When did the story take place?</span>",
+      "options": [
+        "A)Last year",
+        "B)This year",
+        "C)Next year",
+        "D)Five years ago"
+      ],
+      "correct": 2,
+      "section": "Reading"
+    },
+    {
+      "id": 9,
+      "question": "<span class=\"question-text\">Which word means \"very large\"?</span>",
+      "options": [
+        "A)Tiny",
+        "B)Huge",
+        "C)Small",
+        "D)Medium"
+      ],
+      "correct": 1,
+      "section": "Vocabulary"
+    },
+    {
+      "id": 10,
+      "question": "<span class=\"question-text\">What is the synonym of \"important\"?</span>",
+      "options": [
+        "A)Insignificant",
+        "B)Crucial",
+        "C)Minor",
+        "D)Simple"
+      ],
+      "correct": 1,
+      "section": "Vocabulary"
+    },
+    {
+      "id": 11,
+      "question": "<span class=\"question-text\">Choose the correct word: She has a ___ memory.</span>",
+      "options": [
+        "A)good",
+        "B)well",
+        "C)better",
+        "D)best"
+      ],
+      "correct": 0,
+      "section": "Vocabulary"
+    },
+    {
+      "id": 12,
+      "question": "<span class=\"question-text\">The weather was ___ yesterday.</span>",
+      "options": [
+        "A)beauty",
+        "B)beautiful",
+        "C)beautify",
+        "D)beautifully"
+      ],
+      "correct": 1,
+      "section": "Vocabulary"
+    },
+    {
+      "id": 13,
+      "question": "<span class=\"question-text\">He speaks English ___.</span>",
+      "options": [
+        "A)fluent",
+        "B)fluently",
+        "C)fluency",
+        "D)fluens"
+      ],
+      "correct": 1,
+      "section": "Vocabulary"
+    },
+    {
+      "id": 14,
+      "question": "<span class=\"question-text\">I need to ___ my English.</span>",
+      "options": [
+        "A)improve",
+        "B)improvement",
+        "C)improving",
+        "D)improved"
+      ],
+      "correct": 0,
+      "section": "Vocabulary"
+    },
+    {
+      "id": 15,
+      "question": "<span class=\"question-text\">The test was very ___.</span>",
+      "options": [
+        "A)difficult",
+        "B)difficulty",
+        "C)difficultly",
+        "D)difficultness"
+      ],
+      "correct": 0,
+      "section": "Vocabulary"
+    },
+    {
+      "id": 16,
+      "question": "<span class=\"question-text\">She made a ___ decision.</span>",
+      "options": [
+        "A)wise",
+        "B)wisely",
+        "C)wisdom",
+        "D)wiseless"
+      ],
+      "correct": 0,
+      "section": "Vocabulary"
+    },
+    {
+      "id": 17,
+      "question": "<span class=\"question-text\">The book was very ___.</span>",
+      "options": [
+        "A)interesting",
+        "B)interest",
+        "C)interested",
+        "D)interests"
+      ],
+      "correct": 0,
+      "section": "Vocabulary"
+    },
+    {
+      "id": 18,
+      "question": "<span class=\"question-text\">He felt ___ after the long journey.</span>",
+      "options": [
+        "A)tired",
+        "B)tire",
+        "C)tiring",
+        "D)tires"
+      ],
+      "correct": 0,
+      "section": "Vocabulary"
+    },
+    {
+      "id": 19,
+      "question": "<span class=\"question-text\">The food was ___.</span>",
+      "options": [
+        "A)delicious",
+        "B)deliciously",
+        "C)deliciousness",
+        "D)deliciously"
+      ],
+      "correct": 0,
+      "section": "Vocabulary"
+    },
+    {
+      "id": 20,
+      "question": "<span class=\"question-text\">She is a ___ student.</span>",
+      "options": [
+        "A)brilliant",
+        "B)brilliantly",
+        "C)brilliance",
+        "D)brilliantness"
+      ],
+      "correct": 0,
+      "section": "Vocabulary"
+    },
+    {
+      "id": 21,
+      "question": "<span class=\"question-text\">A: \"How are you?\" B: \"___\"</span>",
+      "options": [
+        "A)I'm fine, thank you",
+        "B)I'm 25 years old",
+        "C)I'm a teacher",
+        "D)I'm from Korea"
+      ],
+      "correct": 0,
+      "section": "Conversation"
+    },
+    {
+      "id": 22,
+      "question": "<span class=\"question-text\">A: \"What time is it?\" B: \"___\"</span>",
+      "options": [
+        "A)It's 3 o'clock",
+        "B)It's Monday",
+        "C)It's sunny",
+        "D)It's hot"
+      ],
+      "correct": 0,
+      "section": "Conversation"
+    },
+    {
+      "id": 23,
+      "question": "<span class=\"question-text\">A: \"Where is the library?\" B: \"___\"</span>",
+      "options": [
+        "A)It's over there",
+        "B)It's expensive",
+        "C)It's delicious",
+        "D)It's cold"
+      ],
+      "correct": 0,
+      "section": "Conversation"
+    },
+    {
+      "id": 24,
+      "question": "<span class=\"question-text\">A: \"Can you help me?\" B: \"___\"</span>",
+      "options": [
+        "A)Of course",
+        "B)No problem",
+        "C)I'm busy",
+        "D)I don't know"
+      ],
+      "correct": 0,
+      "section": "Conversation"
+    },
+    {
+      "id": 25,
+      "question": "<span class=\"question-text\">A: \"Thank you for your help.\" B: \"___\"</span>",
+      "options": [
+        "A)You're welcome",
+        "B)Thank you too",
+        "C)Goodbye",
+        "D)Hello"
+      ],
+      "correct": 0,
+      "section": "Conversation"
+    },
+    {
+      "id": 26,
+      "question": "<span class=\"question-text\">A: \"See you tomorrow.\" B: \"___\"</span>",
+      "options": [
+        "A)See you later",
+        "B)Nice to meet you",
+        "C)How are you",
+        "D)What's your name"
+      ],
+      "correct": 0,
+      "section": "Conversation"
+    },
+    {
+      "id": 27,
+      "question": "<span class=\"question-text\">A: \"What do you do for fun?\" B: \"___\"</span>",
+      "options": [
+        "A)I like reading books",
+        "B)I'm a doctor",
+        "C)I'm 30 years old",
+        "D)I live in Seoul"
+      ],
+      "correct": 0,
+      "section": "Conversation"
+    },
+    {
+      "id": 28,
+      "question": "<span class=\"question-text\">A: \"How was your weekend?\" B: \"___\"</span>",
+      "options": [
+        "A)It was great",
+        "B)It's Monday",
+        "C)I'm tired",
+        "D)I'm hungry"
+      ],
+      "correct": 0,
+      "section": "Conversation"
+    },
+    {
+      "id": 29,
+      "question": "<span class=\"question-text\">I ___ to the cinema yesterday.</span>",
+      "options": [
+        "A)go",
+        "B)went",
+        "C)gone",
+        "D)going"
+      ],
+      "correct": 1,
+      "section": "Grammar"
+    },
+    {
+      "id": 30,
+      "question": "<span class=\"question-text\">She ___ English for three years.</span>",
+      "options": [
+        "A)study",
+        "B)studies",
+        "C)has studied",
+        "D)studied"
+      ],
+      "correct": 2,
+      "section": "Grammar"
+    },
+    {
+      "id": 31,
+      "question": "<span class=\"question-text\">They ___ dinner when I arrived.</span>",
+      "options": [
+        "A)have",
+        "B)had",
+        "C)were having",
+        "D)are having"
+      ],
+      "correct": 2,
+      "section": "Grammar"
+    },
+    {
+      "id": 32,
+      "question": "<span class=\"question-text\">If I ___ rich, I would buy a car.</span>",
+      "options": [
+        "A)am",
+        "B)was",
+        "C)were",
+        "D)will be"
+      ],
+      "correct": 2,
+      "section": "Grammar"
+    },
+    {
+      "id": 33,
+      "question": "<span class=\"question-text\">The movie ___ by Steven Spielberg.</span>",
+      "options": [
+        "A)direct",
+        "B)directed",
+        "C)directing",
+        "D)directs"
+      ],
+      "correct": 1,
+      "section": "Grammar"
+    },
+    {
+      "id": 34,
+      "question": "<span class=\"question-text\">You ___ smoke here. It's not allowed.</span>",
+      "options": [
+        "A)mustn't",
+        "B)don't have to",
+        "C)should",
+        "D)can"
+      ],
+      "correct": 0,
+      "section": "Grammar"
+    },
+    {
+      "id": 35,
+      "question": "<span class=\"question-text\">I wish I ___ speak French.</span>",
+      "options": [
+        "A)can",
+        "B)could",
+        "C)will",
+        "D)would"
+      ],
+      "correct": 1,
+      "section": "Grammar"
+    },
+    {
+      "id": 36,
+      "question": "<span class=\"question-text\">By next year, I ___ my degree.</span>",
+      "options": [
+        "A)finish",
+        "B)will finish",
+        "C)have finished",
+        "D)finished"
+      ],
+      "correct": 2,
+      "section": "Grammar"
+    },
+    {
+      "id": 37,
+      "question": "<span class=\"question-text\">She suggested ___ to the park.</span>",
+      "options": [
+        "A)go",
+        "B)going",
+        "C)to go",
+        "D)went"
+      ],
+      "correct": 1,
+      "section": "Grammar"
+    },
+    {
+      "id": 38,
+      "question": "<span class=\"question-text\">The book ___ I borrowed from you was interesting.</span>",
+      "options": [
+        "A)who",
+        "B)which",
+        "C)what",
+        "D)where"
+      ],
+      "correct": 1,
+      "section": "Grammar"
+    },
+    {
+      "id": 39,
+      "question": "<span class=\"question-text\">Which sentence is correct?</span>",
+      "options": [
+        "A)I have visited Paris last year",
+        "B)I visited Paris last year",
+        "C)I visit Paris last year",
+        "D)I am visiting Paris last year"
+      ],
+      "correct": 1,
+      "section": "Writing"
+    },
+    {
+      "id": 40,
+      "question": "<span class=\"question-text\">Choose the best way to complete the sentence: \"I enjoy ___ because...\"</span>",
+      "options": [
+        "A)read books",
+        "B)reading books",
+        "C)to read books",
+        "D)read books"
+      ],
+      "correct": 1,
+      "section": "Writing"
+    }
+  ],
   "B1": [
     {
       "id": 1,

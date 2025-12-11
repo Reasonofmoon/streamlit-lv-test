@@ -28,20 +28,13 @@ if not st.session_state.get('logged_in', False) or st.session_state.get('user_ro
 
 # 데이터 로드 함수
 def load_submissions():
-    submissions = []
-    submissions_dir = 'data/submissions'
-
-    if os.path.exists(submissions_dir):
-        for file in os.listdir(submissions_dir):
-            if file.endswith('.json'):
-                try:
-                    with open(os.path.join(submissions_dir, file), 'r', encoding='utf-8') as f:
-                        data = json.load(f)
-                        submissions.append(data)
-                except Exception as e:
-                    st.error(f"파일 로드 오류: {file} - {e}")
-
-    return submissions
+    from utils.db_manager import DatabaseManager
+    try:
+        db = DatabaseManager()
+        return db.load_submissions()
+    except Exception as e:
+        st.error(f"데이터베이스 로드 오류: {e}")
+        return []
 
 # 통계 계산 함수
 def calculate_statistics(submissions):
@@ -291,13 +284,29 @@ def main():
 
                     # 리포트 다운로드
                     report_content = analyzer.generate_counseling_report(analysis)
-                    st.download_button(
-                        label=f"📄 {student_name}님 리포트 다운로드",
-                        data=report_content,
-                        file_name=f"CEFR_상담리포트_{student_name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.md",
-                        mime="text/markdown",
-                        key=f"download_{submission.get('submittedAt', '')}"
-                    )
+                    
+                    # 시각화 및 다운로드 섹션
+                    v_col1, v_col2 = st.columns([1, 1])
+                    
+                    with v_col1:
+                        # 레이더 차트 표시
+                        from utils.visualization import create_radar_chart
+                        radar_fig = create_radar_chart(
+                            submission.get('sectionResults', {}),
+                            title=f"{student_name}님의 영역별 분석"
+                        )
+                        st.plotly_chart(radar_fig, use_container_width=True)
+                        
+                    with v_col2:
+                         st.markdown("#### 📥 리포트 다운로드")
+                         st.markdown("아래 버튼을 클릭하여 상세 상담 리포트를 다운로드하세요.")
+                         st.download_button(
+                            label=f"📄 {student_name}님 리포트 다운로드",
+                            data=report_content,
+                            file_name=f"CEFR_상담리포트_{student_name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.md",
+                            mime="text/markdown",
+                            key=f"download_{submission.get('submittedAt', '')}"
+                        )
 
         # 테이블 데이터 준비 (개별 리포트 버튼 추가)
         table_data = []

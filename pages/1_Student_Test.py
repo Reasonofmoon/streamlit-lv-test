@@ -8,6 +8,7 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from utils.cefr_analyzer import CEFRAnalyzer
+from utils.question_balancer import balance_and_shuffle_quiz
 
 # 페이지 설정
 st.set_page_config(
@@ -64,7 +65,12 @@ def load_preA1_questions_isolated():
     # 1. 첫 번째 시도: 좋은 데이터가 있는 extracted_questions.json에서만 로드
     try:
         import json
-        with open('../extracted_questions.json', 'r', encoding='utf-8') as f:
+        import os
+        # 프로젝트 루트 경로 계산 (현재 파일의 상위 상위 디렉토리)
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        json_path = os.path.join(base_dir, 'extracted_questions.json')
+        
+        with open(json_path, 'r', encoding='utf-8') as f:
             data = json.load(f)
 
         # 대소문자 무관한 PRE-A1 검색
@@ -178,7 +184,12 @@ def load_other_level_questions(level):
     # JSON 파일에서 로드 시도
     try:
         import json
-        with open('../extracted_questions.json', 'r', encoding='utf-8') as f:
+        import os
+        # 프로젝트 루트 경로 계산 (현재 파일의 상위 상위 디렉토리)
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        json_path = os.path.join(base_dir, 'extracted_questions.json')
+        
+        with open(json_path, 'r', encoding='utf-8') as f:
             extracted_questions = json.load(f)
 
         # 딕셔너리 구조 확인 및 안전한 접근 (대소문자 무관)
@@ -493,61 +504,6 @@ def load_other_level_questions(level):
 
         return questions
 
-    # A2 레벨은 수동으로 추가 (answer-data.js 기반)
-    if level == 'A2':
-        questions = [
-            # Reading Comprehension (8문항)
-            {'id': 1, 'question': 'Read the passage and answer: The main idea of the text is about...', 'options': ['Travel', 'Education', 'Food', 'Sports'], 'correct': 1, 'section': 'Reading'},
-            {'id': 2, 'question': 'According to the passage, the author believes that...', 'options': ['Learning is easy', 'Practice makes perfect', 'Teachers are not important', 'Students don\'t need help'], 'correct': 1, 'section': 'Reading'},
-            {'id': 3, 'question': 'What does the word "challenge" mean in the context?', 'options': ['Problem', 'Solution', 'Reward', 'Game'], 'correct': 0, 'section': 'Reading'},
-            {'id': 4, 'question': 'The tone of the passage can be described as...', 'options': ['Formal', 'Informal', 'Angry', 'Sad'], 'correct': 0, 'section': 'Reading'},
-            {'id': 5, 'question': 'Where was the author born?', 'options': ['London', 'New York', 'Paris', 'Tokyo'], 'correct': 1, 'section': 'Reading'},
-            {'id': 6, 'question': 'How many languages does the author speak?', 'options': ['One', 'Two', 'Three', 'Four'], 'correct': 2, 'section': 'Reading'},
-            {'id': 7, 'question': 'What is the main character\'s profession?', 'options': ['Teacher', 'Doctor', 'Engineer', 'Artist'], 'correct': 2, 'section': 'Reading'},
-            {'id': 8, 'question': 'When did the story take place?', 'options': ['Last year', 'This year', 'Next year', 'Five years ago'], 'correct': 2, 'section': 'Reading'},
-
-            # Vocabulary (12문항)
-            {'id': 9, 'question': 'Which word means "very large"?', 'options': ['Tiny', 'Huge', 'Small', 'Medium'], 'correct': 1, 'section': 'Vocabulary'},
-            {'id': 10, 'question': 'What is the synonym of "important"?', 'options': ['Insignificant', 'Crucial', 'Minor', 'Simple'], 'correct': 1, 'section': 'Vocabulary'},
-            {'id': 11, 'question': 'Choose the correct word: She has a ___ memory.', 'options': ['good', 'well', 'better', 'best'], 'correct': 0, 'section': 'Vocabulary'},
-            {'id': 12, 'question': 'The weather was ___ yesterday.', 'options': ['beauty', 'beautiful', 'beautify', 'beautifully'], 'correct': 1, 'section': 'Vocabulary'},
-            {'id': 13, 'question': 'He speaks English ___.', 'options': ['fluent', 'fluently', 'fluency', 'fluens'], 'correct': 1, 'section': 'Vocabulary'},
-            {'id': 14, 'question': 'I need to ___ my English.', 'options': ['improve', 'improvement', 'improving', 'improved'], 'correct': 0, 'section': 'Vocabulary'},
-            {'id': 15, 'question': 'The test was very ___.', 'options': ['difficult', 'difficulty', 'difficultly', 'difficultness'], 'correct': 0, 'section': 'Vocabulary'},
-            {'id': 16, 'question': 'She made a ___ decision.', 'options': ['wise', 'wisely', 'wisdom', 'wiseless'], 'correct': 0, 'section': 'Vocabulary'},
-            {'id': 17, 'question': 'The book was very ___.', 'options': ['interesting', 'interest', 'interested', 'interests'], 'correct': 0, 'section': 'Vocabulary'},
-            {'id': 18, 'question': 'He felt ___ after the long journey.', 'options': ['tired', 'tire', 'tiring', 'tires'], 'correct': 0, 'section': 'Vocabulary'},
-            {'id': 19, 'question': 'The food was ___.', 'options': ['delicious', 'deliciously', 'deliciousness', 'deliciously'], 'correct': 0, 'section': 'Vocabulary'},
-            {'id': 20, 'question': 'She is a ___ student.', 'options': ['brilliant', 'brilliantly', 'brilliance', 'brilliantness'], 'correct': 0, 'section': 'Vocabulary'},
-
-            # Conversation (8문항)
-            {'id': 21, 'question': 'A: "How are you?" B: "___"', 'options': ['I\'m fine, thank you', 'I\'m 25 years old', 'I\'m a teacher', 'I\'m from Korea'], 'correct': 0, 'section': 'Conversation'},
-            {'id': 22, 'question': 'A: "What time is it?" B: "___"', 'options': ['It\'s 3 o\'clock', 'It\'s Monday', 'It\'s sunny', 'It\'s hot'], 'correct': 0, 'section': 'Conversation'},
-            {'id': 23, 'question': 'A: "Where is the library?" B: "___"', 'options': ['It\'s over there', 'It\'s expensive', 'It\'s delicious', 'It\'s cold'], 'correct': 0, 'section': 'Conversation'},
-            {'id': 24, 'question': 'A: "Can you help me?" B: "___"', 'options': ['Of course', 'No problem', 'I\'m busy', 'I don\'t know'], 'correct': 0, 'section': 'Conversation'},
-            {'id': 25, 'question': 'A: "Thank you for your help." B: "___"', 'options': ['You\'re welcome', 'Thank you too', 'Goodbye', 'Hello'], 'correct': 0, 'section': 'Conversation'},
-            {'id': 26, 'question': 'A: "See you tomorrow." B: "___"', 'options': ['See you later', 'Nice to meet you', 'How are you', 'What\'s your name'], 'correct': 0, 'section': 'Conversation'},
-            {'id': 27, 'question': 'A: "What do you do for fun?" B: "___"', 'options': ['I like reading books', 'I\'m a doctor', 'I\'m 30 years old', 'I live in Seoul'], 'correct': 0, 'section': 'Conversation'},
-            {'id': 28, 'question': 'A: "How was your weekend?" B: "___"', 'options': ['It was great', 'It\'s Monday', 'I\'m tired', 'I\'m hungry'], 'correct': 0, 'section': 'Conversation'},
-
-            # Grammar (10문항)
-            {'id': 29, 'question': 'I ___ to the cinema yesterday.', 'options': ['go', 'went', 'gone', 'going'], 'correct': 1, 'section': 'Grammar'},
-            {'id': 30, 'question': 'She ___ English for three years.', 'options': ['study', 'studies', 'has studied', 'studied'], 'correct': 2, 'section': 'Grammar'},
-            {'id': 31, 'question': 'They ___ dinner when I arrived.', 'options': ['have', 'had', 'were having', 'are having'], 'correct': 2, 'section': 'Grammar'},
-            {'id': 32, 'question': 'If I ___ rich, I would buy a car.', 'options': ['am', 'was', 'were', 'will be'], 'correct': 2, 'section': 'Grammar'},
-            {'id': 33, 'question': 'The movie ___ by Steven Spielberg.', 'options': ['direct', 'directed', 'directing', 'directs'], 'correct': 1, 'section': 'Grammar'},
-            {'id': 34, 'question': 'You ___ smoke here. It\'s not allowed.', 'options': ['mustn\'t', 'don\'t have to', 'should', 'can'], 'correct': 0, 'section': 'Grammar'},
-            {'id': 35, 'question': 'I wish I ___ speak French.', 'options': ['can', 'could', 'will', 'would'], 'correct': 1, 'section': 'Grammar'},
-            {'id': 36, 'question': 'By next year, I ___ my degree.', 'options': ['finish', 'will finish', 'have finished', 'finished'], 'correct': 2, 'section': 'Grammar'},
-            {'id': 37, 'question': 'She suggested ___ to the park.', 'options': ['go', 'going', 'to go', 'went'], 'correct': 1, 'section': 'Grammar'},
-            {'id': 38, 'question': 'The book ___ I borrowed from you was interesting.', 'options': ['who', 'which', 'what', 'where'], 'correct': 1, 'section': 'Grammar'},
-
-            # Writing (2문항)
-            {'id': 39, 'question': 'Which sentence is correct?', 'options': ['I have visited Paris last year', 'I visited Paris last year', 'I visit Paris last year', 'I am visiting Paris last year'], 'correct': 1, 'section': 'Writing'},
-            {'id': 40, 'question': 'Choose the best way to complete the sentence: "I enjoy ___ because..."', 'options': ['read books', 'reading books', 'to read books', 'read books'], 'correct': 1, 'section': 'Writing'}
-        ]
-        return questions
-
     # 최종 안전장치: questions가 리스트인지 확인하고 반환
     if not isinstance(questions, list):
         print(f"Warning: questions is not a list, it's {type(questions)}. Returning empty list.")
@@ -558,60 +514,73 @@ def load_other_level_questions(level):
 # 채점 함수
 def calculate_score(answers, questions):
     correct = 0
+    penalty_deduction = 0
     total = len(questions)
     section_results = {}
 
     for i, question in enumerate(questions):
-        if i < len(answers) and answers[i] == question['correct']:
-            correct += 1
+        # 섹션 초기화
+        section = question['section']
+        if section not in section_results:
+            section_results[section] = {'correct': 0, 'total': 0}
+        section_results[section]['total'] += 1
 
-            # 섹션별 점수 계산
-            section = question['section']
-            if section not in section_results:
-                section_results[section] = {'correct': 0, 'total': 0}
-            section_results[section]['correct'] += 1
-            section_results[section]['total'] += 1
-        else:
-            section = question['section']
-            if section not in section_results:
-                section_results[section] = {'correct': 0, 'total': 0}
-            section_results[section]['total'] += 1
+        # 정답 체크
+        if i < len(answers):
+            if answers[i] == question['correct']:
+                correct += 1
+                section_results[section]['correct'] += 1
+            elif answers[i] == -1: # 미응시/시험중단 패널티
+                # 틀린 것으로 처리됨(점수 없음) + 추가 패널티 부여
+                # 패널티: 1문항 당 0.25점 감점 (예시) -> 총점 백분율에서 차감용
+                # 혹은 맞은 개수에서 차감할 수도 있음.
+                # 여기서는 '추가 패널티'를 정답 수에서 0.25개 차감하는 것으로 구현 (부분 점수 깎임)
+                penalty_deduction += 0.25
+        # answers 길이가 부족한 경우(혹시나)는 틀린걸로 처리됨 (0점)
 
-    percentage = (correct / total) * 100 if total > 0 else 0
+    # 기본 점수 계산 (백분율)
+    # 패널티 적용: 정답 수에서 패널티만큼 차감
+    adjusted_correct = max(0, correct - penalty_deduction)
+    percentage = (adjusted_correct / total) * 100 if total > 0 else 0
 
     return {
         'score': round(percentage),
-        'correct': correct,
+        'correct': correct, # 실제 맞은 개수
         'total': total,
         'passed': percentage >= 70,
-        'section_results': section_results
+        'section_results': section_results,
+        'penalty_deduction': penalty_deduction # 정보용
     }
 
 # 결과 저장 함수
+# 결과 저장 함수
 def save_results(level, score_data):
-    result = {
-        'student_info': st.session_state.get('student_info', {}),
-        'level': level,
-        'submittedAt': datetime.now().isoformat(),
-        'score': score_data['score'],
-        'passed': score_data['passed'],
-        'correct': score_data['correct'],
-        'total': score_data['total'],
-        'sectionResults': score_data['section_results'],
-        'answers': st.session_state['answers']
-    }
-
-    # submissions 폴더에 저장
-    import os
-    if not os.path.exists('data/submissions'):
-        os.makedirs('data/submissions')
-
-    filename = f"data/submissions/{st.session_state['student_info']['name']}_{level}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
-
-    with open(filename, 'w') as f:
-        json.dump(result, f, ensure_ascii=False, indent=2)
-
-    return filename
+    # DB 매니저 초기화
+    from utils.db_manager import DatabaseManager
+    try:
+        db = DatabaseManager()
+        
+        result = {
+            'studentInfo': st.session_state.get('student_info', {}),
+            'level': level,
+            'submittedAt': datetime.now().isoformat(),
+            'score': score_data['score'],
+            'passed': score_data['passed'],
+            'correct': score_data['correct'],
+            'total': score_data['total'],
+            'sectionResults': score_data['section_results'],
+            'answers': st.session_state['answers']
+        }
+        
+        # DB에 저장
+        submission_id = db.save_submission(result)
+        return submission_id
+        
+    except Exception as e:
+        print(f"DB Save Error: {e}")
+        # 폴더가 없어서 실패하는 경우 등을 대비해 로컬 저장 로직(백업)을 유지하거나 
+        # 에러를 반환할 수 있습니다. 여기서는 에러 로그만 남깁니다.
+        return None
 
 # 메인 함수
 def main():
@@ -675,28 +644,64 @@ def main():
         st.error("❌ 유효한 질문이 없습니다. 관리자에게 문의해주세요.")
         st.stop()
 
-    # 🔥 CRITICAL: 학생에게 정답 정보 노출 방지 (지문 유지)
-    ui_questions = []
-    for q in valid_questions:
-        # UI에 전달할 질문에서 correct 필드만 제거, passage는 유지
-        ui_question = {
-            'id': q['id'],
-            'question': q['question'],
-            'options': q['options'],
-            'section': q['section']
-            # correct 필드는 제외됨 - 내부 채점용으로만 보관
-        }
-
-        # 지문이 있으면 UI에도 포함
-        if 'passage' in q and q['passage']:
-            ui_question['passage'] = q['passage']
-
-        ui_questions.append(ui_question)
-
+    # 🔥 [STEP 2] 정답 위치 편향 해소를 위한 균등화 로직 적용
+    # 이 로직은 항상 수행되어 정답 위치를 강제로 균등하게 재배치합니다.
+    # LLM이 생성한 데이터의 편향을 완벽하게 제거합니다.
+    balanced_result = balance_and_shuffle_quiz(valid_questions)
+    balanced_questions = balanced_result["questions"]
+    
     # UI용과 채점용 데이터 분리
-    questions = ui_questions
-    questions_for_scoring = valid_questions  # 채점용으로는 원본 데이터 유지
+    # UI용 데이터에는 정답('correct') 정보를 포함하지 않도록 처리하여 보안 강화
+    questions = []
+    for q in balanced_questions:
+        q_ui = q.copy()
+        # 식별자와 문항 내용은 유지하되 정답 정보 제거
+        if 'correct' in q_ui:
+            del q_ui['correct']
+        # 디버그 정보도 UI에는 불필요하므로 제거
+        if '_original_correct' in q_ui:
+            del q_ui['_original_correct']
+        if '_shuffled_index' in q_ui:
+            del q_ui['_shuffled_index']
+        questions.append(q_ui)
+
+    # 채점용 데이터는 정답 정보를 포함한 balanced_questions 사용
+    questions_for_scoring = balanced_questions 
+    
     total_questions = len(questions)
+
+    # Developer Mode: URL에서 ?debug=true 확인
+    try:
+        query_params = st.query_params
+        debug_mode = query_params.get("debug") == "true"
+    except:
+        debug_mode = False
+
+    if debug_mode:
+        with st.expander("🔧 Developer Mode: Answer Distribution Stats", expanded=True):
+            st.warning("⚠️ 디버그 모드가 활성화되었습니다. 이 패널은 일반 사용자에게 보이지 않습니다.")
+            
+            stats = balanced_result["stats"]
+            col_bk1, col_bk2 = st.columns([1, 2])
+            
+            with col_bk1:
+                st.write("#### 정답 분포 통계")
+                # DataFrame으로 이쁘게 표시
+                stats_df = pd.DataFrame([
+                    {"번호": k, "개수": v} for k, v in stats.items()
+                ])
+                st.dataframe(stats_df, hide_index=True)
+                
+            with col_bk2:
+                st.write("#### 분포 상태 검증")
+                if balanced_result["is_balanced"]:
+                    st.success("✅ **균등 분포 달성** (Perfectly Balanced)")
+                    st.markdown("""
+                    - 모든 문항의 정답 위치가 수학적으로 균등하게 재배치되었습니다.
+                    - LLM의 위치 편향(Center Bias)이 완전히 제거되었습니다.
+                    """)
+                else:
+                    st.error("❌ 분포 균등화 실패")
 
     # 테스트 시작
     if not st.session_state['start_time']:
@@ -705,23 +710,152 @@ def main():
             st.rerun()
         return
 
-    # 진행 상황 표시 (개선)
-    progress = (len(st.session_state['answers']) / total_questions)
+    # --- UX UI 개선: Sticky Header & Timer & Professional Layout ---
+    
+    # 진행률 및 타이머 계산
+    progress_val = len(st.session_state['answers']) / total_questions
+    progress_percent = progress_val * 100
+    
+    start_ts = st.session_state['start_time'] if st.session_state['start_time'] else time.time()
+    
+    st.markdown(f"""
+<style>
+/* 1. Streamlit Override */
+header[data-testid="stHeader"] {{display: none !important;}}
+footer {{display: none !important;}}
+.stApp {{margin-top: -30px;}}
 
-    st.markdown("### 📈 전체 진행률")
-    st.progress(progress)
+/* 2. Professional Layout */
+.main .block-container {{
+    max-width: 900px !important;
+    padding-top: 100px !important;
+    padding-bottom: 100px !important;
+    background-color: var(--bg-primary);
+}}
 
-    # 상세 진행 상황 표시 (더 명확하게)
-    col1, col2, col3, col4 = st.columns(4)
-    with col1:
-        st.metric("📍 현재 문제", f"{st.session_state['current_question'] + 1}/{total_questions}")
-    with col2:
-        st.metric("✅ 답변 완료", f"{len(st.session_state['answers'])}/{total_questions}")
-    with col3:
-        st.metric("⏳ 남은 문제", f"{total_questions - len(st.session_state['answers'])}")
-    with col4:
-        completion_rate = (len(st.session_state['answers']) / total_questions) * 100
-        st.metric("📊 완료율", f"{completion_rate:.1f}%")
+/* 3. Sticky Header (EduPrompT Style) */
+.sticky-header {{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    background: rgba(253, 252, 250, 0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 5%;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+}}
+
+.header-left {{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}}
+.header-logo {{ 
+    font-family: var(--font-display);
+    font-size: 1.4rem; 
+    font-weight: 700; 
+    color: var(--text-primary); 
+    letter-spacing: -0.02em;
+}}
+
+.header-center {{
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-mono);
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    background: var(--bg-secondary);
+    padding: 6px 16px;
+    border-radius: 20px;
+}}
+
+.header-right {{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}}
+
+.timer-box {{
+    font-family: var(--font-mono);
+    color: var(--accent-coral);
+    font-weight: 600;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(232, 120, 90, 0.1);
+    padding: 6px 14px;
+    border-radius: 8px;
+}}
+
+/* 4. Progress Line */
+.progress-line-container {{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: transparent;
+}}
+.progress-line-fill {{
+    height: 100%;
+    width: {progress_percent}%;
+    background: var(--accent-sage);
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 10px rgba(123, 163, 140, 0.3);
+}}
+
+</style>
+
+<div class="sticky-header">
+    <div class="header-left">
+        <div class="header-logo">EduPrompT <span style="font-weight:300; color:var(--text-secondary);">Test</span></div>
+    </div>
+    
+    <div class="header-center">
+        Q {st.session_state['current_question'] + 1} <span style="color:#e2e8f0; margin:0 8px;">/</span> {total_questions}
+    </div>
+    
+    <div class="header-right">
+        <div class="timer-box">
+            <span>⏱</span>
+            <span id="exam-timer">00:00</span>
+        </div>
+    </div>
+    
+    <div class="progress-line-container">
+        <div class="progress-line-fill"></div>
+    </div>
+</div>
+
+<script>
+    function updateTimer() {{
+        const startTime = {start_ts};
+        const now = new Date().getTime() / 1000;
+        const diff = now - startTime;
+        
+        const minutes = Math.floor(diff / 60);
+        const seconds = Math.floor(diff % 60);
+        
+        const timerElement = document.getElementById('exam-timer');
+        if (timerElement) {{
+            timerElement.innerText = 
+                (minutes < 10 ? "0" + minutes : minutes) + ":" + 
+                (seconds < 10 ? "0" + seconds : seconds);
+        }}
+    }}
+    setInterval(updateTimer, 1000);
+    updateTimer(); 
+</script>
+    """, unsafe_allow_html=True)
 
     # 현재 문제 상태 (더 명확하게)
     if st.session_state['current_question'] < len(st.session_state['answers']):
@@ -815,22 +949,85 @@ def main():
             st.error("❌ 일부 선택지가 비어있습니다.")
             st.stop()
 
-        # 지문이 있는 경우 먼저 표시
+        # 구글 폰트 및 컴포넌트 스타일 적용
+        st.markdown(f"""
+        <style>
+            /* 질문 및 본문 스타일 (EduPrompT Design System) */
+            
+            .edu-card-passage {{
+                background-color: #ffffff;
+                border-radius: var(--radius-lg);
+                padding: 2.5rem;
+                border-left: 4px solid var(--accent-sage);
+                box-shadow: var(--shadow-soft);
+                margin-bottom: 2rem;
+                font-family: var(--font-body);
+                line-height: 1.8;
+                color: var(--text-primary);
+            }}
+            
+            .edu-card-question {{
+                margin-bottom: 2rem;
+            }}
+            
+            .question-meta {{
+                font-family: var(--font-mono);
+                font-size: 0.8rem;
+                color: var(--accent-coral);
+                text-transform: uppercase;
+                letter-spacing: 0.1em;
+                margin-bottom: 1rem;
+                display: block;
+            }}
+            
+            .question-title {{
+                font-family: var(--font-display);
+                font-size: 1.6rem;
+                font-weight: 600;
+                color: var(--text-primary);
+                line-height: 1.4;
+            }}
+            
+            /* 선택지 버튼 오버라이드 */
+            .stButton > button {{
+                width: 100%;
+                background-color: #ffffff !important;
+                color: var(--text-secondary) !important;
+                border: 1px solid #e2e8f0 !important;
+                border-radius: var(--radius-md) !important;
+                padding: 1.25rem 1.5rem !important;
+                font-family: var(--font-body) !important;
+                font-size: 1.05rem !important;
+                text-align: left !important;
+                margin-bottom: 0.75rem !important;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            }}
+            
+            .stButton > button:hover {{
+                border-color: var(--accent-sage) !important;
+                background-color: var(--bg-secondary) !important;
+                transform: translateY(-2px);
+                box-shadow: var(--shadow-medium);
+            }}
+        </style>
+        """, unsafe_allow_html=True)
+
+        # 지문 표시
         if 'passage' in current_q and current_q['passage'] and current_q['passage'].strip():
             st.markdown(f"""
-            <div class="question-card" style="background-color: #f0f8ff; border-left: 5px solid #3b82f6;">
-                <h3>📄 Reading Passage</h3>
-                <div style="background-color: white; padding: 20px; border-radius: 8px; white-space: pre-wrap; line-height: 1.6;">
-                    {current_q['passage']}
-                </div>
+            <div class="edu-card-passage animate-fade-up">
+                <h3 style="font-family:var(--font-display); color:var(--accent-sage); margin-top:0; border-bottom:1px solid #eee; padding-bottom:15px; margin-bottom:20px;">
+                    Reading Passage
+                </h3>
+                {current_q['passage']}
             </div>
             """, unsafe_allow_html=True)
 
-        # 질문 카드
+        # 질문 표시
         st.markdown(f"""
-        <div class="question-card">
-            <h3>📖 {current_q['section']}</h3>
-            <h2>{current_q['question']}</h2>
+        <div class="edu-card-question animate-fade-up" style="animation-delay: 0.1s;">
+            <span class="question-meta">{current_q.get('section', 'General Question')}</span>
+            <div class="question-title">{current_q['question']}</div>
         </div>
         """, unsafe_allow_html=True)
 
@@ -842,45 +1039,41 @@ def main():
         if st.session_state['current_question'] < len(st.session_state['answers']):
             current_answer = st.session_state['answers'][st.session_state['current_question']]
 
-        # 옵션 버튼을 위한 CSS 스타일 주입 (f-string 제거)
-    current_q_num = st.session_state['current_question']
-    current_ans = current_answer if current_answer is not None else 'X'
+        # 옵션 버튼을 위한 CSS 스타일 주입 (선택된 항목 하이라이트)
+        current_q_num = st.session_state['current_question']
+        current_ans = current_answer if current_answer is not None else 'X'
 
-    selection_style = f"""
-    <style>
-    .stButton > button[k*="q{current_q_num}_option_{current_ans}"] {{
-        background: linear-gradient(135deg, #ffb3b3 0%, #ff8787 50%, #ff6b6b 100%) !important;
-        color: white !important;
-        border: 2px solid #ff5252 !important;
-        font-weight: 600 !important;
-        box-shadow: 0 4px 8px rgba(255, 107, 107, 0.3) !important;
-        animation: answerSelected 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }}
-    </style>
-    """
-    st.markdown(selection_style, unsafe_allow_html=True)
+        selection_style = f"""
+        <style>
+        .stButton > button[k*="q{current_q_num}_option_{current_ans}"] {{
+            background-color: rgba(123, 163, 140, 0.1) !important;
+            border: 2px solid #7BA38C !important;
+            color: #7BA38C !important;
+            font-weight: 700 !important;
+            box-shadow: 0 0 0 4px rgba(123, 163, 140, 0.15) !important;
+        }}
+        </style>
+        """
+        st.markdown(selection_style, unsafe_allow_html=True)
 
-    for i, option in enumerate(current_q['options']):
-        is_selected = (i == current_answer)
-        button_symbol = '●' if is_selected else '○'
+        for i, option in enumerate(current_q['options']):
+            is_selected = (i == current_answer)
+            button_symbol = '●' if is_selected else '○'
 
-        # 선택된 옵션에 특별한 표시 추가
-        if is_selected:
-            button_text = f"✓ {button_symbol} {option}"
-        else:
-            button_text = f"{button_symbol} {option}"
-
-        if st.button(button_text,
-                    key=f"q{st.session_state['current_question']}_option_{i}",
-                    help=f"옵션 {i+1}"):
-                # 선택된 옵션을 세션 상태에 저장
-                if st.session_state['current_question'] < len(st.session_state['answers']):
-                    # 이미 답한 문제인 경우 업데이트
-                    st.session_state['answers'][st.session_state['current_question']] = i
-                else:
-                    # 새로운 답변인 경우 추가
-                    st.session_state['answers'].append(i)
-                st.rerun()  # 페이지 다시 로드하여 변경사항 반영
+            # 선택된 옵션은 단순히 텍스트만 표시 (스타일은 CSS로 처리)
+            button_text = f"{option}" 
+            
+            # 버튼 클릭 처리
+            if st.button(button_text,
+                        key=f"q{st.session_state['current_question']}_option_{i}"):
+                    # 선택된 옵션을 세션 상태에 저장
+                    if st.session_state['current_question'] < len(st.session_state['answers']):
+                        # 이미 답한 문제인 경우 업데이트
+                        st.session_state['answers'][st.session_state['current_question']] = i
+                    else:
+                        # 새로운 답변인 경우 추가
+                        st.session_state['answers'].append(i)
+                    st.rerun()  # 페이지 다시 로드하여 변경사항 반영
 
         # 버튼 영역
         col1, col2, col3, col4 = st.columns(4)
@@ -891,15 +1084,17 @@ def main():
                 st.rerun()
 
         with col2:
-            if st.button("이전으로", disabled=st.session_state['current_question'] == 0):
-                if st.session_state['current_question'] > 0:
-                    st.session_state['current_question'] -= 1
+             if st.button("🚫 시험 중단 및 제출", type="secondary", help="현재까지 푼 문제로만 채점합니다. 남은 문제는 오답 처리되며 추가 패널티가 있습니다."):
+                if st.session_state['current_question'] < total_questions:
+                     # 남은 문제 오답 처리 (패널티 -1로 표시)
+                     remaining = total_questions - len(st.session_state['answers'])
+                     for _ in range(remaining):
+                         st.session_state['answers'].append(-1) # -1은 오답/미응시
+                st.session_state['test_completed'] = True
                 st.rerun()
 
         with col3:
-            if st.button("다음으로", disabled=st.session_state['current_question'] >= total_questions - 1):
-                st.session_state['current_question'] += 1
-                st.rerun()
+            pass 
 
         with col4:
             if st.button("다음 문제 →", disabled=st.session_state['current_question'] >= total_questions - 1):
@@ -917,21 +1112,21 @@ def main():
         if len(st.session_state['answers']) < total_questions:
             missing_answers = total_questions - len(st.session_state['answers'])
             st.error(f"⚠️ {missing_answers}개의 문항이 아직 답변되지 않았습니다.")
-            st.warning("모든 문항을 완료해야 테스트를 종료할 수 있습니다.")
-            st.info(f"답변 완료: {len(st.session_state['answers'])}/{total_questions} 문항")
-
-            # 답변하지 않은 문항 목록 표시
-            missing_questions = []
-            for i in range(total_questions):
-                if i >= len(st.session_state['answers']):
-                    missing_questions.append(i + 1)
-
-            st.write(f"답변 필요한 문항: {', '.join(map(str, missing_questions))}")
-
-            # 첫 번째 답변하지 않은 문항으로 이동
-            if st.button("첫 번째 미답변 문항으로 이동", type="primary"):
-                st.session_state['current_question'] = missing_questions[0] - 1
-                st.rerun()
+            
+            col_a, col_b = st.columns(2)
+            with col_a:
+                if st.button("첫 번째 미답변 문항으로 이동", type="primary"):
+                    st.session_state['current_question'] = len(st.session_state['answers'])
+                    st.rerun()
+            
+            with col_b:
+                if st.button("⚠️ 미답변 문항 오답 처리 후 제출", type="secondary"):
+                    # 남은 문제 -1 (오답) 처리
+                    remaining = total_questions - len(st.session_state['answers'])
+                    for _ in range(remaining):
+                         st.session_state['answers'].append(-1)
+                    st.session_state['test_completed'] = True
+                    st.rerun()
 
         # 모든 문항이 답변된 경우에만 완료 가능
         else:

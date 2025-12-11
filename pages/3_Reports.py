@@ -25,20 +25,13 @@ if not st.session_state.get('logged_in', False) or st.session_state.get('user_ro
 
 # 데이터 로드 함수
 def load_submissions():
-    submissions = []
-    submissions_dir = 'data/submissions'
-
-    if os.path.exists(submissions_dir):
-        for file in os.listdir(submissions_dir):
-            if file.endswith('.json'):
-                try:
-                    with open(os.path.join(submissions_dir, file), 'r', encoding='utf-8') as f:
-                        data = json.load(f)
-                        submissions.append(data)
-                except Exception as e:
-                    st.error(f"파일 로드 오류: {file} - {e}")
-
-    return submissions
+    from utils.db_manager import DatabaseManager
+    try:
+        db = DatabaseManager()
+        return db.load_submissions()
+    except Exception as e:
+        st.error(f"데이터베이스 로드 오류: {e}")
+        return []
 
 # 학생별 진행 추적 함수
 def track_student_progress(submissions, student_name):
@@ -118,36 +111,45 @@ def generate_detailed_report(submissions):
     <head>
         <meta charset="UTF-8">
         <title>CEFR 테스트 상세 리포트</title>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <style>
-            body {{ font-family: 'Malgun Gothic', sans-serif; margin: 40px; line-height: 1.6; }}
+            body {{ font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif; margin: 40px; line-height: 1.6; color: #333; }}
             .header {{ text-align: center; border-bottom: 3px solid #3B82F6; padding-bottom: 20px; margin-bottom: 30px; }}
             .summary {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }}
-            .summary-item {{ background: #f8fafc; padding: 20px; border-radius: 10px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }}
+            .summary-item {{ background: #f8fafc; padding: 20px; border-radius: 10px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; }}
             .summary-value {{ font-size: 2.5rem; font-weight: bold; color: #3B82F6; }}
-            .section {{ margin-bottom: 30px; }}
-            .section-title {{ color: #3B82F6; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px; }}
+            .section {{ margin-bottom: 40px; page-break-inside: avoid; }}
+            .section-title {{ color: #1e3a8a; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px; margin-bottom: 20px; font-size: 1.5rem; font-weight: bold; }}
             table {{ width: 100%; border-collapse: collapse; margin-bottom: 20px; }}
-            th, td {{ border: 1px solid #e5e7eb; padding: 12px; text-align: left; }}
-            th {{ background: #f1f5f9; font-weight: 600; }}
-            .pass {{ color: #10B981; font-weight: 600; }}
-            .fail {{ color: #EF4444; font-weight: 600; }}
-            .chart-placeholder {{ background: #f9fafb; border: 2px dashed #d1d5db; height: 300px; display: flex; align-items: center; justify-content: center; color: #6b7280; }}
+            th, td {{ border: 1px solid #e5e7eb; padding: 12px; text-align: center; }}
+            th {{ background: #f1f5f9; font-weight: 600; color: #1e293b; }}
+            .pass {{ color: #10B981; font-weight: bold; }}
+            .fail {{ color: #EF4444; font-weight: bold; }}
+            .level-badge {{ padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 0.9em; }}
+            
+            /* 인쇄 최적화 스타일 */
+            @media print {{
+                body {{ margin: 0; padding: 20px; -webkit-print-color-adjust: exact; }}
+                .no-print {{ display: none; }}
+                .section {{ page-break-inside: avoid; }}
+                .header {{ margin-top: 0; }}
+            }}
         </style>
     </head>
     <body>
         <div class="header">
             <h1>🎓 CEFR 영어 레벨 테스트 상세 리포트</h1>
-            <p>생성일: {datetime.now().strftime('%Y년 %m월 %d일 %H:%M')}</p>
-            <p>분석 데이터: {total_students}명의 테스트 결과</p>
+            <p><strong>생성일:</strong> {datetime.now().strftime('%Y년 %m월 %d일 %H:%M')}</p>
+            <p><strong>분석 대상:</strong> {total_students}명의 학생 결과</p>
         </div>
 
         <div class="summary">
             <div class="summary-item">
-                <div class="summary-value">{total_students}</div>
-                <div>전체 학생 수</div>
+                <div class="summary-value">{total_students}명</div>
+                <div>전체 학생</div>
             </div>
             <div class="summary-item">
-                <div class="summary-value">{avg_score}%</div>
+                <div class="summary-value">{avg_score}점</div>
                 <div>평균 점수</div>
             </div>
             <div class="summary-item">
@@ -155,20 +157,25 @@ def generate_detailed_report(submissions):
                 <div>전체 합격률</div>
             </div>
             <div class="summary-item">
-                <div class="summary-value">{passed_count}</div>
-                <div>합격자 수</div>
+                <div class="summary-value">{passed_count}명</div>
+                <div>합격 성공</div>
             </div>
         </div>
 
         <div class="section">
-            <h2 class="section-title">📊 레벨별 분석</h2>
+            <h2 class="section-title">📊 레벨별 성취도 분석</h2>
+            <div style="display: flex; gap: 20px; justify-content: center; margin-bottom: 20px;">
+                <div style="width: 400px; height: 300px;">
+                    <canvas id="levelChart"></canvas>
+                </div>
+            </div>
             <table>
                 <tr>
                     <th>레벨</th>
                     <th>응시자 수</th>
                     <th>평균 점수</th>
                     <th>합격자 수</th>
-                    <th>레벨별 합격률</th>
+                    <th>합격률</th>
                 </tr>
     """
 
@@ -190,48 +197,69 @@ def generate_detailed_report(submissions):
         </div>
 
         <div class="section">
-            <h2 class="section-title">👥 학생별 상세 결과</h2>
-            <table>
-                <tr>
-                    <th>이름</th>
-                    <th>학교</th>
-                    <th>학년/반</th>
-                    <th>레벨</th>
-                    <th>점수</th>
-                    <th>결과</th>
-                    <th>제출일</th>
-                </tr>
-    """
-
-    for s in sorted(submissions, key=lambda x: x.get('submittedAt', ''), reverse=True)[:50]:  # 최근 50개만 표시
-        student_info = s.get('studentInfo', {})
-        submitted_date = datetime.fromisoformat(s.get('submittedAt', '')).strftime('%Y-%m-%d %H:%M')
-        result_class = "pass" if s.get('passed', False) else "fail"
-        result_text = "✅ 합격" if s.get('passed', False) else "❌ 불합격"
-
-        html_report += f"""
-                <tr>
-                    <td>{student_info.get('name', '-')}</td>
-                    <td>{student_info.get('school', '-')}</td>
-                    <td>{student_info.get('grade', '-')}/{student_info.get('class', '-')}</td>
-                    <td>{s.get('level', '-')}</td>
-                    <td>{s.get('score', 0)}점</td>
-                    <td class="{result_class}">{result_text}</td>
-                    <td>{submitted_date}</td>
-                </tr>
-        """
-
-    html_report += """
-            </table>
+            <h2 class="section-title">📝 종합 분석 의견</h2>
+            <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px; height: 150px; background: #f9fafb;">
+                <p style="color: #6b7280; font-style: italic;">(이곳에 교사 코멘트를 수기로 작성하거나 입력할 수 있습니다.)</p>
+            </div>
         </div>
 
-        <div style="text-align: center; margin-top: 50px; color: #6b7280;">
-            <p>이 리포트는 CEFR Teacher Dashboard에서 생성되었습니다.</p>
-            <p>더 자세한 분석은 대시보드에서 확인해주세요.</p>
+        <div style="text-align: center; margin-top: 50px; color: #6b7280; font-size: 0.9em;">
+            <p>본 리포트는 CEFR Teacher Dashboard 시스템에서 자동 생성되었습니다.</p>
+            <p>© 2025 CEFR English Level Test System</p>
         </div>
+
+        <script>
+            // 차트 데이터 준비
+            const levelLabels = {level_labels};
+            const levelScores = {level_scores};
+            const levelPassRates = {level_pass_rates};
+
+            const ctx = document.getElementById('levelChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: levelLabels,
+                    datasets: [{
+                        label: '평균 점수',
+                        data: levelScores,
+                        backgroundColor: 'rgba(59, 130, 246, 0.5)',
+                        borderColor: 'rgb(59, 130, 246)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: '합격률 (%)',
+                        data: levelPassRates,
+                        backgroundColor: 'rgba(16, 185, 129, 0.5)',
+                        borderColor: 'rgb(16, 185, 129)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    }
+                }
+            });
+        </script>
     </body>
     </html>
     """
+
+    # JS 데이터 포맷팅
+    levels = list(level_stats.keys())
+    scores = [round(level_stats[l]['total_score'] / level_stats[l]['count']) for l in levels]
+    pass_rates = [round((level_stats[l]['passed'] / level_stats[l]['count']) * 100) for l in levels]
+
+    html_report = html_report.format(
+        level_labels=json.dumps(levels),
+        level_scores=json.dumps(scores),
+        level_pass_rates=json.dumps(pass_rates)
+    )
 
     return html_report
 

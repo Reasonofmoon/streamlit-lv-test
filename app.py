@@ -25,12 +25,14 @@ if 'student_info' not in st.session_state:
     st.session_state['student_info'] = {}
 
 # 로그인 함수
+# 로그인 함수
 def login(username, password):
-    # 간단한 인증 로직 (실제로는 데이터베이스 사용)
-    users = {
-        'darlbitt': {'password': 'darlbitt123', 'role': 'teacher'},
-        'darlbit': {'password': 'darlbit123', 'role': 'student'}
-    }
+    # 비밀번호 보안 처리 (Streamlit Secrets 사용)
+    if 'users' not in st.secrets:
+        st.error("설정 파일(secrets.toml)이 누락되었습니다. 관리자에게 문의하세요.")
+        return False
+        
+    users = st.secrets['users']
 
     if username in users and users[username]['password'] == password:
         st.session_state['logged_in'] = True
@@ -79,50 +81,78 @@ def main():
         welcome_page()
 
 def welcome_page():
-    st.title("🌟 CEFR English Level Test Platform")
+    # EduPrompT Hero Section
+    st.markdown("""
+    <div style="
+        position: relative; 
+        background: linear-gradient(180deg, #FDFCFA 0%, #F7F5F2 100%); 
+        padding: 5rem 2rem; 
+        border-radius: 20px; 
+        overflow: hidden; 
+        text-align: center;
+        margin-bottom: 3rem;
+    ">
+        <!-- Background Orbs -->
+        <div style="position: absolute; top: -50px; left: -50px; width: 300px; height: 300px; background: #E8785A; opacity: 0.15; filter: blur(80px); border-radius: 50%;"></div>
+        <div style="position: absolute; bottom: -50px; right: -50px; width: 300px; height: 300px; background: #7BA38C; opacity: 0.15; filter: blur(80px); border-radius: 50%;"></div>
+        
+        <!-- Content -->
+        <div style="position: relative; z-index: 10;">
+            <p style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: #E8785A; letter-spacing: 0.3em; margin-bottom: 2rem; text-transform: uppercase;">
+                EduPrompT v12.0 ULTIMATE
+            </p>
+            
+            <h1 style="font-family: 'Cormorant Garamond', serif; font-size: 3.5rem; font-weight: 300; line-height: 1.2; color: #1A1A1A; margin-bottom: 1.5rem;">
+                CEFR English <em style="font-family: 'Cormorant Garamond', serif; color: #7BA38C; font-style: italic;">Level Test</em>
+            </h1>
+            
+            <p style="font-family: 'Sora', sans-serif; font-size: 1.1rem; color: #5A5A5A; font-weight: 300; line-height: 1.6; max-width: 600px; margin: 0 auto 3rem auto;">
+                평가원 수준의 정밀한 문항 분석과 국제 표준 CEFR 레벨 진단.<br>
+                당신의 영어 실력을 가장 완벽하게 증명하세요.
+            </p>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
     col1, col2 = st.columns(2)
 
     with col1:
-        st.header("📝 학생용")
         st.markdown("""
-        - CEFR 레벨 테스트 응시
-        - 즉시 결과 확인
-        - 상세 피드백 제공
-        """)
+        <div class="edu-card card-hover" style="height: 100%;">
+            <div style="width: 50px; height: 50px; background: rgba(123, 163, 140, 0.1); color: #7BA38C; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1.5rem;">📝</div>
+            <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; margin-bottom: 1rem;">For Students</h3>
+            <ul style="list-style: none; padding: 0; color: #5A5A5A; line-height: 1.8; font-family: 'Sora', sans-serif;">
+                <li>✓ CEFR 레벨 정밀 진단</li>
+                <li>✓ 실시간 점수 및 피드백</li>
+                <li>✓ 취약 유형 상세 분석</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
 
     with col2:
-        st.header("👨‍🏫 교사용")
         st.markdown("""
-        - 학생 결과 관리
-        - 통계 및 분석
-        - 성적 리포트 생성
-        """)
-
+        <div class="edu-card card-hover" style="height: 100%;">
+            <div style="width: 50px; height: 50px; background: rgba(232, 120, 90, 0.1); color: #E8785A; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1.5rem;">👨‍🏫</div>
+            <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; margin-bottom: 1rem;">For Teachers</h3>
+            <ul style="list-style: none; padding: 0; color: #5A5A5A; line-height: 1.8; font-family: 'Sora', sans-serif;">
+                <li>✓ 학생 성적 통합 관리</li>
+                <li>✓ 데이터 기반 학습 분석</li>
+                <li>✓ 맞춤형 PDF 리포트 생성</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
+ 
     st.markdown("---")
     st.info("💡 테스트 계정: 학생(darlbit/darlbit123), 교사(darlbitt/darlbitt123)")
 
-    # CEFR 레벨 정보
-    st.subheader("📚 CEFR 레벨 안내")
-    levels_info = pd.DataFrame({
-        '레벨': ['Pre-A1', 'A1', 'A2', 'B1', 'B2'],
-        '설명': [
-            '초보1 - 기초 영어',
-            '초급 - 기본 영어',
-            '중급1 - 독립적 사용자',
-            '중급2 - 독립적 사용자',
-            '고급 - 숙련된 사용자'
-        ],
-        '주요 능력': [
-            '간단한 인사, 자기소개',
-            '일상 대화, 기본 질문/응답',
-            '친숙한 주제에 대한 대화',
-            '경험, 사건, 계획 설명',
-            '복잡한 주제에 대한 상세한 설명'
-        ]
-    })
+    # CEFR 레벨 정보 (Use EduPrompT styled table if possible, for now keep standard dataframe or custom HTML)
+    st.subheader("📚 CEFR Level Guide")
+    st.dataframe(pd.DataFrame({
+        'Level': ['Pre-A1', 'A1', 'A2', 'B1', 'B2'],
+        'Description': ['Foundation', 'Basic', 'Independent 1', 'Independent 2', 'Proficient'],
+        'Key Competency': ['Basic Greetings', 'Daily Conversation', 'Familiar Topics', 'Describing Experiences', 'Complex Discussions']
+    }), use_container_width=True)
 
-    st.dataframe(levels_info, use_container_width=True)
 
 def student_dashboard():
     st.title("📝 학생 대시보드")

@@ -1,281 +1,131 @@
-/* CEFR Test Platform Styles */
+/* EduPrompT v12.0 DESIGN SYSTEM */
 
-/* Main Styles */
+/* 1. Imports & Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Noto+Serif+KR:wght@300;400;500;600;700&family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Pretendard:wght@300;400;500;600;700&display=swap');
+
+:root {
+    /* Color Palette */
+    --bg-primary: #FDFCFA;      /* Cream White */
+    --bg-secondary: #F7F5F2;    /* Light Beige */
+    --text-primary: #1A1A1A;    /* Deep Black */
+    --text-secondary: #5A5A5A;  /* Medium Grey */
+    
+    /* Accents */
+    --accent-coral: #E8785A;    /* Killer / Top Priority */
+    --accent-sage: #7BA38C;     /* Answer / Success */
+    --accent-gold: #C9A962;     /* Warning / Trap */
+    --accent-lavender: #9B8AA6; /* Analysis */
+    --accent-sky: #6B9AC4;      /* Info / Default */
+    
+    /* Shadows */
+    --shadow-soft: 0 4px 6px -1px rgba(26, 26, 26, 0.06);
+    --shadow-medium: 0 10px 15px -3px rgba(26, 26, 26, 0.12);
+    --shadow-strong: 0 20px 25px -5px rgba(26, 26, 26, 0.18);
+    
+    /* Radius */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+
+    /* Typography */
+    --font-display: 'Cormorant Garamond', 'Noto Serif KR', serif;
+    --font-body: 'Sora', 'Pretendard', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+}
+
+/* Global Reset & Base Styles */
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-body) !important;
+}
+
+h1, h2, h3, h4, h5, h6, .stTitle {
+    font-family: var(--font-display) !important;
+    font-weight: 600;
+}
+
+/* Streamlit Overrides */
+.stApp {
+    background-color: var(--bg-primary);
+}
+
 .main .block-container {
-    max-width: 1200px;
-    padding-top: 2rem;
+    max-width: 900px;
+    padding-top: 3rem;
 }
 
-/* Header Styles */
-.stTitle {
-    color: #3B82F6;
-    font-weight: 600;
+/* EduPrompT Component Classes */
+
+/* Card */
+.edu-card {
+    background-color: #ffffff;
+    border-radius: var(--radius-xl);
+    padding: 2rem;
+    border: 1px solid transparent;
+    box-shadow: var(--shadow-soft);
+    transition: all 0.4s ease;
+    margin-bottom: 2rem;
 }
 
-/* Sidebar Styles */
-.sidebar .sidebar-content {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+.edu-card:hover {
+    border-color: var(--bg-secondary);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-medium);
 }
 
-/* Metric Cards */
-div[data-testid="metric-container"] {
-    background-color: #f0f8ff;
-    border: 1px solid #e0e0e0;
-    padding: 1rem;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-/* Button Styles */
+/* Buttons (Generic) */
 .stButton > button {
-    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    font-weight: 600;
-    border: none;
-    border-radius: 8px;
-    padding: 0.5rem 1rem;
-    transition: all 0.3s;
+    background-color: #ffffff;
+    color: var(--text-primary);
+    border: 1px solid #e2e8f0;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-weight: 500;
+    transition: all 0.2s ease;
 }
 
 .stButton > button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+    border-color: var(--accent-sage);
+    color: var(--accent-sage);
+    background-color: var(--bg-secondary);
 }
 
-/* Answer Option Styles */
-.stButton > button[k*="option_"] {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    color: #333;
-    border: 2px solid #dee2e6;
-    font-weight: 500;
-    padding: 0.75rem 1rem;
-    width: 100%;
-    text-align: left;
-    font-size: 16px;
-    position: relative;
-    overflow: hidden;
-    animation: slideInUp 0.3s ease-out;
+/* Selected Option Override (Sage Theme) */
+.stButton > button[data-selected="true"],
+.stButton > button:active {
+    background-color: rgba(123, 163, 140, 0.1) !important; /* Sage Light */
+    border-color: var(--accent-sage) !important;
+    color: var(--text-primary) !important;
+    font-weight: 700;
 }
 
-.stButton > button[k*="option_"]:hover {
-    background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 15px rgba(0,0,0,0.15);
-    border-color: #adb5bd;
-}
 
-/* Selected Answer Option - Light Red */
-.stButton > button[k*="option_"]:active,
-.stButton > button[k*="option_"][data-selected="true"] {
-    background: linear-gradient(135deg, #ffb3b3 0%, #ff8787 50%, #ff6b6b 100%);
-    color: white;
-    border: 2px solid #ff5252;
-    font-weight: 600;
-    box-shadow: 0 4px 8px rgba(255, 107, 107, 0.3);
-    animation: answerSelected 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-/* Animation for button entry */
-@keyframes slideInUp {
+/* Animations */
+@keyframes fadeSlideUp {
     from {
-        transform: translateY(20px);
         opacity: 0;
+        transform: translateY(20px);
     }
     to {
-        transform: translateY(0);
         opacity: 1;
+        transform: translateY(0);
     }
 }
 
-/* Animation for selection */
-@keyframes answerSelected {
-    0% {
-        transform: scale(1);
-        box-shadow: 0 2px 4px rgba(255, 107, 107, 0.2);
-    }
-    50% {
-        transform: scale(1.05);
-        box-shadow: 0 6px 12px rgba(255, 107, 107, 0.4);
-    }
-    100% {
-        transform: scale(1);
-        box-shadow: 0 4px 8px rgba(255, 107, 107, 0.3);
-    }
+.animate-fade-up {
+    animation: fadeSlideUp 0.5s ease-out forwards;
 }
 
-/* Pulse effect for selected option */
-.stButton > button[k*="option_"][data-selected="true"]::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 8px;
-    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-    animation: pulse 2s infinite;
-}
+/* Typography Utilities */
+.text-serif { font-family: var(--font-display); }
+.text-mono { font-family: var(--font-mono); }
+.text-sage { color: var(--accent-sage); }
+.text-coral { color: var(--accent-coral); }
+.text-gold { color: var(--accent-gold); }
 
-@keyframes pulse {
-    0% {
-        opacity: 0;
-        transform: scale(0.95);
-    }
-    50% {
-        opacity: 0.4;
-        transform: scale(1);
-    }
-    100% {
-        opacity: 0;
-        transform: scale(0.95);
-    }
-}
-
-/* Success State */
-.success-message {
-    background-color: #d4edda;
-    color: #155724;
-    padding: 1rem;
-    border-radius: 8px;
-    border: 1px solid #c3e6cb;
-    margin-bottom: 1rem;
-}
-
-/* Error State */
-.error-message {
-    background-color: #f8d7da;
-    color: #721c24;
-    padding: 1rem;
-    border-radius: 8px;
-    border: 1px solid #f5c6cb;
-    margin-bottom: 1rem;
-}
-
-/* Info State */
-.info-message {
-    background-color: #d1ecf1;
-    color: #0c5460;
-    padding: 1rem;
-    border-radius: 8px;
-    border: 1px solid #bee5eb;
-    margin-bottom: 1rem;
-}
-
-/* Question Card */
-.question-card {
-    background-color: #ffffff;
-    border: 2px solid #e0e0e0;
-    border-radius: 12px;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-/* Progress Bar */
-.progress-container {
-    background-color: #e0e0e0;
-    border-radius: 10px;
-    height: 8px;
-    margin: 1rem 0;
-}
-
-.progress-bar {
-    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-    height: 100%;
-    border-radius: 10px;
-    transition: width 0.3s ease;
-}
-
-/* Answer Options */
-.answer-option {
-    background-color: #f8f9fa;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    padding: 1rem;
-    margin: 0.5rem 0;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.answer-option:hover {
-    background-color: #e9ecef;
-    border-color: #667eea;
-}
-
-.answer-option.selected {
-    background-color: #e7f3ff;
-    border-color: #667eea;
-}
-
-/* Level Badges */
-.level-badge {
-    display: inline-block;
-    padding: 0.25rem 0.75rem;
-    border-radius: 20px;
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: white;
-    margin: 0.25rem;
-}
-
-.level-pre-a1 { background-color: #EC4899; }
-.level-a1 { background-color: #3B82F6; }
-.level-a2 { background-color: #10B981; }
-.level-b1 { background-color: #F59E0B; }
-.level-b2 { background-color: #8B5CF6; }
-
-/* Score Badge */
-.score-badge {
-    display: inline-block;
-    padding: 0.25rem 0.75rem;
-    border-radius: 20px;
-    font-size: 0.875rem;
-    font-weight: 600;
-}
-
-.score-excellent {
-    background-color: #D1FAE5;
-    color: #065F46;
-}
-
-.score-good {
-    background-color: #DBEAFE;
-    color: #1E40AF;
-}
-
-.score-pass {
-    background-color: #FEF3C7;
-    color: #92400E;
-}
-
-.score-fail {
-    background-color: #FEE2E2;
-    color: #991B1B;
-}
-
-/* Chart Container */
-.chart-container {
-    background-color: white;
-    border-radius: 12px;
-    padding: 1.5rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    margin-bottom: 1rem;
-}
-
-/* Data Table Styles */
-.stDataFrame {
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .main .block-container {
-        padding: 1rem;
-    }
-
-    .question-card {
-        padding: 1rem;
-    }
+/* Progress Bar Customization */
+div[data-testid="stProgress"] > div > div {
+    background-color: var(--accent-sage) !important;
 }
