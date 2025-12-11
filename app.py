@@ -3,6 +3,7 @@ import pandas as pd
 from datetime import datetime
 import json
 import os
+import base64
 
 # 페이지 설정
 st.set_page_config(
@@ -82,19 +83,31 @@ def main():
 
 def welcome_page():
     # EduPrompT Hero Section
-    st.markdown("""
+    # Load hero image
+    hero_bg = "background: linear-gradient(180deg, #FDFCFA 0%, #F7F5F2 100%);"
+    try:
+        with open("assets/hero_image.png", "rb") as f:
+            encoded_image = base64.b64encode(f.read()).decode()
+        hero_bg = f"""
+        background-image: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)), url('data:image/png;base64,{encoded_image}');
+        background-size: cover;
+        background-position: center;
+        """
+    except Exception:
+        pass
+
+    # EduPrompT Hero Section
+    st.markdown(f"""
     <div style="
         position: relative; 
-        background: linear-gradient(180deg, #FDFCFA 0%, #F7F5F2 100%); 
+        {hero_bg}
         padding: 5rem 2rem; 
         border-radius: 20px; 
         overflow: hidden; 
         text-align: center;
         margin-bottom: 3rem;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
     ">
-        <!-- Background Orbs -->
-        <div style="position: absolute; top: -50px; left: -50px; width: 300px; height: 300px; background: #E8785A; opacity: 0.15; filter: blur(80px); border-radius: 50%;"></div>
-        <div style="position: absolute; bottom: -50px; right: -50px; width: 300px; height: 300px; background: #7BA38C; opacity: 0.15; filter: blur(80px); border-radius: 50%;"></div>
         
         <!-- Content -->
         <div style="position: relative; z-index: 10;">
