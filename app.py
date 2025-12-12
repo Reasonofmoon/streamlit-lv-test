@@ -82,48 +82,27 @@ def main():
         welcome_page()
 
 def welcome_page():
-    # EduPrompT Hero Section
-    # Load hero image
-    hero_bg = "background: linear-gradient(180deg, #FDFCFA 0%, #F7F5F2 100%);"
-    try:
-        with open("assets/hero_image.png", "rb") as f:
-            encoded_image = base64.b64encode(f.read()).decode()
-        hero_bg = f"""
-        background-image: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)), url('data:image/png;base64,{encoded_image}');
-        background-size: cover;
-        background-position: center;
-        """
-    except Exception:
-        pass
-
-    # EduPrompT Hero Section
-    st.markdown(f"""
+    # EduPrompT Minimal Hero Section
+    st.markdown("""
     <div style="
-        position: relative; 
-        {hero_bg}
-        padding: 5rem 2rem; 
-        border-radius: 20px; 
-        overflow: hidden; 
         text-align: center;
+        padding: 4rem 2rem;
         margin-bottom: 3rem;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        background-color: #FDFCFA;
+        border-radius: 20px;
     ">
+        <p style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: #E8785A; letter-spacing: 0.3em; margin-bottom: 1.5rem; text-transform: uppercase;">
+            EduPrompT v12.0 ULTIMATE
+        </p>
         
-        <!-- Content -->
-        <div style="position: relative; z-index: 10;">
-            <p style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: #E8785A; letter-spacing: 0.3em; margin-bottom: 2rem; text-transform: uppercase;">
-                EduPrompT v12.0 ULTIMATE
-            </p>
-            
-            <h1 style="font-family: 'Cormorant Garamond', serif; font-size: 3.5rem; font-weight: 300; line-height: 1.2; color: #1A1A1A; margin-bottom: 1.5rem;">
-                CEFR English <em style="font-family: 'Cormorant Garamond', serif; color: #7BA38C; font-style: italic;">Level Test</em>
-            </h1>
-            
-            <p style="font-family: 'Sora', sans-serif; font-size: 1.1rem; color: #5A5A5A; font-weight: 300; line-height: 1.6; max-width: 600px; margin: 0 auto 3rem auto;">
-                평가원 수준의 정밀한 문항 분석과 국제 표준 CEFR 레벨 진단.<br>
-                당신의 영어 실력을 가장 완벽하게 증명하세요.
-            </p>
-        </div>
+        <h1 style="font-family: 'Cormorant Garamond', serif; font-size: 3.5rem; font-weight: 300; line-height: 1.2; color: #1A1A1A; margin-bottom: 1.5rem;">
+            CEFR English <em style="font-family: 'Cormorant Garamond', serif; color: #7BA38C; font-style: italic;">Level Test</em>
+        </h1>
+        
+        <p style="font-family: 'Sora', sans-serif; font-size: 1.1rem; color: #5A5A5A; font-weight: 300; line-height: 1.6; max-width: 600px; margin: 0 auto;">
+            평가원 수준의 정밀한 문항 분석과 국제 표준 CEFR 레벨 진단.<br>
+            당신의 영어 실력을 가장 완벽하게 증명하세요.
+        </p>
     </div>
     """, unsafe_allow_html=True)
 
