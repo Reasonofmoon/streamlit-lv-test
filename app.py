@@ -83,28 +83,18 @@ def main():
 
 def welcome_page():
     # EduPrompT Minimal Hero Section
-    st.markdown("""
-<div style="
-    text-align: center;
-    padding: 4rem 2rem;
-    margin-bottom: 3rem;
-    background-color: #FDFCFA;
-    border-radius: 20px;
-">
+    st.markdown("""<div style="text-align: center; padding: 4rem 2rem; margin-bottom: 3rem; background-color: #FDFCFA; border-radius: 20px;">
     <p style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: #E8785A; letter-spacing: 0.3em; margin-bottom: 1.5rem; text-transform: uppercase;">
         EduPrompT v12.0 ULTIMATE
     </p>
-    
     <h1 style="font-family: 'Cormorant Garamond', serif; font-size: 3.5rem; font-weight: 300; line-height: 1.2; color: #1A1A1A; margin-bottom: 1.5rem;">
         CEFR English <em style="font-family: 'Cormorant Garamond', serif; color: #7BA38C; font-style: italic;">Level Test</em>
     </h1>
-    
     <p style="font-family: 'Sora', sans-serif; font-size: 1.1rem; color: #5A5A5A; font-weight: 300; line-height: 1.6; max-width: 600px; margin: 0 auto;">
         평가원 수준의 정밀한 문항 분석과 국제 표준 CEFR 레벨 진단.<br>
         당신의 영어 실력을 가장 완벽하게 증명하세요.
     </p>
-</div>
-""", unsafe_allow_html=True)
+</div>""", unsafe_allow_html=True)
 
     col1, col2 = st.columns(2)
 
