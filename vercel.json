@@ -9,14 +9,20 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "https://streamlit.io"
+      "dest": "app.py"
     }
   ],
+  "installCommand": "pip install --no-cache-dir -r requirements.txt",
+  "buildCommand": "echo 'Build complete'",
+  "outputDirectory": ".",
   "env": {
-    "STREAMLIT_SERVER_PORT": "8501",
+    "STREAMLIT_SERVER_PORT": "$PORT",
     "STREAMLIT_SERVER_ADDRESS": "0.0.0.0"
   },
-  "installCommand": "pip install -r requirements.txt",
-  "buildCommand": "echo 'Build complete'",
-  "devCommand": "streamlit run app.py --server.port=$PORT --server.address=0.0.0.0"
+  "functions": {
+    "app.py": {
+      "memory": 1024,
+      "maxDuration": 30
+    }
+  }
 }

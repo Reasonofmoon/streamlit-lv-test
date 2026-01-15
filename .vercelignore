@@ -26,7 +26,6 @@ venv/
 ENV/
 env/
 .venv/
-.env/
 
 # IDEs
 .vscode/
@@ -41,6 +40,7 @@ env/
 # Data files
 data/submissions/*.json
 !data/submissions/.gitkeep
+data/cefr_test.db
 
 # Logs
 *.log
@@ -85,4 +85,12 @@ yarn.lock
 
 # Old HTML/JS version
 moon-cefr-level-test/
-.vercel
+
+# Documentation
+*.md
+!README.md
+
+# Test files
+tests/
+.pytest_cache/
+.coverage
