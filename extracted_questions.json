@@ -10,7 +10,7 @@
         "D)Sorry"
       ],
       "correct": 0,
-      "section": "Reading"
+      "section": "Conversation"
     },
     {
       "id": 2,
@@ -22,7 +22,7 @@
         "D)be"
       ],
       "correct": 1,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 3,
@@ -34,7 +34,7 @@
         "D)No"
       ],
       "correct": 2,
-      "section": "Reading"
+      "section": "Vocabulary"
     },
     {
       "id": 4,
@@ -46,7 +46,7 @@
         "D)have"
       ],
       "correct": 3,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 5,
@@ -58,7 +58,7 @@
         "D)go"
       ],
       "correct": 0,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 6,
@@ -70,7 +70,7 @@
         "D)Six"
       ],
       "correct": 1,
-      "section": "Reading"
+      "section": "Vocabulary"
     },
     {
       "id": 7,
@@ -82,7 +82,7 @@
         "D)four"
       ],
       "correct": 2,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 8,
@@ -94,7 +94,8 @@
         "D)Ten"
       ],
       "correct": 3,
-      "section": "Reading"
+      "section": "Reading",
+      "passage": "This is my room. I have a blue bed and a brown desk. \nMy favorite color is blue. I like my room."
     },
     {
       "id": 9,
@@ -106,7 +107,7 @@
         "D)four"
       ],
       "correct": 0,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 10,
@@ -118,7 +119,7 @@
         "D)Nine"
       ],
       "correct": 1,
-      "section": "Reading"
+      "section": "Vocabulary"
     },
     {
       "id": 11,
@@ -130,7 +131,7 @@
         "D)Yellow"
       ],
       "correct": 2,
-      "section": "Reading"
+      "section": "Vocabulary"
     },
     {
       "id": 12,
@@ -142,7 +143,7 @@
         "D)color"
       ],
       "correct": 3,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 13,
@@ -154,7 +155,7 @@
         "D)Brown"
       ],
       "correct": 0,
-      "section": "Reading"
+      "section": "Vocabulary"
     },
     {
       "id": 14,
@@ -166,7 +167,7 @@
         "D)chair"
       ],
       "correct": 1,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 15,
@@ -178,7 +179,7 @@
         "D)Blue"
       ],
       "correct": 2,
-      "section": "Reading"
+      "section": "Vocabulary"
     },
     {
       "id": 16,
@@ -190,7 +191,7 @@
         "D)cousin"
       ],
       "correct": 3,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 17,
@@ -202,7 +203,7 @@
         "D)a color"
       ],
       "correct": 0,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 18,
@@ -214,7 +215,7 @@
         "D)uncle"
       ],
       "correct": 1,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 19,
@@ -226,7 +227,7 @@
         "D)Fish"
       ],
       "correct": 2,
-      "section": "Reading"
+      "section": "General"
     },
     {
       "id": 20,
@@ -238,7 +239,7 @@
         "D)I don't know"
       ],
       "correct": 3,
-      "section": "Reading"
+      "section": "General"
     },
     {
       "id": 21,
@@ -250,7 +251,7 @@
         "D)drink"
       ],
       "correct": 0,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 22,
@@ -262,7 +263,7 @@
         "D)gone"
       ],
       "correct": 1,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 23,
@@ -274,7 +275,7 @@
         "D)run"
       ],
       "correct": 2,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 24,
@@ -286,7 +287,7 @@
         "D)write"
       ],
       "correct": 3,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 25,
@@ -298,7 +299,7 @@
         "D)work"
       ],
       "correct": 0,
-      "section": "Reading"
+      "section": "Grammar"
     }
   ],
   "A1": [
@@ -312,7 +313,8 @@
         "D)At the park"
       ],
       "correct": 1,
-      "section": "Reading"
+      "section": "Reading",
+      "passage": "Dear Alice,\n\nHow are you? I am fine. I am writing this letter to tell you about my school.\n\nMy school is big and beautiful. It has many classrooms, a library, and a playground. I like reading books in the library.\n\nWhat about your school? Please write soon.\n\nBest,\nEmma"
     },
     {
       "id": 2,
@@ -324,7 +326,8 @@
         "D)His pencil case"
       ],
       "correct": 2,
-      "section": "Reading"
+      "section": "Reading",
+      "passage": "The Weather\n\nToday is Sunday. The weather is very nice. The sun is shining and the sky is blue. \n\nTom and his friends are playing in the park. They are happy and having fun.\n\nTomorrow will be rainy. They should bring umbrellas."
     },
     {
       "id": 3,
@@ -336,7 +339,8 @@
         "D)Henry"
       ],
       "correct": 3,
-      "section": "Reading"
+      "section": "Reading",
+      "passage": "Dear Alice,\n\nHow are you? I am fine. I am writing this letter to tell you about my school.\n\nMy school is big and beautiful. It has many classrooms, a library, and a playground. I like reading books in the library.\n\nWhat about your school? Please write soon.\n\nBest,\nEmma"
     },
     {
       "id": 4,
@@ -348,7 +352,8 @@
         "D)Trees and rocks"
       ],
       "correct": 0,
-      "section": "Reading"
+      "section": "Reading",
+      "passage": "The Weather\n\nToday is Sunday. The weather is very nice. The sun is shining and the sky is blue. \n\nTom and his friends are playing in the park. They are happy and having fun.\n\nTomorrow will be rainy. They should bring umbrellas."
     },
     {
       "id": 5,
@@ -360,7 +365,8 @@
         "D)Cookies"
       ],
       "correct": 1,
-      "section": "Reading"
+      "section": "Reading",
+      "passage": "Dear Alice,\n\nHow are you? I am fine. I am writing this letter to tell you about my school.\n\nMy school is big and beautiful. It has many classrooms, a library, and a playground. I like reading books in the library.\n\nWhat about your school? Please write soon.\n\nBest,\nEmma"
     },
     {
       "id": 6,
@@ -372,7 +378,8 @@
         "D)Her book"
       ],
       "correct": 2,
-      "section": "Reading"
+      "section": "Reading",
+      "passage": "The Weather\n\nToday is Sunday. The weather is very nice. The sun is shining and the sky is blue. \n\nTom and his friends are playing in the park. They are happy and having fun.\n\nTomorrow will be rainy. They should bring umbrellas."
     },
     {
       "id": 7,
@@ -384,7 +391,8 @@
         "D)Doctor"
       ],
       "correct": 3,
-      "section": "Reading"
+      "section": "Reading",
+      "passage": "Dear Alice,\n\nHow are you? I am fine. I am writing this letter to tell you about my school.\n\nMy school is big and beautiful. It has many classrooms, a library, and a playground. I like reading books in the library.\n\nWhat about your school? Please write soon.\n\nBest,\nEmma"
     },
     {
       "id": 8,
@@ -396,7 +404,8 @@
         "D)Henry's"
       ],
       "correct": 0,
-      "section": "Reading"
+      "section": "Reading",
+      "passage": "The Weather\n\nToday is Sunday. The weather is very nice. The sun is shining and the sky is blue. \n\nTom and his friends are playing in the park. They are happy and having fun.\n\nTomorrow will be rainy. They should bring umbrellas."
     },
     {
       "id": 9,
@@ -408,7 +417,7 @@
         "D)chairs"
       ],
       "correct": 1,
-      "section": "Reading"
+      "section": "Vocabulary"
     },
     {
       "id": 10,
@@ -420,7 +429,7 @@
         "D)door"
       ],
       "correct": 2,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 11,
@@ -432,7 +441,7 @@
         "D)reading"
       ],
       "correct": 3,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 12,
@@ -444,7 +453,7 @@
         "D)baker"
       ],
       "correct": 0,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 13,
@@ -456,7 +465,7 @@
         "D)movie"
       ],
       "correct": 1,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 14,
@@ -468,7 +477,7 @@
         "D)tall"
       ],
       "correct": 2,
-      "section": "Reading"
+      "section": "Vocabulary"
     },
     {
       "id": 15,
@@ -480,7 +489,7 @@
         "D)basket"
       ],
       "correct": 3,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 16,
@@ -492,7 +501,7 @@
         "D)garden"
       ],
       "correct": 0,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 17,
@@ -504,7 +513,7 @@
         "D)eye"
       ],
       "correct": 1,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 18,
@@ -516,7 +525,7 @@
         "D)New Year's Day"
       ],
       "correct": 2,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 19,
@@ -528,7 +537,7 @@
         "D)camper"
       ],
       "correct": 3,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 20,
@@ -540,7 +549,7 @@
         "D)violin"
       ],
       "correct": 0,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 21,
@@ -552,7 +561,7 @@
         "D)The library is closed."
       ],
       "correct": 1,
-      "section": "Reading"
+      "section": "Conversation"
     },
     {
       "id": 22,
@@ -564,7 +573,7 @@
         "D)My dog is very big."
       ],
       "correct": 2,
-      "section": "Reading"
+      "section": "Conversation"
     },
     {
       "id": 23,
@@ -576,7 +585,7 @@
         "D)I am ten years old."
       ],
       "correct": 3,
-      "section": "Reading"
+      "section": "Conversation"
     },
     {
       "id": 24,
@@ -588,7 +597,7 @@
         "D)The book is on the table."
       ],
       "correct": 0,
-      "section": "Reading"
+      "section": "Conversation"
     },
     {
       "id": 25,
@@ -600,7 +609,7 @@
         "D)The sun is shining."
       ],
       "correct": 1,
-      "section": "Reading"
+      "section": "Conversation"
     },
     {
       "id": 26,
@@ -612,7 +621,7 @@
         "D)I like pancakes too."
       ],
       "correct": 2,
-      "section": "Reading"
+      "section": "Conversation"
     },
     {
       "id": 27,
@@ -624,7 +633,7 @@
         "D)I am happy."
       ],
       "correct": 3,
-      "section": "Reading"
+      "section": "Conversation"
     },
     {
       "id": 28,
@@ -636,7 +645,7 @@
         "D)went"
       ],
       "correct": 0,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 29,
@@ -648,7 +657,7 @@
         "D)were"
       ],
       "correct": 1,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 30,
@@ -660,7 +669,7 @@
         "D)Is"
       ],
       "correct": 2,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 31,
@@ -672,7 +681,7 @@
         "D)playing"
       ],
       "correct": 3,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 32,
@@ -684,7 +693,7 @@
         "D)to set up"
       ],
       "correct": 0,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 33,
@@ -696,7 +705,7 @@
         "D)How"
       ],
       "correct": 1,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 34,
@@ -708,7 +717,7 @@
         "D)be"
       ],
       "correct": 2,
-      "section": "Reading"
+      "section": "Grammar"
     }
   ],
   "A2": [
@@ -716,37 +725,39 @@
       "id": 1,
       "question": "<span class=\"question-text\">Read the passage and answer: The main idea of the text is about...</span>",
       "options": [
-        "A)Travel",
-        "B)Education",
         "C)Food",
-        "D)Sports"
+        "A)Travel",
+        "D)Sports",
+        "B)Education"
       ],
-      "correct": 1,
-      "section": "Reading"
+      "correct": 3,
+      "section": "Reading",
+      "passage": "The Park Experience\n\nLast Sunday, Tom went to the park with his friends. The park was beautiful with green trees and colorful flowers. They played soccer and ate sandwiches on the grass.\n\nIn the afternoon, they went to the small lake and saw many ducks. Tom's friend Sarah took some photos. It was a wonderful day, and everyone went home feeling happy and tired."
     },
     {
       "id": 2,
       "question": "<span class=\"question-text\">According to the passage, the author believes that...</span>",
       "options": [
-        "A)Learning is easy",
-        "B)Practice makes perfect",
         "C)Teachers are not important",
-        "D)Students don't need help"
+        "A)Learning is easy",
+        "D)Students don't need help",
+        "B)Practice makes perfect"
       ],
-      "correct": 1,
-      "section": "Reading"
+      "correct": 3,
+      "section": "Reading",
+      "passage": "School Life\n\nMy school starts at 8:30 AM every morning. I have six classes each day. My favorite subject is English because I like learning new words and speaking with foreigners.\n\nAfter school, I usually go to the library to study. Sometimes I play basketball with my classmates in the gym. I think school is important for my future."
     },
     {
       "id": 3,
       "question": "<span class=\"question-text\">What does the word \"challenge\" mean in the context?</span>",
       "options": [
-        "A)Problem",
         "B)Solution",
-        "C)Reward",
-        "D)Game"
+        "A)Problem",
+        "D)Game",
+        "C)Reward"
       ],
-      "correct": 0,
-      "section": "Reading"
+      "correct": 3,
+      "section": "Vocabulary"
     },
     {
       "id": 4,
@@ -757,20 +768,22 @@
         "C)Angry",
         "D)Sad"
       ],
-      "correct": 0,
-      "section": "Reading"
+      "correct": 2,
+      "section": "Reading",
+      "passage": "School Life\n\nMy school starts at 8:30 AM every morning. I have six classes each day. My favorite subject is English because I like learning new words and speaking with foreigners.\n\nAfter school, I usually go to the library to study. Sometimes I play basketball with my classmates in the gym. I think school is important for my future."
     },
     {
       "id": 5,
       "question": "<span class=\"question-text\">Where was the author born?</span>",
       "options": [
-        "A)London",
-        "B)New York",
         "C)Paris",
-        "D)Tokyo"
+        "A)London",
+        "D)Tokyo",
+        "B)New York"
       ],
-      "correct": 1,
-      "section": "Reading"
+      "correct": 3,
+      "section": "Reading",
+      "passage": "The Park Experience\n\nLast Sunday, Tom went to the park with his friends. The park was beautiful with green trees and colorful flowers. They played soccer and ate sandwiches on the grass.\n\nIn the afternoon, they went to the small lake and saw many ducks. Tom's friend Sarah took some photos. It was a wonderful day, and everyone went home feeling happy and tired."
     },
     {
       "id": 6,
@@ -782,7 +795,8 @@
         "D)Four"
       ],
       "correct": 2,
-      "section": "Reading"
+      "section": "Reading",
+      "passage": "School Life\n\nMy school starts at 8:30 AM every morning. I have six classes each day. My favorite subject is English because I like learning new words and speaking with foreigners.\n\nAfter school, I usually go to the library to study. Sometimes I play basketball with my classmates in the gym. I think school is important for my future."
     },
     {
       "id": 7,
@@ -794,7 +808,7 @@
         "D)Artist"
       ],
       "correct": 2,
-      "section": "Reading"
+      "section": "General"
     },
     {
       "id": 8,
@@ -806,18 +820,18 @@
         "D)Five years ago"
       ],
       "correct": 2,
-      "section": "Reading"
+      "section": "General"
     },
     {
       "id": 9,
       "question": "<span class=\"question-text\">Which word means \"very large\"?</span>",
       "options": [
-        "A)Tiny",
-        "B)Huge",
         "C)Small",
-        "D)Medium"
+        "A)Tiny",
+        "D)Medium",
+        "B)Huge"
       ],
-      "correct": 1,
+      "correct": 3,
       "section": "Vocabulary"
     },
     {
@@ -841,7 +855,7 @@
         "C)better",
         "D)best"
       ],
-      "correct": 0,
+      "correct": 2,
       "section": "Vocabulary"
     },
     {
@@ -877,67 +891,67 @@
         "C)improving",
         "D)improved"
       ],
-      "correct": 0,
+      "correct": 2,
       "section": "Vocabulary"
     },
     {
       "id": 15,
       "question": "<span class=\"question-text\">The test was very ___.</span>",
       "options": [
-        "A)difficult",
-        "B)difficulty",
         "C)difficultly",
-        "D)difficultness"
+        "B)difficulty",
+        "D)difficultness",
+        "A)difficult"
       ],
-      "correct": 0,
+      "correct": 3,
       "section": "Vocabulary"
     },
     {
       "id": 16,
       "question": "<span class=\"question-text\">She made a ___ decision.</span>",
       "options": [
-        "A)wise",
-        "B)wisely",
         "C)wisdom",
-        "D)wiseless"
+        "B)wisely",
+        "D)wiseless",
+        "A)wise"
       ],
-      "correct": 0,
+      "correct": 3,
       "section": "Vocabulary"
     },
     {
       "id": 17,
       "question": "<span class=\"question-text\">The book was very ___.</span>",
       "options": [
-        "A)interesting",
-        "B)interest",
         "C)interested",
-        "D)interests"
+        "B)interest",
+        "D)interests",
+        "A)interesting"
       ],
-      "correct": 0,
+      "correct": 3,
       "section": "Vocabulary"
     },
     {
       "id": 18,
       "question": "<span class=\"question-text\">He felt ___ after the long journey.</span>",
       "options": [
-        "A)tired",
-        "B)tire",
         "C)tiring",
-        "D)tires"
+        "B)tire",
+        "D)tires",
+        "A)tired"
       ],
-      "correct": 0,
+      "correct": 3,
       "section": "Vocabulary"
     },
     {
       "id": 19,
       "question": "<span class=\"question-text\">The food was ___.</span>",
       "options": [
-        "A)delicious",
-        "B)deliciously",
         "C)deliciousness",
-        "D)deliciously"
+        "B)deliciously",
+        "D)deliciously",
+        "A)delicious"
       ],
-      "correct": 0,
+      "correct": 3,
       "section": "Vocabulary"
     },
     {
@@ -1198,157 +1212,160 @@
       "id": 1,
       "question": "<span class=\"question-text\">What can we infer about Gilly's experience with foster homes?</span>",
       "options": [
-        "A)She has had difficulty staying in one place for long.",
-        "B)She has always been treated well by foster families.",
         "C)She prefers living in foster homes to her real home.",
+        "B)She has always been treated well by foster families.",
+        "A)She has had difficulty staying in one place for long.",
         "D)She has never caused any problems in her placements."
       ],
-      "correct": 1,
-      "section": "Reading"
+      "correct": 0,
+      "section": "General"
     },
     {
       "id": 2,
       "question": "<span class=\"question-text\">How does Gilly view herself based on the passage?</span>",
       "options": [
-        "A)She sees herself as a quiet and obedient child.",
-        "B)She believes she is intelligent but difficult to handle.",
         "C)She thinks she is unpopular and untalented.",
+        "B)She believes she is intelligent but difficult to handle.",
+        "A)She sees herself as a quiet and obedient child.",
         "D)She considers herself to be very kind and gentle."
       ],
-      "correct": 1,
-      "section": "Reading"
+      "correct": 0,
+      "section": "Reading",
+      "passage": "Environmental Protection\n\nClimate change is one of the most serious problems facing our planet today. Rising temperatures, melting ice caps, and extreme weather events are becoming more common worldwide.\n\nIndividuals can help by reducing waste, recycling, and using public transportation. Small changes in daily habits can make a significant difference in protecting our environment for future generations."
     },
     {
       "id": 3,
       "question": "<span class=\"question-text\">The phrase \"having to go into the hospital for her nerves\" suggests Mrs. Richmond:</span>",
       "options": [
-        "A)had a broken leg that needed treatment.",
-        "B)experienced mental or emotional health problems.",
         "C)wanted to become a nurse at the hospital.",
+        "B)experienced mental or emotional health problems.",
+        "A)had a broken leg that needed treatment.",
         "D)needed to visit a relative who was sick."
       ],
-      "correct": 1,
-      "section": "Reading"
+      "correct": 0,
+      "section": "General"
     },
     {
       "id": 4,
       "question": "<span class=\"question-text\">Why was Leigh initially upset with Mr. Henshaw?</span>",
       "options": [
-        "A)Mr. Henshaw refused to write any books.",
         "B)The reply didn't arrive before his report was due.",
-        "C)Mr. Henshaw never answered any of his letters.",
-        "D)The teacher gave Leigh a bad grade on his work."
+        "A)Mr. Henshaw refused to write any books.",
+        "D)The teacher gave Leigh a bad grade on his work.",
+        "C)Mr. Henshaw never answered any of his letters."
       ],
-      "correct": 2,
-      "section": "Reading"
+      "correct": 3,
+      "section": "General"
     },
     {
       "id": 5,
       "question": "<span class=\"question-text\">What was Mr. Henshaw's tone in his letter to Leigh?</span>",
       "options": [
-        "A)Serious and formal throughout the entire letter",
         "B)Angry and disappointed with the student's request",
-        "C)Humorous but with a subtle message about research",
-        "D)Confused and unsure how to respond properly"
+        "A)Serious and formal throughout the entire letter",
+        "D)Confused and unsure how to respond properly",
+        "C)Humorous but with a subtle message about research"
       ],
-      "correct": 1,
-      "section": "Reading"
+      "correct": 3,
+      "section": "General"
     },
     {
       "id": 6,
       "question": "<span class=\"question-text\">What is Mr. Wormwood's attitude toward his customers?</span>",
       "options": [
-        "A)He believes in providing excellent service to all buyers.",
         "B)He sees them as people to be tricked for his profit.",
-        "C)He treats them with respect and builds relationships.",
-        "D)He feels guilty about selling them used vehicles."
+        "A)He believes in providing excellent service to all buyers.",
+        "D)He feels guilty about selling them used vehicles.",
+        "C)He treats them with respect and builds relationships."
       ],
-      "correct": 1,
-      "section": "Reading"
+      "correct": 3,
+      "section": "General"
     },
     {
       "id": 7,
       "question": "<span class=\"question-text\">The phrase \"runs as sweet as a nut\" most likely means:</span>",
       "options": [
-        "A)the car tastes like sweet food.",
         "B)the car operates very smoothly.",
-        "C)the car makes a crunching sound.",
-        "D)the car needs more fuel to run."
+        "A)the car tastes like sweet food.",
+        "D)the car needs more fuel to run.",
+        "C)the car makes a crunching sound."
       ],
-      "correct": 2,
-      "section": "Reading"
+      "correct": 3,
+      "section": "General"
     },
     {
       "id": 8,
       "question": "<span class=\"question-text\">How does Matilda's reaction differ from her father's perspective?</span>",
       "options": [
-        "A)She is impressed by his clever business strategies.",
         "B)She recognizes the practice as morally wrong.",
-        "C)She wants to learn his methods to use later.",
-        "D)She thinks he should charge higher prices."
+        "A)She is impressed by his clever business strategies.",
+        "D)She thinks he should charge higher prices.",
+        "C)She wants to learn his methods to use later."
       ],
-      "correct": 2,
-      "section": "Reading"
+      "correct": 3,
+      "section": "General"
     },
     {
       "id": 9,
       "question": "<span class=\"question-text\">What does the author mean by \"the books transported her into new worlds\"?</span>",
       "options": [
-        "A)Matilda physically traveled to different countries.",
         "B)Reading allowed her to imagine being in different places.",
-        "C)The library sent her books from around the world.",
-        "D)Her parents took her on trips mentioned in books."
+        "A)Matilda physically traveled to different countries.",
+        "D)Her parents took her on trips mentioned in books.",
+        "C)The library sent her books from around the world."
       ],
-      "correct": 1,
-      "section": "Reading"
+      "correct": 3,
+      "section": "Reading",
+      "passage": "The Impact of Technology on Education\n\nTechnology has changed education significantly in recent years. Students can now access information instantly through the internet and use various educational apps to enhance their learning experience.\n\nHowever, some experts argue that excessive technology use may reduce face-to-face interaction skills. Finding the right balance between traditional teaching methods and digital tools is crucial for modern education."
     },
     {
       "id": 10,
       "question": "<span class=\"question-text\">Based on the passage, which statement best describes Matilda?</span>",
       "options": [
-        "A)She is a passionate reader with a rich imagination.",
         "B)She dislikes spending time alone in her bedroom.",
-        "C)She prefers watching television to reading books.",
-        "D)She finds reading to be boring and difficult."
+        "A)She is a passionate reader with a rich imagination.",
+        "D)She finds reading to be boring and difficult.",
+        "C)She prefers watching television to reading books."
       ],
-      "correct": 2,
-      "section": "Reading"
+      "correct": 3,
+      "section": "Reading",
+      "passage": "Environmental Protection\n\nClimate change is one of the most serious problems facing our planet today. Rising temperatures, melting ice caps, and extreme weather events are becoming more common worldwide.\n\nIndividuals can help by reducing waste, recycling, and using public transportation. Small changes in daily habits can make a significant difference in protecting our environment for future generations."
     },
     {
       "id": 11,
       "question": "<span class=\"question-text\">The word <strong>unfortunate</strong> in \"one of those unfortunate things\" means:</span>",
       "options": [
-        "A)lucky and beneficial",
         "B)unlucky or regrettable",
-        "C)planned and expected",
-        "D)exciting and wonderful"
+        "A)lucky and beneficial",
+        "D)exciting and wonderful",
+        "C)planned and expected"
       ],
-      "correct": 1,
-      "section": "Reading"
+      "correct": 3,
+      "section": "Vocabulary"
     },
     {
       "id": 12,
       "question": "<span class=\"question-text\">The word <strong>manage</strong> in \"too hard to manage\" means:</span>",
       "options": [
-        "A)to control or handle someone's behavior",
         "B)to run a successful business",
-        "C)to achieve something difficult",
-        "D)to organize files and documents"
+        "A)to control or handle someone's behavior",
+        "D)to organize files and documents",
+        "C)to achieve something difficult"
       ],
-      "correct": 1,
-      "section": "Reading"
+      "correct": 3,
+      "section": "Vocabulary"
     },
     {
       "id": 13,
       "question": "<span class=\"question-text\">The word <strong>diddled</strong> in \"Customers are there to be diddled\" means:</span>",
       "options": [
-        "A)helped and supported",
         "B)cheated or deceived",
-        "C)entertained and amused",
-        "D)ignored and avoided"
+        "A)helped and supported",
+        "D)ignored and avoided",
+        "C)entertained and amused"
       ],
-      "correct": 2,
-      "section": "Reading"
+      "correct": 3,
+      "section": "Vocabulary"
     },
     {
       "id": 14,
@@ -1359,8 +1376,8 @@
         "C)made too many spelling mistakes.",
         "D)chose a book that was too difficult."
       ],
-      "correct": 1,
-      "section": "Reading"
+      "correct": 2,
+      "section": "General"
     },
     {
       "id": 15,
@@ -1372,31 +1389,31 @@
         "D)angrily and dangerously"
       ],
       "correct": 2,
-      "section": "Reading"
+      "section": "General"
     },
     {
       "id": 16,
       "question": "<span class=\"question-text\">A <strong>professional</strong> voice sounds:</span>",
       "options": [
-        "A)emotional and upset",
         "B)businesslike and controlled",
         "C)loud and commanding",
+        "A)emotional and upset",
         "D)quiet and barely audible"
       ],
-      "correct": 1,
-      "section": "Reading"
+      "correct": 0,
+      "section": "General"
     },
     {
       "id": 17,
       "question": "<span class=\"question-text\">The word <strong>mischief</strong> refers to:</span>",
       "options": [
-        "A)serious criminal activity",
         "B)playful troublemaking behavior",
         "C)homework and school projects",
+        "A)serious criminal activity",
         "D)cleaning and organizing tasks"
       ],
-      "correct": 1,
-      "section": "Reading"
+      "correct": 0,
+      "section": "Vocabulary"
     },
     {
       "id": 18,
@@ -1408,19 +1425,19 @@
         "D)transformed her into a different person"
       ],
       "correct": 2,
-      "section": "Reading"
+      "section": "General"
     },
     {
       "id": 19,
       "question": "<span class=\"question-text\"><strong>Mammoth</strong> emphasizes that Mrs. Trotter was:</span>",
       "options": [
-        "A)extremely small and thin",
         "B)very large in size",
         "C)quite young and energetic",
+        "A)extremely small and thin",
         "D)ancient and prehistoric"
       ],
-      "correct": 1,
-      "section": "Reading"
+      "correct": 0,
+      "section": "General"
     },
     {
       "id": 20,
@@ -1432,31 +1449,31 @@
         "D)complicated and confusing"
       ],
       "correct": 2,
-      "section": "Reading"
+      "section": "General"
     },
     {
       "id": 21,
       "question": "<span class=\"question-text\"><strong>Salvage</strong> means:</span>",
       "options": [
-        "A)to throw away completely",
         "B)to save or rescue from loss",
         "C)to purchase at a low price",
+        "A)to throw away completely",
         "D)to hide from other people"
       ],
-      "correct": 1,
-      "section": "Reading"
+      "correct": 0,
+      "section": "General"
     },
     {
       "id": 22,
       "question": "<span class=\"question-text\">Comparing his idea to \"penicillin\" suggests Mr. Wormwood thought it was:</span>",
       "options": [
-        "A)related to medicine and health",
         "B)a brilliant and important discovery",
         "C)dangerous and harmful to others",
+        "A)related to medicine and health",
         "D)copied from another person's work"
       ],
-      "correct": 1,
-      "section": "Reading"
+      "correct": 0,
+      "section": "General"
     },
     {
       "id": 23,
@@ -1468,43 +1485,43 @@
         "D)What time does the library close today?"
       ],
       "correct": 2,
-      "section": "Reading"
+      "section": "General"
     },
     {
       "id": 24,
       "question": "<span class=\"question-text\">Choose the most appropriate response:</span>",
       "options": [
-        "A)You're right. I should change my practices.",
         "B)No one ever got rich being honest.",
         "C)I don't understand what you're talking about.",
+        "A)You're right. I should change my practices.",
         "D)Would you like to go to the park tomorrow?"
       ],
-      "correct": 1,
-      "section": "Reading"
+      "correct": 0,
+      "section": "General"
     },
     {
       "id": 25,
       "question": "<span class=\"question-text\">Choose the most appropriate response:</span>",
       "options": [
-        "A)I was hoping to encourage you to do your own research.",
         "B)I have never written any letters in my entire life.",
         "C)My favorite food is pizza with extra cheese.",
+        "A)I was hoping to encourage you to do your own research.",
         "D)I don't remember sending you any letter at all."
       ],
-      "correct": 1,
-      "section": "Reading"
+      "correct": 0,
+      "section": "General"
     },
     {
       "id": 26,
       "question": "<span class=\"question-text\">Choose the most appropriate response:</span>",
       "options": [
-        "A)Here I come, ready or not. I'll be in charge soon.",
         "B)This seems like the perfect home I've wanted.",
         "C)I should call Miss Ellis to thank her.",
+        "A)Here I come, ready or not. I'll be in charge soon.",
         "D)I wonder what books they have here."
       ],
-      "correct": 1,
-      "section": "Reading"
+      "correct": 0,
+      "section": "General"
     },
     {
       "id": 27,
@@ -1516,7 +1533,7 @@
         "D)My father sells second-hand cars."
       ],
       "correct": 2,
-      "section": "Reading"
+      "section": "General"
     },
     {
       "id": 28,
@@ -1528,7 +1545,7 @@
         "D)I don't think reports are important anyway."
       ],
       "correct": 1,
-      "section": "Reading"
+      "section": "General"
     },
     {
       "id": 29,
@@ -1540,7 +1557,7 @@
         "D)I've never heard of cars breaking down."
       ],
       "correct": 2,
-      "section": "Reading"
+      "section": "General"
     },
     {
       "id": 30,
@@ -1552,7 +1569,7 @@
         "D)The weather has been unpredictable lately."
       ],
       "correct": 1,
-      "section": "Reading"
+      "section": "General"
     },
     {
       "id": 31,
@@ -1564,7 +1581,7 @@
         "D)is reading"
       ],
       "correct": 1,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 32,
@@ -1576,7 +1593,7 @@
         "D)writes"
       ],
       "correct": 1,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 33,
@@ -1588,7 +1605,7 @@
         "D)what"
       ],
       "correct": 2,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 34,
@@ -1600,7 +1617,7 @@
         "D)has been"
       ],
       "correct": 1,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 35,
@@ -1612,7 +1629,7 @@
         "D)to sell"
       ],
       "correct": 1,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 36,
@@ -1624,7 +1641,7 @@
         "D)while"
       ],
       "correct": 1,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 37,
@@ -1636,7 +1653,7 @@
         "D)may"
       ],
       "correct": 2,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 38,
@@ -1648,7 +1665,7 @@
         "D)Because"
       ],
       "correct": 1,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 39,
@@ -1660,7 +1677,7 @@
         "D)trying"
       ],
       "correct": 1,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 40,
@@ -1672,7 +1689,7 @@
         "D)whose"
       ],
       "correct": 1,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 41,
@@ -1684,7 +1701,7 @@
         "D)have been"
       ],
       "correct": 1,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 42,
@@ -1696,7 +1713,7 @@
         "D)reads"
       ],
       "correct": 2,
-      "section": "Reading"
+      "section": "Grammar"
     }
   ],
   "B2": [
@@ -1710,7 +1727,8 @@
         "D)All disciplines emerged simultaneously"
       ],
       "correct": 2,
-      "section": "Reading"
+      "section": "Reading",
+      "passage": "The Evolution of Artificial Intelligence\n\nArtificial Intelligence (AI) has evolved dramatically since its inception in the 1950s. From simple rule-based systems to complex neural networks, AI now powers countless applications in healthcare, finance, and transportation.\n\nWhile AI offers numerous benefits, including increased efficiency and data analysis capabilities, it also raises important ethical questions about privacy, job displacement, and decision-making transparency. Society must carefully navigate these challenges as AI continues to advance."
     },
     {
       "id": 2,
@@ -1722,7 +1740,7 @@
         "D)maintain stability without change"
       ],
       "correct": 1,
-      "section": "Reading"
+      "section": "General"
     },
     {
       "id": 3,
@@ -1734,7 +1752,8 @@
         "D)The Industrial Revolution"
       ],
       "correct": 3,
-      "section": "Reading"
+      "section": "Reading",
+      "passage": "The Evolution of Artificial Intelligence\n\nArtificial Intelligence (AI) has evolved dramatically since its inception in the 1950s. From simple rule-based systems to complex neural networks, AI now powers countless applications in healthcare, finance, and transportation.\n\nWhile AI offers numerous benefits, including increased efficiency and data analysis capabilities, it also raises important ethical questions about privacy, job displacement, and decision-making transparency. Society must carefully navigate these challenges as AI continues to advance."
     },
     {
       "id": 4,
@@ -1746,7 +1765,8 @@
         "D)They were dominant predators unlike any other species"
       ],
       "correct": 0,
-      "section": "Reading"
+      "section": "Reading",
+      "passage": "Global Economic Challenges\n\nThe global economy faces unprecedented challenges in the post-pandemic era. Supply chain disruptions, inflation concerns, and geopolitical tensions have created a complex economic landscape.\n\nPolicymakers must balance short-term recovery measures with long-term structural reforms. Central banks are adjusting monetary policies to stabilize markets while governments implement fiscal strategies to support sustainable growth and address inequality."
     },
     {
       "id": 5,
@@ -1758,7 +1778,7 @@
         "D)expressed strong opposition"
       ],
       "correct": 1,
-      "section": "Reading"
+      "section": "General"
     },
     {
       "id": 6,
@@ -1770,7 +1790,7 @@
         "D)Complex social hierarchies and laws"
       ],
       "correct": 2,
-      "section": "Reading"
+      "section": "General"
     },
     {
       "id": 7,
@@ -1782,7 +1802,8 @@
         "D)Genetic similarity and evolutionary age"
       ],
       "correct": 3,
-      "section": "Reading"
+      "section": "Reading",
+      "passage": "The Evolution of Artificial Intelligence\n\nArtificial Intelligence (AI) has evolved dramatically since its inception in the 1950s. From simple rule-based systems to complex neural networks, AI now powers countless applications in healthcare, finance, and transportation.\n\nWhile AI offers numerous benefits, including increased efficiency and data analysis capabilities, it also raises important ethical questions about privacy, job displacement, and decision-making transparency. Society must carefully navigate these challenges as AI continues to advance."
     },
     {
       "id": 8,
@@ -1794,7 +1815,7 @@
         "D)Because they cannot coexist in the same environment"
       ],
       "correct": 0,
-      "section": "Reading"
+      "section": "General"
     },
     {
       "id": 9,
@@ -1806,7 +1827,8 @@
         "D)A type of genetic mutation"
       ],
       "correct": 2,
-      "section": "Reading"
+      "section": "Reading",
+      "passage": "The Evolution of Artificial Intelligence\n\nArtificial Intelligence (AI) has evolved dramatically since its inception in the 1950s. From simple rule-based systems to complex neural networks, AI now powers countless applications in healthcare, finance, and transportation.\n\nWhile AI offers numerous benefits, including increased efficiency and data analysis capabilities, it also raises important ethical questions about privacy, job displacement, and decision-making transparency. Society must carefully navigate these challenges as AI continues to advance."
     },
     {
       "id": 10,
@@ -1818,7 +1840,8 @@
         "D)Critical and disapproving"
       ],
       "correct": 1,
-      "section": "Reading"
+      "section": "Reading",
+      "passage": "Global Economic Challenges\n\nThe global economy faces unprecedented challenges in the post-pandemic era. Supply chain disruptions, inflation concerns, and geopolitical tensions have created a complex economic landscape.\n\nPolicymakers must balance short-term recovery measures with long-term structural reforms. Central banks are adjusting monetary policies to stabilize markets while governments implement fiscal strategies to support sustainable growth and address inequality."
     },
     {
       "id": 11,
@@ -1830,7 +1853,7 @@
         "D)was training the animals for agricultural purposes"
       ],
       "correct": 3,
-      "section": "Reading"
+      "section": "General"
     },
     {
       "id": 12,
@@ -1842,7 +1865,8 @@
         "D)It is dangerous and unsuitable for children"
       ],
       "correct": 0,
-      "section": "Reading"
+      "section": "Reading",
+      "passage": "Global Economic Challenges\n\nThe global economy faces unprecedented challenges in the post-pandemic era. Supply chain disruptions, inflation concerns, and geopolitical tensions have created a complex economic landscape.\n\nPolicymakers must balance short-term recovery measures with long-term structural reforms. Central banks are adjusting monetary policies to stabilize markets while governments implement fiscal strategies to support sustainable growth and address inequality."
     },
     {
       "id": 13,
@@ -1854,7 +1878,8 @@
         "D)Tactile (warm and soft days)"
       ],
       "correct": 2,
-      "section": "Reading"
+      "section": "Reading",
+      "passage": "The Evolution of Artificial Intelligence\n\nArtificial Intelligence (AI) has evolved dramatically since its inception in the 1950s. From simple rule-based systems to complex neural networks, AI now powers countless applications in healthcare, finance, and transportation.\n\nWhile AI offers numerous benefits, including increased efficiency and data analysis capabilities, it also raises important ethical questions about privacy, job displacement, and decision-making transparency. Society must carefully navigate these challenges as AI continues to advance."
     },
     {
       "id": 14,
@@ -1866,7 +1891,8 @@
         "D)Rural farming causes environmental damage"
       ],
       "correct": 1,
-      "section": "Reading"
+      "section": "Reading",
+      "passage": "Global Economic Challenges\n\nThe global economy faces unprecedented challenges in the post-pandemic era. Supply chain disruptions, inflation concerns, and geopolitical tensions have created a complex economic landscape.\n\nPolicymakers must balance short-term recovery measures with long-term structural reforms. Central banks are adjusting monetary policies to stabilize markets while governments implement fiscal strategies to support sustainable growth and address inequality."
     },
     {
       "id": 15,
@@ -1878,7 +1904,7 @@
         "D)Extremely basic and primitive"
       ],
       "correct": 3,
-      "section": "Reading"
+      "section": "Vocabulary"
     },
     {
       "id": 16,
@@ -1890,7 +1916,7 @@
         "D)Create artificial genetic material"
       ],
       "correct": 0,
-      "section": "Reading"
+      "section": "General"
     },
     {
       "id": 17,
@@ -1902,7 +1928,7 @@
         "D)A type of ancient civilization"
       ],
       "correct": 2,
-      "section": "Reading"
+      "section": "Vocabulary"
     },
     {
       "id": 18,
@@ -1914,7 +1940,7 @@
         "D)Learning to obey government laws"
       ],
       "correct": 1,
-      "section": "Reading"
+      "section": "General"
     },
     {
       "id": 19,
@@ -1926,7 +1952,7 @@
         "D)Experienced significant failure"
       ],
       "correct": 3,
-      "section": "Reading"
+      "section": "General"
     },
     {
       "id": 20,
@@ -1938,7 +1964,7 @@
         "D)Related to laboratory equipment"
       ],
       "correct": 0,
-      "section": "Reading"
+      "section": "Vocabulary"
     },
     {
       "id": 21,
@@ -1950,7 +1976,7 @@
         "D)Modern and highly technological"
       ],
       "correct": 1,
-      "section": "Reading"
+      "section": "General"
     },
     {
       "id": 22,
@@ -1962,7 +1988,7 @@
         "D)Happening secretly or concealed"
       ],
       "correct": 2,
-      "section": "Reading"
+      "section": "General"
     },
     {
       "id": 23,
@@ -1974,7 +2000,7 @@
         "D)Clearly visible and obvious"
       ],
       "correct": 3,
-      "section": "Reading"
+      "section": "General"
     },
     {
       "id": 24,
@@ -1986,7 +2012,8 @@
         "D)Temporary and short-lived"
       ],
       "correct": 0,
-      "section": "Reading"
+      "section": "Reading",
+      "passage": "Global Economic Challenges\n\nThe global economy faces unprecedented challenges in the post-pandemic era. Supply chain disruptions, inflation concerns, and geopolitical tensions have created a complex economic landscape.\n\nPolicymakers must balance short-term recovery measures with long-term structural reforms. Central banks are adjusting monetary policies to stabilize markets while governments implement fiscal strategies to support sustainable growth and address inequality."
     },
     {
       "id": 25,
@@ -1998,7 +2025,7 @@
         "D)To remain unchanged over time"
       ],
       "correct": 1,
-      "section": "Reading"
+      "section": "General"
     },
     {
       "id": 26,
@@ -2010,7 +2037,7 @@
         "D)Feeling confused or uncertain"
       ],
       "correct": 2,
-      "section": "Reading"
+      "section": "General"
     },
     {
       "id": 27,
@@ -2022,7 +2049,7 @@
         "D)have"
       ],
       "correct": 3,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 28,
@@ -2034,7 +2061,7 @@
         "D)to evolve"
       ],
       "correct": 0,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 29,
@@ -2046,7 +2073,7 @@
         "D)did"
       ],
       "correct": 1,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 30,
@@ -2058,7 +2085,7 @@
         "D)whose"
       ],
       "correct": 2,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 31,
@@ -2070,7 +2097,7 @@
         "D)that"
       ],
       "correct": 3,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 32,
@@ -2082,7 +2109,7 @@
         "D)During"
       ],
       "correct": 0,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 33,
@@ -2094,7 +2121,7 @@
         "D)have been sharing"
       ],
       "correct": 1,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 34,
@@ -2106,7 +2133,7 @@
         "D)Regardless of"
       ],
       "correct": 2,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 35,
@@ -2118,7 +2145,7 @@
         "D)in respect to"
       ],
       "correct": 3,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 36,
@@ -2130,7 +2157,7 @@
         "D)despite"
       ],
       "correct": 0,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 37,
@@ -2142,7 +2169,7 @@
         "D)they were the only humans existing at that time"
       ],
       "correct": 1,
-      "section": "Reading"
+      "section": "Grammar"
     },
     {
       "id": 38,
@@ -2154,7 +2181,8 @@
         "D)Interestingly, most people are unaware of these facts"
       ],
       "correct": 2,
-      "section": "Reading"
+      "section": "Reading",
+      "passage": "Global Economic Challenges\n\nThe global economy faces unprecedented challenges in the post-pandemic era. Supply chain disruptions, inflation concerns, and geopolitical tensions have created a complex economic landscape.\n\nPolicymakers must balance short-term recovery measures with long-term structural reforms. Central banks are adjusting monetary policies to stabilize markets while governments implement fiscal strategies to support sustainable growth and address inequality."
     },
     {
       "id": 39,
@@ -2166,7 +2194,7 @@
         "D)To introduce children's education methods"
       ],
       "correct": 3,
-      "section": "Reading"
+      "section": "General"
     },
     {
       "id": 40,
@@ -2178,7 +2206,8 @@
         "D)Chronological listing only"
       ],
       "correct": 0,
-      "section": "Reading"
+      "section": "Reading",
+      "passage": "Global Economic Challenges\n\nThe global economy faces unprecedented challenges in the post-pandemic era. Supply chain disruptions, inflation concerns, and geopolitical tensions have created a complex economic landscape.\n\nPolicymakers must balance short-term recovery measures with long-term structural reforms. Central banks are adjusting monetary policies to stabilize markets while governments implement fiscal strategies to support sustainable growth and address inequality."
     },
     {
       "id": 41,
@@ -2190,7 +2219,8 @@
         "D)That trout can be caught in brooks"
       ],
       "correct": 1,
-      "section": "Reading"
+      "section": "Reading",
+      "passage": "The Evolution of Artificial Intelligence\n\nArtificial Intelligence (AI) has evolved dramatically since its inception in the 1950s. From simple rule-based systems to complex neural networks, AI now powers countless applications in healthcare, finance, and transportation.\n\nWhile AI offers numerous benefits, including increased efficiency and data analysis capabilities, it also raises important ethical questions about privacy, job displacement, and decision-making transparency. Society must carefully navigate these challenges as AI continues to advance."
     },
     {
       "id": 42,
@@ -2202,7 +2232,7 @@
         "D)Species classification is more important than understanding evolution"
       ],
       "correct": 2,
-      "section": "Reading"
+      "section": "General"
     }
   ]
 }

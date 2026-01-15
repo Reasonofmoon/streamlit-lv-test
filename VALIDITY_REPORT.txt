@@ -1,0 +1,213 @@
+
+============================================================
+LEVEL: PRE-A1
+============================================================
+Total Questions: 25
+
+📊 Section Distribution:
+   - Conversation: 1
+   - General: 2
+   - Grammar: 15
+   - Reading: 1
+   - Vocabulary: 6
+
+📄 Passage Status:
+   - With passage: 1
+   - Without passage: 24
+
+🎯 Answer Position Distribution (0=A, 1=B, 2=C, 3=D):
+   - Position 0 (A): 7 (28.0%)
+   - Position 1 (B): 6 (24.0%)
+   - Position 2 (C): 6 (24.0%)
+   - Position 3 (D): 6 (24.0%)
+   ✅ Answer distribution is balanced
+
+📖 Reading Section:
+   - Total reading questions: 1
+   - Reading questions with passage: 1
+
+📝 Sample Passages:
+
+   Question ID 8:
+   "This is my room. I have a blue bed and a brown desk. 
+My favorite color is blue. I like my room."
+
+============================================================
+LEVEL: A1
+============================================================
+Total Questions: 34
+
+📊 Section Distribution:
+   - Conversation: 7
+   - Grammar: 17
+   - Reading: 8
+   - Vocabulary: 2
+
+📄 Passage Status:
+   - With passage: 8
+   - Without passage: 26
+
+🎯 Answer Position Distribution (0=A, 1=B, 2=C, 3=D):
+   - Position 0 (A): 8 (23.5%)
+   - Position 1 (B): 9 (26.5%)
+   - Position 2 (C): 9 (26.5%)
+   - Position 3 (D): 8 (23.5%)
+   ✅ Answer distribution is balanced
+
+📖 Reading Section:
+   - Total reading questions: 8
+   - Reading questions with passage: 8
+
+📝 Sample Passages:
+
+   Question ID 1:
+   "Dear Alice,
+
+How are you? I am fine. I am writing this letter to tell you about my school.
+
+My schoo..."
+
+   Question ID 2:
+   "The Weather
+
+Today is Sunday. The weather is very nice. The sun is shining and the sky is blue. 
+
+To..."
+
+   Question ID 3:
+   "Dear Alice,
+
+How are you? I am fine. I am writing this letter to tell you about my school.
+
+My schoo..."
+
+============================================================
+LEVEL: A2
+============================================================
+Total Questions: 40
+
+📊 Section Distribution:
+   - Conversation: 8
+   - General: 2
+   - Grammar: 10
+   - Reading: 5
+   - Vocabulary: 13
+   - Writing: 2
+
+📄 Passage Status:
+   - With passage: 5
+   - Without passage: 35
+
+🎯 Answer Position Distribution (0=A, 1=B, 2=C, 3=D):
+   - Position 0 (A): 10 (25.0%)
+   - Position 1 (B): 10 (25.0%)
+   - Position 2 (C): 10 (25.0%)
+   - Position 3 (D): 10 (25.0%)
+   ✅ Answer distribution is balanced
+
+📖 Reading Section:
+   - Total reading questions: 5
+   - Reading questions with passage: 5
+
+📝 Sample Passages:
+
+   Question ID 1:
+   "The Park Experience
+
+Last Sunday, Tom went to the park with his friends. The park was beautiful with..."
+
+   Question ID 2:
+   "School Life
+
+My school starts at 8:30 AM every morning. I have six classes each day. My favorite sub..."
+
+   Question ID 4:
+   "School Life
+
+My school starts at 8:30 AM every morning. I have six classes each day. My favorite sub..."
+
+============================================================
+LEVEL: B1
+============================================================
+Total Questions: 42
+
+📊 Section Distribution:
+   - General: 23
+   - Grammar: 12
+   - Reading: 3
+   - Vocabulary: 4
+
+📄 Passage Status:
+   - With passage: 3
+   - Without passage: 39
+
+🎯 Answer Position Distribution (0=A, 1=B, 2=C, 3=D):
+   - Position 0 (A): 11 (26.2%)
+   - Position 1 (B): 11 (26.2%)
+   - Position 2 (C): 10 (23.8%)
+   - Position 3 (D): 10 (23.8%)
+   ✅ Answer distribution is balanced
+
+📖 Reading Section:
+   - Total reading questions: 3
+   - Reading questions with passage: 3
+
+📝 Sample Passages:
+
+   Question ID 2:
+   "Environmental Protection
+
+Climate change is one of the most serious problems facing our planet today..."
+
+   Question ID 9:
+   "The Impact of Technology on Education
+
+Technology has changed education significantly in recent year..."
+
+   Question ID 10:
+   "Environmental Protection
+
+Climate change is one of the most serious problems facing our planet today..."
+
+============================================================
+LEVEL: B2
+============================================================
+Total Questions: 42
+
+📊 Section Distribution:
+   - General: 15
+   - Grammar: 11
+   - Reading: 13
+   - Vocabulary: 3
+
+📄 Passage Status:
+   - With passage: 13
+   - Without passage: 29
+
+🎯 Answer Position Distribution (0=A, 1=B, 2=C, 3=D):
+   - Position 0 (A): 10 (23.8%)
+   - Position 1 (B): 11 (26.2%)
+   - Position 2 (C): 11 (26.2%)
+   - Position 3 (D): 10 (23.8%)
+   ✅ Answer distribution is balanced
+
+📖 Reading Section:
+   - Total reading questions: 13
+   - Reading questions with passage: 13
+
+📝 Sample Passages:
+
+   Question ID 1:
+   "The Evolution of Artificial Intelligence
+
+Artificial Intelligence (AI) has evolved dramatically sinc..."
+
+   Question ID 3:
+   "The Evolution of Artificial Intelligence
+
+Artificial Intelligence (AI) has evolved dramatically sinc..."
+
+   Question ID 4:
+   "Global Economic Challenges
+
+The global economy faces unprecedented challenges in the post-pandemic e..."

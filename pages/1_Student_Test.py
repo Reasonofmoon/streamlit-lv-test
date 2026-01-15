@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit.components.v1 as components
 import pandas as pd
 import json
 import time
@@ -8,7 +9,6 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from utils.cefr_analyzer import CEFRAnalyzer
-from utils.question_balancer import balance_and_shuffle_quiz
 
 # 페이지 설정
 st.set_page_config(
@@ -30,6 +30,10 @@ if 'test_completed' not in st.session_state:
     st.session_state['test_completed'] = False
 if 'start_time' not in st.session_state:
     st.session_state['start_time'] = None
+if 'shuffled_questions' not in st.session_state:
+    st.session_state['shuffled_questions'] = None
+if 'answer_mappings' not in st.session_state:
+    st.session_state['answer_mappings'] = None
 
 # 로그인 확인
 if not st.session_state.get('logged_in', False) or st.session_state.get('user_role') != 'student':
@@ -101,9 +105,12 @@ def load_preA1_questions_isolated():
                                 'section': str(q.get('section', 'General'))
                             }
 
-                            # PRE-A1 Reading 섹션에 지문 연결
-                            q_id = cleaned_q['id']
-                            if cleaned_q['section'] == 'Reading':
+                            # JSON에서 passage 필드가 있으면 그대로 사용
+                            if 'passage' in q and q['passage']:
+                                cleaned_q['passage'] = q['passage']
+                            # passage가 없고 PRE-A1 Reading 섹션이면 fallback 지문 연결
+                            elif cleaned_q['section'] == 'Reading':
+                                q_id = cleaned_q['id']
                                 # 지문 공유 규칙: 1-2번은 지문 1 공유, 3-4번은 지문 2 공유, 5-8번은 지문 3 공유
                                 if q_id in [1, 2]:
                                     cleaned_q['passage'] = passages[1]
@@ -180,12 +187,19 @@ def load_other_level_questions(level):
     A1, A2, B1, B2 등 PRE-A1 외 레벨용 로더
     """
     questions = []  # 기본값으로 빈 리스트 초기화
+    
+    # 지문 정의 (모든 레벨 공통)
+    passages = {
+        1: "Hi Tom,\n\nI am at the library. Please come at 3 o'clock.\nBring your English book.\nSee you soon!\n\nMia",
+        3: "Henry and his big dog Mudge went camping. Henry's mother knew all about camping. She knew how to set up a tent. She knew how to build a campfire. Henry's father didn't know anything about camping. He just came with a guitar and a smile. They walked and walked. It was beautiful. Henry saw fish in the stream and a rainbow.",
+        5: "Nate is a detective. He likes pancakes very much. He had pancakes for breakfast. Then the telephone rang. It was Annie. Annie lost a picture. The picture was of her dog, Fang. Nate said, \"I will find the picture.\""
+    }
 
     # JSON 파일에서 로드 시도
     try:
         import json
         import os
-        # 프로젝트 루트 경로 계산 (현재 파일의 상위 상위 디렉토리)
+        # 프로젝트 루트 경로 계산 (현재 파일의 상위 상위 디렉터리)
         base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         json_path = os.path.join(base_dir, 'extracted_questions.json')
         
@@ -219,6 +233,11 @@ def load_other_level_questions(level):
                                 'correct': int(q.get('correct', 0)),  # 내부 채점용 - UI에 표시 안됨
                                 'section': str(q.get('section', 'General'))
                             }
+                            
+                            # JSON에서 passage 필드가 있으면 그대로 사용
+                            if 'passage' in q and q['passage']:
+                                cleaned_q['passage'] = q['passage']
+                            
                             cleaned_questions.append(cleaned_q)
                     except Exception:
                         continue  # 개별 질문 오류는 무시하고 계속 진행
@@ -491,16 +510,17 @@ def load_other_level_questions(level):
             }
         ]
 
-        # 각 문항에 지문 연결 (공유 지문 포함)
+        # A1 레벨의 Reading 섹션에만 하드코딩된 지문 연결 (fallback용)
         for question in questions:
-            q_id = question['id']
-            # 지문 공유 규칙: 1-2번은 지문 1 공유, 3-4번은 지문 2 공유, 5-8번은 지문 3 공유
-            if q_id in [1, 2]:
-                question['passage'] = passages[1]
-            elif q_id in [3, 4]:
-                question['passage'] = passages[3]
-            elif q_id in [5, 6, 7, 8]:
-                question['passage'] = passages[5]
+            if question.get('section') == 'Reading' and 'passage' not in question:
+                q_id = question['id']
+                # 지문 공유 규칙: 1-2번은 지문 1 공유, 3-4번은 지문 2 공유, 5-8번은 지문 3 공유
+                if q_id in [1, 2]:
+                    question['passage'] = passages[1]
+                elif q_id in [3, 4]:
+                    question['passage'] = passages[3]
+                elif q_id in [5, 6, 7, 8]:
+                    question['passage'] = passages[5]
 
         return questions
 
@@ -644,69 +664,47 @@ def main():
         st.error("❌ 유효한 질문이 없습니다. 관리자에게 문의해주세요.")
         st.stop()
 
-    # 🔥 [STEP 2] 정답 위치 편향 해소를 위한 균등화 로직 적용
-    # 이 로직은 항상 수행되어 정답 위치를 강제로 균등하게 재배치합니다.
-    # LLM이 생성한 데이터의 편향을 완벽하게 제거합니다.
-    balanced_result = balance_and_shuffle_quiz(valid_questions)
-    balanced_questions = balanced_result["questions"]
+    # 정답 편향 해결: 시험 시작 시 한 번만 선택지 셌플
+    if st.session_state['shuffled_questions'] is None:
+        # 처음 시험 시작 시에만 실행
+        shuffled_questions = []
+        answer_mappings = []  # 원본 정답 인덱스 -> 셌플된 정답 인덱스 매핑
+        
+        for q in valid_questions:
+            q_copy = q.copy()
+            original_correct = q['correct']
+            options = q['options'][:]
+            
+            # 선택지를 인덱스와 함께 셌플
+            indexed_options = list(enumerate(options))
+            random.shuffle(indexed_options)
+            
+            # 새로운 선택지 순서와 정답 인덱스 찾기
+            new_options = [opt for idx, opt in indexed_options]
+            new_correct = next(i for i, (orig_idx, _) in enumerate(indexed_options) if orig_idx == original_correct)
+            
+            q_copy['options'] = new_options
+            q_copy['correct'] = new_correct
+            q_copy['original_correct'] = original_correct  # 원본 정답 보관
+            
+            shuffled_questions.append(q_copy)
+            answer_mappings.append(new_correct)
+        
+        st.session_state['shuffled_questions'] = shuffled_questions
+        st.session_state['answer_mappings'] = answer_mappings
     
-    # UI용과 채점용 데이터 분리
-    # UI용 데이터에는 정답('correct') 정보를 포함하지 않도록 처리하여 보안 강화
-    questions = []
-    for q in balanced_questions:
-        q_ui = q.copy()
-        # 식별자와 문항 내용은 유지하되 정답 정보 제거
-        if 'correct' in q_ui:
-            del q_ui['correct']
-        # 디버그 정보도 UI에는 불필요하므로 제거
-        if '_original_correct' in q_ui:
-            del q_ui['_original_correct']
-        if '_shuffled_index' in q_ui:
-            del q_ui['_shuffled_index']
-        questions.append(q_ui)
-
-    # 채점용 데이터는 정답 정보를 포함한 balanced_questions 사용
-    questions_for_scoring = balanced_questions 
-    
+    # 세션에 저장된 셌플된 문제 사용
+    questions = st.session_state['shuffled_questions']
+    questions_for_scoring = st.session_state['shuffled_questions']
     total_questions = len(questions)
-
-    # Developer Mode: URL에서 ?debug=true 확인
-    try:
-        query_params = st.query_params
-        debug_mode = query_params.get("debug") == "true"
-    except:
-        debug_mode = False
-
-    if debug_mode:
-        with st.expander("🔧 Developer Mode: Answer Distribution Stats", expanded=True):
-            st.warning("⚠️ 디버그 모드가 활성화되었습니다. 이 패널은 일반 사용자에게 보이지 않습니다.")
-            
-            stats = balanced_result["stats"]
-            col_bk1, col_bk2 = st.columns([1, 2])
-            
-            with col_bk1:
-                st.write("#### 정답 분포 통계")
-                # DataFrame으로 이쁘게 표시
-                stats_df = pd.DataFrame([
-                    {"번호": k, "개수": v} for k, v in stats.items()
-                ])
-                st.dataframe(stats_df, hide_index=True)
-                
-            with col_bk2:
-                st.write("#### 분포 상태 검증")
-                if balanced_result["is_balanced"]:
-                    st.success("✅ **균등 분포 달성** (Perfectly Balanced)")
-                    st.markdown("""
-                    - 모든 문항의 정답 위치가 수학적으로 균등하게 재배치되었습니다.
-                    - LLM의 위치 편향(Center Bias)이 완전히 제거되었습니다.
-                    """)
-                else:
-                    st.error("❌ 분포 균등화 실패")
 
     # 테스트 시작
     if not st.session_state['start_time']:
         if st.button("테스트 시작", type="primary"):
             st.session_state['start_time'] = time.time()
+            # 선택지 셌플 초기화 (새 시험 시작시 재셌플)
+            st.session_state['shuffled_questions'] = None
+            st.session_state['answer_mappings'] = None
             st.rerun()
         return
 
@@ -718,6 +716,7 @@ def main():
     
     start_ts = st.session_state['start_time'] if st.session_state['start_time'] else time.time()
     
+    # CSS for sticky header
     st.markdown(f"""
 <style>
 /* 1. Streamlit Override */
@@ -812,9 +811,11 @@ footer {{display: none !important;}}
     transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 0 10px rgba(123, 163, 140, 0.3);
 }}
-
 </style>
-
+    """, unsafe_allow_html=True)
+    
+    # Timer HTML component with JavaScript
+    components.html(f"""
 <div class="sticky-header">
     <div class="header-left">
         <div class="header-logo">EduPrompT <span style="font-weight:300; color:var(--text-secondary);">Test</span></div>
@@ -853,9 +854,9 @@ footer {{display: none !important;}}
         }}
     }}
     setInterval(updateTimer, 1000);
-    updateTimer(); 
+    updateTimer();
 </script>
-    """, unsafe_allow_html=True)
+    """, height=80)
 
     # 현재 문제 상태 (더 명확하게)
     if st.session_state['current_question'] < len(st.session_state['answers']):
@@ -1066,13 +1067,20 @@ footer {{display: none !important;}}
             # 버튼 클릭 처리
             if st.button(button_text,
                         key=f"q{st.session_state['current_question']}_option_{i}"):
-                    # 선택된 옵션을 세션 상태에 저장
-                    if st.session_state['current_question'] < len(st.session_state['answers']):
+                    current_q_idx = st.session_state['current_question']
+                    
+                    # 선택된 옵션을 세션 상킬에 저장
+                    if current_q_idx < len(st.session_state['answers']):
                         # 이미 답한 문제인 경우 업데이트
-                        st.session_state['answers'][st.session_state['current_question']] = i
+                        st.session_state['answers'][current_q_idx] = i
                     else:
                         # 새로운 답변인 경우 추가
                         st.session_state['answers'].append(i)
+                    
+                    # 자동으로 다음 문제로 이동 (마지막 문제가 아닌 경우)
+                    if current_q_idx < total_questions - 1:
+                        st.session_state['current_question'] = current_q_idx + 1
+                    
                     st.rerun()  # 페이지 다시 로드하여 변경사항 반영
 
         # 버튼 영역
@@ -1174,7 +1182,7 @@ footer {{display: none !important;}}
         st.success("🎉 테스트 완료! 상세한 학습 분석 리포트가 생성되었습니다.")
 
         # 탭 생성
-        tab1, tab2, tab3 = st.tabs(["📊 결과 요약", "🎯 상담 리포트", "📚 학습 커리큘럼"])
+        tab1, tab2, tab3, tab4 = st.tabs(["📊 결과 요약", "🌟 프리미엄 리포트", "🎯 상담 리포트", "📚 학습 커리큐럼"])
 
         with tab1:
             # 기본 결과 요약
@@ -1215,6 +1223,33 @@ footer {{display: none !important;}}
                 st.info(f"⏱️ 소요 시간: {minutes}분 {seconds}초")
 
         with tab2:
+            # 프리미엄 HTML 리포트
+            from utils.report_generator import generate_premium_report
+            
+            st.header("🌟 EduPrompT Premium Report")
+            st.info("📄 이 리포트는 고품질 HTML 형식으로 제공됩니다. 다운로드하여 브라우저에서 열어보세요!")
+            
+            # HTML 리포트 생성
+            html_report = generate_premium_report(
+                st.session_state.get('student_info', {}),
+                test_results,
+                analysis
+            )
+            
+            # 다운로드 버튼
+            st.download_button(
+                label="📥 프리미엄 리포트 다운로드 (HTML)",
+                data=html_report,
+                file_name=f"EduPrompT_Premium_Report_{st.session_state['student_info'].get('full_name', 'Student')}_{datetime.now().strftime('%Y%m%d')}.html",
+                mime="text/html",
+                type="primary"
+            )
+            
+            # HTML 미리보기 (제한적)
+            with st.expander("👁️ 리포트 미리보기", expanded=False):
+                st.components.v1.html(html_report, height=800, scrolling=True)
+
+        with tab3:
             # 상담 리포트
             st.header("🎯 상담용 학습 분석 리포트")
 
@@ -1234,9 +1269,9 @@ footer {{display: none !important;}}
             report_content = analyzer.generate_counseling_report(analysis)
             st.markdown(report_content)
 
-        with tab3:
-            # 학습 커리큘럼
-            st.header("📚 맞춤형 학습 커리큘럼")
+        with tab4:
+            # 학습 커리큐럼
+            st.header("📚 맞춤형 학습 커리큐럼")
 
             curriculum = analysis['learning_curriculum']
             next_goal = analysis['next_level_goal']
