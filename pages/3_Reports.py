@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit.components.v1 as components
 import pandas as pd
 import json
 import os
@@ -6,6 +7,11 @@ from datetime import datetime, timedelta
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+from utils.counseling_report_generator import (
+    generate_student_counseling_report,
+    generate_printable_report_html,
+    save_report_as_html
+)
 
 # 페이지 설정
 st.set_page_config(
@@ -277,7 +283,7 @@ def main():
     # 리포트 타입 선택
     report_type = st.selectbox(
         "리포트 유형 선택:",
-        ["📊 종합 분석 리포트", "👥 학생별 진행 현황", "📈 레벨별 비교 분석", "⏰ 시간대별 분석"]
+        ["📊 종합 분석 리포트", "👥 학생별 진행 현황", "📈 레벨별 비교 분석", "⏰ 시간대별 분석", "🎓 개별 학생 상담 리포트 (NEW)"]
     )
 
     if report_type == "📊 종합 분석 리포트":
@@ -495,6 +501,185 @@ def main():
             fig.update_yaxes(title_text="응시자 수", secondary_y=True)
 
             st.plotly_chart(fig, use_container_width=True)
+
+    elif report_type == "🎓 개별 학생 상담 리포트 (NEW)":
+        st.subheader("개별 학생 상담 리포트 생성")
+        st.info("📄 A4 형식의 프린트 가능한 상담 리포트를 생성합니다.")
+        
+        # 학생 선택
+        students = list(set(s.get('studentInfo', {}).get('name', 'Unknown') for s in submissions))
+        students = [s for s in students if s != 'Unknown']
+        
+        if not students:
+            st.warning("리포트를 생성할 학생 데이터가 없습니다.")
+            return
+        
+        col1, col2 = st.columns([2, 1])
+        with col1:
+            selected_student = st.selectbox("학생 선택:", students)
+        with col2:
+            test_count = st.number_input("최근 테스트 개수", min_value=1, max_value=10, value=1)
+        
+        if selected_student:
+            # 해당 학생의 최근 테스트 데이터 가져오기
+            student_submissions = [
+                s for s in submissions
+                if s.get('studentInfo', {}).get('name') == selected_student
+            ]
+            student_submissions.sort(key=lambda x: x.get('submittedAt', ''), reverse=True)
+            
+            if student_submissions:
+                # 테스트 선택
+                st.subheader("테스트 기록 선택")
+                test_options = []
+                for i, sub in enumerate(student_submissions[:test_count]):
+                    date = datetime.fromisoformat(sub.get('submittedAt', '')).strftime('%Y-%m-%d %H:%M')
+                    level = sub.get('level', 'Unknown')
+                    score = sub.get('score', 0)
+                    status = "합격" if sub.get('passed', False) else "불합격"
+                    test_options.append(f"{date} | {level} | {score}점 | {status}")
+                
+                selected_test_idx = st.selectbox(
+                    "리포트를 생성할 테스트 선택:",
+                    range(len(test_options[:test_count])),
+                    format_func=lambda x: test_options[x]
+                )
+                
+                selected_submission = student_submissions[selected_test_idx]
+                
+                # 상세 정보 표시
+                st.markdown("---")
+                col1, col2, col3, col4 = st.columns(4)
+                with col1:
+                    st.metric("테스트 레벨", selected_submission.get('level', 'Unknown'))
+                with col2:
+                    st.metric("점수", f"{selected_submission.get('score', 0)}점")
+                with col3:
+                    st.metric("정답률", f"{selected_submission.get('accuracy', 0)}%")
+                with col4:
+                    status = "✅ 합격" if selected_submission.get('passed', False) else "❌ 불합격"
+                    st.metric("합격 여부", status)
+                
+                # 리포트 생성 버튼
+                st.markdown("---")
+                st.subheader("리포트 생성 옵션")
+                
+                col1, col2 = st.columns(2)
+                with col1:
+                    include_charts = st.checkbox("📊 차표 포함", value=True)
+                    include_detailed_analysis = st.checkbox("🔍 상세 분석 포함", value=True)
+                with col2:
+                    include_roadmap = st.checkbox("🗺️ 학습 로드맵 포함", value=True)
+                    include_questions = st.checkbox("📝 문항별 분석 포함", value=True)
+                
+                # 리포트 생성
+                if st.button("📄 A4 상담 리포트 생성", type="primary", use_container_width=True):
+                    # 학생 정보 추출
+                    student_info = {
+                        'name': selected_student,
+                        'full_name': selected_submission.get('studentInfo', {}).get('full_name', selected_student),
+                        'school': selected_submission.get('studentInfo', {}).get('school', ''),
+                        'grade': selected_submission.get('studentInfo', {}).get('grade', ''),
+                        'class': selected_submission.get('studentInfo', {}).get('class', '')
+                    }
+                    
+                    # 테스트 결과 추출
+                    test_results = {
+                        'level': selected_submission.get('level', 'A1'),
+                        'score': selected_submission.get('score', 0),
+                        'correct': selected_submission.get('correct', 0),
+                        'total': selected_submission.get('total', 0),
+                        'accuracy': selected_submission.get('accuracy', 0),
+                        'passed': selected_submission.get('passed', False),
+                        'submitted_at': datetime.fromisoformat(selected_submission.get('submittedAt', '')).strftime('%Y년 %m월 %d일'),
+                        'duration': selected_submission.get('duration', '0분')
+                    }
+                    
+                    # 분석 결과 추출 (간단한 기본값 사용)
+                    analysis = selected_submission.get('analysis', {})
+                    if not analysis:
+                        # 기본 분석 생성
+                        from utils.cefr_analyzer import CEFRAnalyzer
+                        analyzer = CEFRAnalyzer()
+                        
+                        # 섹션별 결과 계산
+                        section_results = {}
+                        section_data = {}
+                        for q_data in questions_data:
+                            section = q_data.get('section', 'General')
+                            if section not in section_data:
+                                section_data[section] = {'correct': 0, 'total': 0}
+                            section_data[section]['total'] += 1
+                        
+                        # 정답 체크
+                        for ans, q_data in zip(answers, questions_data):
+                            section = q_data.get('section', 'General')
+                            if ans.get('correct', False):
+                                section_data[section]['correct'] += 1
+                        
+                        # 섹션 결과 변환
+                        for section, data in section_data.items():
+                            section_results[section] = data
+                        
+                        # 테스트 결과 준비
+                        test_results_for_analysis = {
+                            'level': selected_submission.get('level', 'A1'),
+                            'score': selected_submission.get('score', 0),
+                            'sectionResults': section_results,
+                            'submittedAt': selected_submission.get('submittedAt', ''),
+                            'studentInfo': selected_submission.get('studentInfo', {})
+                        }
+                        
+                        analysis = analyzer.analyze_test_results(test_results_for_analysis)
+                    
+                    # 상세 문항 정보
+                    detailed_questions = []
+                    answers = selected_submission.get('answers', [])
+                    questions_data = selected_submission.get('questions', [])
+                    
+                    for i, (ans, q_data) in enumerate(zip(answers, questions_data)):
+                        detailed_questions.append({
+                            'question': q_data.get('question', ''),
+                            'options': q_data.get('options', []),
+                            'user_answer': ans.get('answer', -1),
+                            'correct_answer': q_data.get('correct', 0),
+                            'is_correct': ans.get('correct', False),
+                            'section': q_data.get('section', 'General'),
+                            'explanation': q_data.get('explanation', '')
+                        })
+                    
+                    # 리포트 생성
+                    try:
+                        html_report = generate_student_counseling_report(
+                            student_info,
+                            test_results,
+                            analysis,
+                            detailed_questions
+                        )
+                        
+                        # 미리보기
+                        st.success("✅ 리포트가 생성되었습니다!")
+                        st.markdown("### 리포트 미리보기")
+                        components.html(html_report, height=1000, scrolling=True)
+                        
+                        # 다운로드 버튼
+                        st.markdown("---")
+                        col1, col2 = st.columns(2)
+                        with col1:
+                            st.download_button(
+                                label="📥 HTML 파일 다운로드",
+                                data=html_report,
+                                file_name=f"counseling_report_{selected_student}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.html",
+                                mime="text/html",
+                                use_container_width=True
+                            )
+                        with col2:
+                            st.info("💡 팁: HTML 파일을 브라우저에서 열고 Ctrl+P(또는 Cmd+P)로 인쇄하여 PDF로 저장하세요.")
+                        
+                    except Exception as e:
+                        st.error(f"리포트 생성 중 오류가 발생했습니다: {str(e)}")
+                        import traceback
+                        st.error(traceback.format_exc())
 
 if __name__ == "__main__":
     main()
